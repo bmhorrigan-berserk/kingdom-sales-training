@@ -263,7 +263,8 @@ export default function Curriculum() {
                   </div>
                 </div>
 
-                {/* Lesson list */}
+                {/* Lesson list - sits on its own solid card so the radial fan
+                    behind the section does not bleed through the lesson text. */}
                 <div>
                   <Eyebrow
                     style={{
@@ -276,18 +277,24 @@ export default function Curriculum() {
                   <ol
                     style={{
                       listStyle: "none",
-                      padding: 0,
+                      padding: "8px 16px",
                       margin: 0,
-                      borderTop: `1px solid ${onDark ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
+                      background: onDark ? "#141849" : CREAM,
+                      border: `1px solid ${onDark ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
+                      borderRadius: 8,
+                      boxShadow: onDark
+                        ? "0 8px 24px rgba(0,0,0,0.35)"
+                        : "0 8px 24px rgba(26, 32, 96, 0.06), 0 1px 2px rgba(26, 32, 96, 0.04)",
                     }}
                   >
-                    {phase.lessons.map((l) => {
+                    {phase.lessons.map((l, lessonIdx) => {
                       const media = lessonMediaTypes(l.code);
+                      const isLast = lessonIdx === phase.lessons.length - 1;
                       return (
                       <li
                         key={l.code}
                         style={{
-                          borderBottom: `1px solid ${onDark ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
+                          borderBottom: isLast ? "none" : `1px solid ${onDark ? "rgba(255,251,240,0.12)" : HAIRLINE}`,
                         }}
                       >
                         <Link href={`/curriculum/${l.code}`}>
