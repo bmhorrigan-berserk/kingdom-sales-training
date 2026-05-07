@@ -94,6 +94,14 @@ export function RadialFan({
   ariaHidden = true,
 }: RadialFanProps) {
   const placement = originPlacement(origin, size);
+  /* Radial fade mask. The catalog SVGs have dense content all the way to
+     their viewBox edges, so without a mask the SVG's bounding box shows
+     as a hard rectangle when the page is bigger than half the texture.
+     The mask is anchored at the SVG center (where the radial focal point
+     sits) and fades to transparent before reaching the bounding box,
+     giving a clean organic falloff with no visible edges. */
+  const fadeMask =
+    "radial-gradient(circle at 50% 50%, black 0%, black 35%, transparent 75%)";
   return (
     <img
       src={`/textures/texture-${texture}.svg`}
@@ -108,6 +116,8 @@ export function RadialFan({
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
+        maskImage: fadeMask,
+        WebkitMaskImage: fadeMask,
         ...placement,
         ...style,
       }}
