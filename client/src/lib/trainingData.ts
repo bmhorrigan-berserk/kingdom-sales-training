@@ -44,7 +44,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-001",
     category: "New Patient Sign-Up",
     front: "What must you verify in the Treatment Options (TO) before proceeding with a new patient sign-up?",
-    back: "Verify: Driver's license, did they respond to every question — Approved Treatment, Confirmed Shipping Address, Approved Card on File or Invoice, Attached Photo of front of Driver's License. Correct any unanswered questions or errors before proceeding.",
+    back: "Verify: Driver's license, did they respond to every question - Approved Treatment, Confirmed Shipping Address, Approved Card on File or Invoice, Attached Photo of front of Driver's License. Correct any unanswered questions or errors before proceeding.",
   },
   {
     id: "fc-002",
@@ -56,7 +56,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-003",
     category: "New Patient Sign-Up",
     front: "What is the rule for setting up recurring when an invoice was paid for a new order?",
-    back: "If an Invoice was paid for the new Order, set the recurring for the FOLLOWING MONTH — not the current month. Setting it for the current month would double-bill the patient.",
+    back: "If an Invoice was paid for the new Order, set the recurring for the FOLLOWING MONTH - not the current month. Setting it for the current month would double-bill the patient.",
   },
   {
     id: "fc-004",
@@ -80,7 +80,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-007",
     category: "New Patient Sign-Up",
     front: "What must be set up in Stickies after a new patient sign-up?",
-    back: "Set up Stickies and tasks to reflect approved medications. Include: Recurring (Price, Dosing, Treatment, Frequency or QTY) — example: $149 / 200mg Modafinil #33, and Approved Add-Ons.",
+    back: "Set up Stickies and tasks to reflect approved medications. Include: Recurring (Price, Dosing, Treatment, Frequency or QTY) - example: $149 / 200mg Modafinil #33, and Approved Add-Ons.",
   },
   {
     id: "fc-008",
@@ -94,7 +94,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-009",
     category: "Billing & Recurring",
     front: "What four approvals must be obtained before billing a patient?",
-    back: "1. Medication approval, 2. Price approval, 3. Card to charge approval, 4. Recurring approval — from both patient AND Provider.",
+    back: "1. Medication approval, 2. Price approval, 3. Card to charge approval, 4. Recurring approval - from both patient AND Provider.",
   },
   {
     id: "fc-010",
@@ -156,19 +156,19 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-019",
     category: "Diagnosis Codes",
     front: "What diagnosis codes apply to Sermorelin, Tesamorelin, and IGF-LR3?",
-    back: "M62.50: Muscle Wasting; M25.50: Joint Pain; R53.83: Fatigue — same for all three peptides.",
+    back: "M62.50: Muscle Wasting; M25.50: Joint Pain; R53.83: Fatigue - same for all three peptides.",
   },
   {
     id: "fc-020",
     category: "Diagnosis Codes",
     front: "What diagnosis code applies to Semaglutide, Oral Semaglutide, and Phentermine?",
-    back: "E66.3: Overweight — all three weight loss medications share this code.",
+    back: "E66.3: Overweight - all three weight loss medications share this code.",
   },
   {
     id: "fc-021",
     category: "Diagnosis Codes",
     front: "What diagnosis code applies to Tadalafil, Sildenafil, and Trimix?",
-    back: "N52.9: Erectile Dysfunction — all three ED medications share this code.",
+    back: "N52.9: Erectile Dysfunction - all three ED medications share this code.",
   },
   {
     id: "fc-022",
@@ -186,13 +186,13 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-024",
     category: "Diagnosis Codes",
     front: "What diagnosis codes apply to Stanozolol and Oxandrolone (both genders)?",
-    back: "M62.50: Muscle Wasting — applies to both males and females for both compounds.",
+    back: "M62.50: Muscle Wasting - applies to both males and females for both compounds.",
   },
   {
     id: "fc-025",
     category: "Diagnosis Codes",
     front: "What diagnosis code applies to Anastrozole, Exemestane, Kyzatrex, and Enclomiphene?",
-    back: "E29.1: Testicular Hypofunction — all four share this code.",
+    back: "E29.1: Testicular Hypofunction - all four share this code.",
   },
   {
     id: "fc-026",
@@ -210,7 +210,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-028",
     category: "Diagnosis Codes",
     front: "What diagnosis code applies to Progesterone Capsules and Estradiol Cream?",
-    back: "E34.9: Hormone Disturbance/Endocrine Disorder — both female hormone medications share this code.",
+    back: "E34.9: Hormone Disturbance/Endocrine Disorder - both female hormone medications share this code.",
   },
 
   // ─── LAB PANELS & ORDERING ───
@@ -242,7 +242,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-033",
     category: "Lab Panels & Ordering",
     front: "What is the lab recheck protocol after starting or changing hormone therapy?",
-    back: "Labs are rechecked at the 6-7 week mark after starting or making changes to hormone therapy, then every 6 months per protocol — unless the Provider or patient requests sooner.",
+    back: "Labs are rechecked at the 6-7 week mark after starting or making changes to hormone therapy, then every 6 months per protocol - unless the Provider or patient requests sooner.",
   },
   {
     id: "fc-034",
@@ -304,7 +304,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-043",
     category: "Patient Pipeline & CRM",
     front: "What state-specific limitations exist for compound medications?",
-    back: "California: Only Testosterone is approved for Hormone Health — Nandrolone and other compounds are NOT approved for CA patients. Iowa and Wisconsin patients use Revive pharmacy. CA patients for Testosterone use Tailor-Made when Empower is out of stock.",
+    back: "California: Only Testosterone is approved for Hormone Health - Nandrolone and other compounds are NOT approved for CA patients. Iowa and Wisconsin patients use Revive pharmacy. CA patients for Testosterone use Tailor-Made when Empower is out of stock.",
   },
   {
     id: "fc-044",
@@ -366,7 +366,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-053",
     category: "The Consultation (WHARP)",
     front: "What are the two fee options when converting a consultation?",
-    back: "CPT Code 201 = Physician Consult only = $99 (Cognitive Function and Weight Loss — no labs required). CPT Code 202 = Initial Hormone Panel + Initial Physician Consult = $199 (Hormone Health — labs required).",
+    back: "CPT Code 201 = Physician Consult only = $99 (Cognitive Function and Weight Loss - no labs required). CPT Code 202 = Initial Hormone Panel + Initial Physician Consult = $199 (Hormone Health - labs required).",
   },
   {
     id: "fc-054",
@@ -454,13 +454,13 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-067",
     category: "Sticky Notes & Tasks",
     front: "What is the purpose of the Green Sticky Note?",
-    back: "The Green Sticky is used for address changes — temporary to short-term work addresses, including Military Deployment areas approved for shipping. For 1-2 month changes, update the green sticky with the new/temp address and set a task for the recurring refill date.",
+    back: "The Green Sticky is used for address changes - temporary to short-term work addresses, including Military Deployment areas approved for shipping. For 1-2 month changes, update the green sticky with the new/temp address and set a task for the recurring refill date.",
   },
   {
     id: "fc-068",
     category: "Sticky Notes & Tasks",
     front: "What quick text is used to set a recurring refill task with an address change?",
-    back: "Use 'taskrefadd' — set for the date of the next recurring refill. In Comments: place the New/Temp Address and the duration this address will be utilized.",
+    back: "Use 'taskrefadd' - set for the date of the next recurring refill. In Comments: place the New/Temp Address and the duration this address will be utilized.",
   },
 
   // ─── CANCELLATIONS & DEVIATIONS ───
@@ -536,7 +536,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-080",
     category: "Sales Framework",
     front: "What is the Assumptive Logistics Close and why does it work?",
-    back: "The Assumptive Logistics Close treats the decision as already made and moves directly to logistics. It works because it eliminates the 'decision moment' that triggers buyer hesitation. You are not asking IF they want to proceed — you are asking HOW to proceed.",
+    back: "The Assumptive Logistics Close treats the decision as already made and moves directly to logistics. It works because it eliminates the 'decision moment' that triggers buyer hesitation. You are not asking IF they want to proceed - you are asking HOW to proceed.",
   },
 
   // ─── HPG AXIS & HORMONES ───
@@ -636,7 +636,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-102",
     category: "Testosterone Therapy",
     front: "What is anastrozole and when is it prescribed with TRT?",
-    back: "Anastrozole is an aromatase inhibitor (AI) that blocks the conversion of testosterone to estrogen. Prescribed when estradiol levels are elevated on TRT. Must not be overused -- estrogen serves critical biological functions including protecting cholesterol levels and sexual function.",
+    back: "Anastrozole is an aromatase inhibitor (AI) that blocks the conversion of testosterone to estrogen. Prescribed when estradiol levels are elevated on TRT. Must not be overused - estrogen serves critical biological functions including protecting cholesterol levels and sexual function.",
   },
   {
     id: "fc-103",
@@ -726,7 +726,7 @@ export const FLASHCARDS: Flashcard[] = [
     id: "fc-081",
     category: "Objection Handling",
     front: "What is an Accusation Audit and when do you use it?",
-    back: "An Accusation Audit proactively lists the worst things the prospect might be thinking and says them first — BEFORE the prospect voices their objection.\n\nScript: 'You probably think we are just another expensive online clinic that is going to complicate your life, trap you into massive out-of-pocket costs, and leave you guessing. I completely understand that fear.'\n\nResult: The prospect instinctively disagrees and lowers their defenses.",
+    back: "An Accusation Audit proactively lists the worst things the prospect might be thinking and says them first - BEFORE the prospect voices their objection.\n\nScript: 'You probably think we are just another expensive online clinic that is going to complicate your life, trap you into massive out-of-pocket costs, and leave you guessing. I completely understand that fear.'\n\nResult: The prospect instinctively disagrees and lowers their defenses.",
   },
   {
     id: "fc-082",
@@ -826,7 +826,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       "It does not aromatize into estrogen, eliminating the need for an AI",
     ],
     correctIndex: 2,
-    explanation: "Testosterone cypionate has a half-life of approximately 8 days, producing stable blood levels without frequent injections. It also provides clinically meaningful trough lab values for accurate dose titration -- something topical and sublingual forms cannot reliably provide.",
+    explanation: "Testosterone cypionate has a half-life of approximately 8 days, producing stable blood levels without frequent injections. It also provides clinically meaningful trough lab values for accurate dose titration - something topical and sublingual forms cannot reliably provide.",
   },
   {
     id: "q-trt-2",
@@ -852,7 +852,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       "The timing does not matter for testosterone cypionate",
     ],
     correctIndex: 1,
-    explanation: "Labs should be drawn at the trough -- just before the next scheduled injection, approximately 6-7 days after the last testosterone cypionate dose. Trough levels provide the most clinically relevant baseline for accurate dose titration.",
+    explanation: "Labs should be drawn at the trough - just before the next scheduled injection, approximately 6-7 days after the last testosterone cypionate dose. Trough levels provide the most clinically relevant baseline for accurate dose titration.",
   },
   // ─── WEIGHT LOSS & GLP-1 ───
   {
@@ -901,7 +901,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     question: "What is the mechanism of action of CJC-1295 and Ipamorelin when used together?",
     options: [
       "CJC-1295 blocks cortisol while Ipamorelin directly injects growth hormone into the bloodstream",
-      "CJC-1295 is a GHRH analog that stimulates the pituitary to release GH; Ipamorelin is a GHRP that amplifies GH pulses -- together they produce a synergistic increase in GH",
+      "CJC-1295 is a GHRH analog that stimulates the pituitary to release GH; Ipamorelin is a GHRP that amplifies GH pulses - together they produce a synergistic increase in GH",
       "Both peptides work identically and are combined only to reduce the required dose of each",
       "CJC-1295 increases IGF-1 directly while Ipamorelin increases testosterone",
     ],
@@ -999,7 +999,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       "'Thank you for your payment. Your order is on its way.'",
     ],
     correctIndex: 1,
-    explanation: "The exact reply is: 'Your order was charged and sent for processing...' — go back to the original PT message and reply with this exact language.",
+    explanation: "The exact reply is: 'Your order was charged and sent for processing...' - go back to the original PT message and reply with this exact language.",
   },
   // ─── DIAGNOSIS CODES ───
   {
@@ -1087,10 +1087,10 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     category: "The Consultation (WHARP)",
     question: "What does the 'A' in WHARP stand for and what is its primary purpose?",
     options: [
-      "Assess — evaluate the patient's current health status",
-      "Align — confirm talking points and validate the patient's goals and research",
-      "Advise — provide medical recommendations",
-      "Agree — get the patient to commit to treatment",
+      "Assess - evaluate the patient's current health status",
+      "Align - confirm talking points and validate the patient's goals and research",
+      "Advise - provide medical recommendations",
+      "Agree - get the patient to commit to treatment",
     ],
     correctIndex: 1,
     explanation: "A = Align. You confirm talking points by repeating side effects/feelings, congratulating achievements, validating that the product can aid their goals, validating their research, and building trust through demonstrated knowledge.",
@@ -1114,8 +1114,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     category: "Patient Pipeline & CRM",
     question: "A patient from California wants to start Nandrolone therapy. What should you do?",
     options: [
-      "Process the order normally — Nandrolone is available in all states",
-      "Inform the patient that California legislation only allows Testosterone for Hormone Health — Nandrolone is not approved for CA patients",
+      "Process the order normally - Nandrolone is available in all states",
+      "Inform the patient that California legislation only allows Testosterone for Hormone Health - Nandrolone is not approved for CA patients",
       "Refer the patient to a different clinic",
       "Use Tailor-Made pharmacy to fulfill the Nandrolone order for CA",
     ],
@@ -1224,7 +1224,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     question: "A prospect says 'I think I just need some time to think about this.' What is the FIRST technique you should use?",
     options: [
       "Immediately offer a discount to close",
-      "Use Mirroring — repeat 'Time to think about it?' and wait 4 seconds",
+      "Use Mirroring - repeat 'Time to think about it?' and wait 4 seconds",
       "Use an Accusation Audit",
       "Ask a No-Oriented Question",
     ],
@@ -1237,12 +1237,12 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     question: "What is the key reframe when a prospect says 'I need to talk to my partner first'?",
     options: [
       "Offer to schedule a three-way call with the partner",
-      "Reframe the $199 as simply gathering biological data — not a treatment commitment. Nobody needs a partner's permission to get a blood test.",
+      "Reframe the $199 as simply gathering biological data - not a treatment commitment. Nobody needs a partner's permission to get a blood test.",
       "Agree and schedule a follow-up call for after they speak with their partner",
       "Explain that the decision is time-sensitive and the price may go up",
     ],
     correctIndex: 1,
-    explanation: "Prospects use their spouse to mask uncertainty. Reframe the $199 as simply gathering biological data, not a full treatment commitment. You are not asking them to commit to a protocol — you are asking them to get a blood test.",
+    explanation: "Prospects use their spouse to mask uncertainty. Reframe the $199 as simply gathering biological data, not a full treatment commitment. You are not asking them to commit to a protocol - you are asking them to get a blood test.",
   },
   {
     id: "q-024",
@@ -1255,7 +1255,7 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       "A conditional yes; avoid it by removing all conditions from the offer",
     ],
     correctIndex: 1,
-    explanation: "A Counterfeit Yes is an evasive reply designed to make the salesperson go away without any true commitment. It is triggered by pushing for 'Yes' too early. Avoid it by using No-Oriented Questions — saying 'No' makes the prospect feel safe and in control, which creates genuine buy-in.",
+    explanation: "A Counterfeit Yes is an evasive reply designed to make the salesperson go away without any true commitment. It is triggered by pushing for 'Yes' too early. Avoid it by using No-Oriented Questions - saying 'No' makes the prospect feel safe and in control, which creates genuine buy-in.",
   },
   {
     id: "q-025",
@@ -1268,6 +1268,6 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
       "Recheck at 8 weeks, then every 4 months",
     ],
     correctIndex: 1,
-    explanation: "Labs are rechecked at the 6-7 week mark after starting or making changes to hormone therapy, then every 6 months per protocol — unless the Provider or patient requests sooner.",
+    explanation: "Labs are rechecked at the 6-7 week mark after starting or making changes to hormone therapy, then every 6 months per protocol - unless the Provider or patient requests sooner.",
   },
 ];

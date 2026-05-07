@@ -27,11 +27,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -42,53 +37,72 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* Kingdom Brand: TRT Kingdom Identity */
-/* Colors: Near-black #0A0D14, Kingdom Navy #1a1f35, Kingdom Gold #C9A84C */
-/* Fonts: Bebas Neue (display), DM Sans (body) */
+/* ----------------------------------------------------------------------
+ * Kingdom Sales Training - Editorial Magazine Identity
+ * Cream surface, Dark Navy ink, Mid Blue accent, Fraunces + Inter.
+ * No gold. No dark mode.
+ * -------------------------------------------------------------------- */
 
 :root {
-  --radius: 0.25rem;
-  --background: oklch(0.09 0.015 240);
-  --foreground: oklch(0.96 0.003 240);
-  --card: oklch(0.13 0.02 240);
-  --card-foreground: oklch(0.96 0.003 240);
-  --popover: oklch(0.13 0.02 240);
-  --popover-foreground: oklch(0.96 0.003 240);
-  --primary: oklch(0.42 0.16 255);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.17 0.025 240);
-  --secondary-foreground: oklch(0.85 0.005 240);
-  --muted: oklch(0.17 0.025 240);
-  --muted-foreground: oklch(0.55 0.01 240);
-  --accent: oklch(0.73 0.12 75);
-  --accent-foreground: oklch(0.09 0.015 240);
-  --destructive: oklch(0.60 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.22 0.025 240);
-  --input: oklch(0.17 0.025 240);
-  --ring: oklch(0.42 0.16 255);
-  --chart-1: oklch(0.45 0.18 255);
-  --chart-2: oklch(0.78 0.17 75);
-  --chart-3: oklch(0.60 0.15 160);
-  --chart-4: oklch(0.60 0.22 25);
-  --chart-5: oklch(0.70 0.12 300);
-  --sidebar: oklch(0.13 0.025 240);
-  --sidebar-foreground: oklch(0.95 0.005 240);
-  --sidebar-primary: oklch(0.45 0.18 255);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.20 0.03 240);
-  --sidebar-accent-foreground: oklch(0.95 0.005 240);
-  --sidebar-border: oklch(0.22 0.03 240);
-  --sidebar-ring: oklch(0.45 0.18 255);
+  --radius: 0.375rem;
+
+  /* Kingdom brand */
+  --kingdom-navy: #1A2060;
+  --kingdom-blue: #3B5BDB;
+  --kingdom-pale: #F0F7FE;
+  --kingdom-cream: #FFFBF0;
+  --kingdom-hairline: #E8DEC6;
+  --kingdom-ink: #2D2A24;
+  --kingdom-ink-muted: #6B6357;
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* shadcn-compatible token mapping (cream surface) */
+  --background: oklch(0.985 0.018 95);
+  --foreground: oklch(0.20 0.02 60);
+  --card: oklch(0.985 0.018 95);
+  --card-foreground: oklch(0.20 0.02 60);
+  --popover: oklch(0.985 0.018 95);
+  --popover-foreground: oklch(0.20 0.02 60);
+  --primary: oklch(0.22 0.13 270);
+  --primary-foreground: oklch(0.985 0.018 95);
+  --secondary: oklch(0.94 0.025 250);
+  --secondary-foreground: oklch(0.22 0.13 270);
+  --muted: oklch(0.94 0.025 250);
+  --muted-foreground: oklch(0.45 0.02 60);
+  --accent: oklch(0.50 0.20 270);
+  --accent-foreground: oklch(0.985 0.018 95);
+  --destructive: oklch(0.55 0.20 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.88 0.04 90);
+  --input: oklch(0.94 0.025 250);
+  --ring: oklch(0.50 0.20 270);
+  --sidebar: oklch(0.985 0.018 95);
+  --sidebar-foreground: oklch(0.20 0.02 60);
+  --sidebar-primary: oklch(0.22 0.13 270);
+  --sidebar-primary-foreground: oklch(0.985 0.018 95);
+  --sidebar-accent: oklch(0.94 0.025 250);
+  --sidebar-accent-foreground: oklch(0.22 0.13 270);
+  --sidebar-border: oklch(0.88 0.04 90);
+  --sidebar-ring: oklch(0.50 0.20 270);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'DM Sans', sans-serif;
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--kingdom-cream);
+    color: var(--kingdom-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -102,8 +116,8 @@
     @apply cursor-pointer;
   }
   h1, h2, h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.05em;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 }
 
@@ -137,110 +151,19 @@
   }
 }
 
-/* Flashcard flip animation */
-.flashcard-scene {
-  perspective: 1000px;
+/* Selection */
+::selection {
+  background: var(--kingdom-blue);
+  color: var(--kingdom-cream);
 }
 
-.flashcard-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--kingdom-cream); }
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 32, 96, 0.18);
+  border-radius: 999px;
 }
-
-.flashcard-inner.flipped {
-  transform: rotateY(180deg);
-}
-
-.flashcard-front,
-.flashcard-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.flashcard-back {
-  transform: rotateY(180deg);
-}
-
-/* Gold color utility (Kingdom brand) */
-.text-gold { color: oklch(0.73 0.12 75); }
-.bg-gold { background-color: oklch(0.73 0.12 75); }
-.border-gold { border-color: oklch(0.73 0.12 75); }
-.bg-gold\/5 { background-color: oklch(0.73 0.12 75 / 0.05); }
-.bg-gold\/8 { background-color: oklch(0.73 0.12 75 / 0.08); }
-.bg-gold\/10 { background-color: oklch(0.73 0.12 75 / 0.10); }
-.bg-gold\/15 { background-color: oklch(0.73 0.12 75 / 0.15); }
-.bg-gold\/20 { background-color: oklch(0.73 0.12 75 / 0.20); }
-.border-gold\/30 { border-color: oklch(0.73 0.12 75 / 0.30); }
-.border-gold\/40 { border-color: oklch(0.73 0.12 75 / 0.40); }
-.border-gold\/60 { border-color: oklch(0.73 0.12 75 / 0.60); }
-.text-gold\/50 { color: oklch(0.73 0.12 75 / 0.50); }
-.text-gold\/70 { color: oklch(0.73 0.12 75 / 0.70); }
-.via-gold\/60 { --tw-gradient-via: oklch(0.73 0.12 75 / 0.60); }
-.shadow-gold\/5 { --tw-shadow-color: oklch(0.73 0.12 75 / 0.05); }
-
-/* Gold glow effect */
-.gold-glow {
-  box-shadow: 0 0 20px oklch(0.73 0.12 75 / 0.15), 0 0 40px oklch(0.73 0.12 75 / 0.05);
-}
-.gold-glow:hover {
-  box-shadow: 0 0 30px oklch(0.73 0.12 75 / 0.25), 0 0 60px oklch(0.73 0.12 75 / 0.1);
-}
-
-/* Amber glow effect */
-.amber-glow {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.15), 0 0 40px rgba(245, 158, 11, 0.05);
-}
-
-.amber-glow:hover {
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.25), 0 0 60px rgba(245, 158, 11, 0.1);
-}
-
-/* Blue glow effect */
-.blue-glow {
-  box-shadow: 0 0 20px rgba(59, 91, 219, 0.2), 0 0 40px rgba(59, 91, 219, 0.08);
-}
-
-/* Correct answer pulse */
-@keyframes correctPulse {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-
-.correct-pulse {
-  animation: correctPulse 0.6s ease-out;
-}
-
-/* Wrong answer shake */
-@keyframes wrongShake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
-
-.wrong-shake {
-  animation: wrongShake 0.4s ease-out;
-}
-
-/* Progress bar animation */
-.progress-fill {
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Subtle noise texture overlay */
-.noise-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 32, 96, 0.32);
 }

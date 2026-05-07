@@ -1,290 +1,412 @@
-// Kingdom Sales Training - Flashcards Page
-// Design: Dark Military Command Interface
-// Colors: Deep Navy bg, Kingdom Blue primary, Amber accent
-// Fonts: Bebas Neue (headers), DM Sans (body)
+/**
+ * Flashcards - drill page with editorial cream + Mid Blue accent.
+ * Keeps the click-to-flip mechanic. Replaces the old gold/navy tile with
+ * a magazine-style large card on cream, hairline border, Mid Blue category
+ * pill, Fraunces front prompt, Inter back answer.
+ *
+ * Data: expects window.__KINGDOM_FLASHCARDS__ (pre-existing) OR the existing
+ * client/src/lib/flashcardData module. Adapter at top of file picks whichever
+ * exists.
+ */
+import { useEffect, useMemo, useState } from "react";
+import TopNav from "@/components/TopNav";
+import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
+import { RadialFan } from "@/components/RadialFan";
+import { ChevronLeft, ChevronRight, RotateCcw, Shuffle } from "lucide-react";
 
-import { useState, useCallback } from "react";
-import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, RotateCcw, Home, Shuffle, BookOpen } from "lucide-react";
+// ---------- adapter: existing trainingData.ts ----------
+import { FLASHCARDS as RAW_FLASHCARDS, type Flashcard } from "@/lib/trainingData";
 
-import { FLASHCARDS, QUIZ_QUESTIONS, CATEGORIES, type Flashcard } from "@/lib/trainingData";
+const NAVY = "#1A2060";
+const BLUE = "#3B5BDB";
+const CREAM = "#FFFBF0";
+const PALE = "#F0F7FE";
+const HAIRLINE = "#E8DEC6";
+const INK = "#2D2A24";
+const INK_MUTED = "#6B6357";
 
-const LOGO_URL = "https://cdn.prod.website-files.com/697241380caf4b1af9f8e8de/6977aba6f009db2a5f302b9b_kingdom-logo-white.svg";
+export default function Flashcards() {
+  const all: Flashcard[] = RAW_FLASHCARDS ?? [];
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    all.forEach((c) => set.add(c.category));
+    return ["All", ...Array.from(set)];
+  }, [all]);
 
-function FlashcardView({ card, isFlipped, onFlip }: { card: Flashcard; isFlipped: boolean; onFlip: () => void }) {
+  const [activeCategory, setActiveCategory] = useState<string>("All");
+  const [order, setOrder] = useState<number[]>(() => all.map((_, i) => i));
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+
+  // Filter by category
+  const filtered = useMemo(() => {
+    if (activeCategory === "All") return all.map((_, i) => i);
+    return all
+      .map((c, i) => ({ c, i }))
+      .filter(({ c }) => c.category === activeCategory)
+      .map(({ i }) => i);
+  }, [activeCategory, all]);
+
+  useEffect(() => {
+    setOrder(filtered);
+    setIdx(0);
+    setFlipped(false);
+  }, [filtered]);
+
+  const card: Flashcard | undefined = all[order[idx]];
+
+  const next = () => {
+    setFlipped(false);
+    setIdx((i) => (i + 1) % order.length);
+  };
+  const prev = () => {
+    setFlipped(false);
+    setIdx((i) => (i - 1 + order.length) % order.length);
+  };
+  const shuffle = () => {
+    const s = [...order].sort(() => Math.random() - 0.5);
+    setOrder(s);
+    setIdx(0);
+    setFlipped(false);
+  };
+  const reset = () => {
+    setOrder(filtered);
+    setIdx(0);
+    setFlipped(false);
+  };
+
   return (
-    <div className="flashcard-scene w-full" style={{ height: "340px" }} onClick={onFlip}>
-      <div className={`flashcard-inner ${isFlipped ? "flipped" : ""}`}>
-        {/* Front */}
-        <div className="flashcard-front rounded-xl border border-primary/40 bg-card cursor-pointer blue-glow overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/60 to-transparent" />
-          <div className="h-full flex flex-col p-6 md:p-8">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-['DM_Sans'] font-medium text-accent uppercase tracking-widest px-2 py-1 rounded border border-accent/30 bg-accent/10">
-                {card.tag || card.category}
-              </span>
-              <span className="text-xs text-muted-foreground font-['DM_Sans']">Click to reveal</span>
-            </div>
-            <div className="flex-1 flex items-center justify-center">
-              <p className="font-['DM_Sans'] text-lg md:text-xl font-semibold text-foreground text-center leading-relaxed">
-                {card.front}
-              </p>
-            </div>
-            <div className="flex justify-center mt-4">
-              <div className="flex gap-1">
-                {[0, 1, 2].map(i => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+    <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
+      <TopNav />
 
-        {/* Back */}
-        <div className="flashcard-back rounded-xl border border-accent/40 bg-card cursor-pointer amber-glow overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent via-accent/60 to-transparent" />
-          <div className="h-full flex flex-col p-6 md:p-8">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-['DM_Sans'] font-medium text-primary uppercase tracking-widest px-2 py-1 rounded border border-primary/30 bg-primary/10">
-                Answer
-              </span>
-              <span className="text-xs text-muted-foreground font-['DM_Sans']">Click to flip back</span>
-            </div>
-            <div className="flex-1 overflow-y-auto">
-              <p className="font-['DM_Sans'] text-sm md:text-base text-foreground leading-relaxed whitespace-pre-line">
-                {card.back}
-              </p>
+      {/* HERO STRIP */}
+      <section
+        style={{
+          position: "relative",
+          padding: "56px 32px 24px",
+          maxWidth: 1280,
+          margin: "0 auto",
+          overflow: "hidden",
+        }}
+      >
+        <RadialFan
+          origin="tr"
+          color={BLUE}
+          opacity={0.06}
+          size={780}
+          rays={40}
+          arcs={4}
+          style={{
+            position: "absolute",
+            top: -180,
+            right: -200,
+            width: 780,
+            height: 780,
+            zIndex: 0,
+          }}
+        />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Eyebrow style={{ marginBottom: 16 }}>
+            § 03 · DRILL · {all.length} CARDS · {categories.length - 1}{" "}
+            CATEGORIES
+          </Eyebrow>
+          <h1
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(40px, 5vw, 64px)",
+              lineHeight: 1.04,
+              letterSpacing: "-0.02em",
+              color: NAVY,
+              margin: 0,
+              maxWidth: "16ch",
+            }}
+          >
+            Drill until it is <Em>instinct.</Em>
+          </h1>
+        </div>
+      </section>
+
+      {/* CATEGORY FILTER */}
+      <section
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+          padding: "16px 32px 0",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 8,
+        }}
+      >
+        {categories.map((cat) => {
+          const active = cat === activeCategory;
+          return (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              style={{
+                padding: "8px 14px",
+                border: `1px solid ${active ? NAVY : HAIRLINE}`,
+                background: active ? NAVY : "transparent",
+                color: active ? CREAM : INK,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                borderRadius: 4,
+                cursor: "pointer",
+              }}
+            >
+              {cat}
+            </button>
+          );
+        })}
+      </section>
+
+      {/* CARD STAGE */}
+      <section
+        style={{
+          maxWidth: 960,
+          margin: "0 auto",
+          padding: "32px 32px 24px",
+        }}
+      >
+        {!card ? (
+          <p style={{ color: INK_MUTED }}>No cards in this category.</p>
+        ) : (
+          <div
+            onClick={() => setFlipped((f) => !f)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                setFlipped((f) => !f);
+              }
+              if (e.key === "ArrowRight") next();
+              if (e.key === "ArrowLeft") prev();
+            }}
+            style={{
+              perspective: 1400,
+              outline: "none",
+              cursor: "pointer",
+              minHeight: 420,
+            }}
+          >
+            <div
+              style={{
+                position: "relative",
+                transformStyle: "preserve-3d",
+                transition: "transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                transform: flipped ? "rotateY(180deg)" : "rotateY(0)",
+                minHeight: 420,
+              }}
+            >
+              {/* FRONT */}
+              <CardFace side="front" category={card.category} text={card.front} />
+              {/* BACK */}
+              <CardFace side="back" category={card.category} text={card.back} />
             </div>
           </div>
+        )}
+
+        {/* Counter + flip hint */}
+        <div
+          style={{
+            marginTop: 16,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            color: INK_MUTED,
+            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+            fontSize: 12,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+          }}
+        >
+          <span>
+            {order.length === 0
+              ? "0 / 0"
+              : `${String(idx + 1).padStart(2, "0")} / ${String(order.length).padStart(2, "0")}`}
+          </span>
+          <span>
+            Click card to flip · Arrow keys to navigate
+          </span>
         </div>
+      </section>
+
+      {/* CONTROLS */}
+      <section
+        style={{
+          maxWidth: 960,
+          margin: "0 auto",
+          padding: "0 32px 96px",
+          display: "flex",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <ControlButton onClick={prev} disabled={!card} icon={<ChevronLeft size={14} />} label="Previous" />
+        <ControlButton
+          onClick={() => setFlipped((f) => !f)}
+          disabled={!card}
+          icon={<RotateCcw size={14} />}
+          label="Flip"
+          primary
+        />
+        <ControlButton onClick={next} disabled={!card} icon={<ChevronRight size={14} />} label="Next" />
+        <span style={{ flex: 1 }} />
+        <ControlButton onClick={shuffle} disabled={!card} icon={<Shuffle size={14} />} label="Shuffle" />
+        <ControlButton onClick={reset} disabled={!card} icon={<RotateCcw size={14} />} label="Reset" />
+      </section>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          padding: 32,
+          maxWidth: 1280,
+          margin: "0 auto",
+          borderTop: `1px solid ${HAIRLINE}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+        }}
+      >
+        <Eyebrow>· FLASHCARD DRILL · KINGDOM CONFIDENTIAL ·</Eyebrow>
+        <PageNumber current={3} total={4} />
+      </footer>
+    </div>
+  );
+}
+
+function CardFace({
+  side,
+  category,
+  text,
+}: {
+  side: "front" | "back";
+  category: string;
+  text: string;
+}) {
+  const isBack = side === "back";
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        backfaceVisibility: "hidden",
+        WebkitBackfaceVisibility: "hidden",
+        transform: isBack ? "rotateY(180deg)" : "rotateY(0)",
+        background: isBack ? NAVY : CREAM,
+        color: isBack ? CREAM : INK,
+        border: `1px solid ${isBack ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
+        borderRadius: 8,
+        padding: "48px 56px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        boxShadow: isBack
+          ? "0 1px 0 rgba(0,0,0,0.4)"
+          : "0 1px 0 rgba(26,32,96,0.04)",
+        minHeight: 420,
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span
+          style={{
+            display: "inline-block",
+            padding: "6px 12px",
+            background: isBack ? "rgba(255,251,240,0.1)" : PALE,
+            color: isBack ? CREAM : NAVY,
+            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            borderRadius: 999,
+          }}
+        >
+          {category}
+        </span>
+        <Eyebrow style={{ color: isBack ? "rgba(255,251,240,0.55)" : BLUE }}>
+          {isBack ? "§ ANSWER" : "§ PROMPT"}
+        </Eyebrow>
+      </div>
+
+      <p
+        style={{
+          fontFamily: isBack
+            ? "var(--font-body, Inter), system-ui, sans-serif"
+            : "var(--font-display, Fraunces), Georgia, serif",
+          fontWeight: isBack ? 400 : 400,
+          fontSize: isBack ? "clamp(18px, 2vw, 22px)" : "clamp(24px, 3vw, 36px)",
+          lineHeight: isBack ? 1.55 : 1.2,
+          letterSpacing: isBack ? "0" : "-0.015em",
+          color: isBack ? CREAM : NAVY,
+          margin: "32px 0",
+          maxWidth: "30ch",
+        }}
+      >
+        {text}
+      </p>
+
+      <div
+        style={{
+          fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: isBack ? "rgba(255,251,240,0.55)" : INK_MUTED,
+        }}
+      >
+        {isBack ? "Click to return to prompt" : "Click to reveal answer"}
       </div>
     </div>
   );
 }
 
-export default function Flashcards() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [direction, setDirection] = useState(0);
-  const [cardKey, setCardKey] = useState(0);
-
-  const filteredCards = selectedCategory === "all"
-    ? FLASHCARDS
-    : FLASHCARDS.filter(c => c.category === selectedCategory);
-
-  const currentCard = filteredCards[currentIndex];
-  const progress = filteredCards.length > 0 ? ((currentIndex + 1) / filteredCards.length) * 100 : 0;
-
-  const goNext = useCallback(() => {
-    if (currentIndex < filteredCards.length - 1) {
-      setDirection(1);
-      setIsFlipped(false);
-      setCardKey(k => k + 1);
-      setTimeout(() => setCurrentIndex(i => i + 1), 50);
-    }
-  }, [currentIndex, filteredCards.length]);
-
-  const goPrev = useCallback(() => {
-    if (currentIndex > 0) {
-      setDirection(-1);
-      setIsFlipped(false);
-      setCardKey(k => k + 1);
-      setTimeout(() => setCurrentIndex(i => i - 1), 50);
-    }
-  }, [currentIndex]);
-
-  const handleCategoryChange = (catId: string) => {
-    setSelectedCategory(catId);
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setCardKey(k => k + 1);
-  };
-
-  const handleShuffle = () => {
-    const randomIndex = Math.floor(Math.random() * filteredCards.length);
-    setCurrentIndex(randomIndex);
-    setIsFlipped(false);
-    setCardKey(k => k + 1);
-  };
-
-  const handleReset = () => {
-    setCurrentIndex(0);
-    setIsFlipped(false);
-    setCardKey(k => k + 1);
-  };
-
+function ControlButton({
+  onClick,
+  disabled,
+  icon,
+  label,
+  primary,
+}: {
+  onClick: () => void;
+  disabled?: boolean;
+  icon: React.ReactNode;
+  label: string;
+  primary?: boolean;
+}) {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Background grid */}
-      <div
-        className="fixed inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(59,91,219,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,91,219,0.5) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      {/* Header */}
-      <header className="relative z-10 border-b border-border/50 backdrop-blur-sm sticky top-0">
-        <div className="container flex items-center justify-between h-14">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <img src={LOGO_URL} alt="Kingdom" className="h-7 w-auto" />
-            </Link>
-            <div className="w-px h-5 bg-white/20" />
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <BookOpen className="w-4 h-4 text-primary" />
-              <span className="font-['Bebas_Neue'] text-lg tracking-wider text-foreground">FLASHCARDS</span>
-            </div>
-          </div>
-          <Link href="/">
-            <div className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-xs font-['DM_Sans']">
-              <Home className="w-4 h-4" />
-              <span className="hidden sm:block">Home</span>
-            </div>
-          </Link>
-        </div>
-      </header>
-
-      <div className="relative z-10 container py-6 md:py-10">
-        {/* Category filter */}
-        <div className="flex gap-2 flex-wrap mb-8">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryChange(cat.id)}
-              className={`px-3 py-1.5 rounded-md text-xs font-['DM_Sans'] font-medium transition-all ${
-                selectedCategory === cat.id
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
-              }`}
-            >
-              {cat.label}
-              {cat.id !== "all" && (
-                <span className="ml-1.5 opacity-60">
-                  {FLASHCARDS.filter(c => c.category === cat.id).length}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-['DM_Sans'] text-muted-foreground">
-              Card {currentIndex + 1} of {filteredCards.length}
-            </span>
-            <span className="text-xs font-['DM_Sans'] text-muted-foreground">
-              {Math.round(progress)}% complete
-            </span>
-          </div>
-          <div className="h-1.5 rounded-full bg-border overflow-hidden">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-accent progress-fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Card area */}
-        <div className="max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            {currentCard && (
-              <motion.div
-                key={cardKey}
-                initial={{ opacity: 0, x: direction * 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction * -40 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-              >
-                <FlashcardView
-                  card={currentCard}
-                  isFlipped={isFlipped}
-                  onFlip={() => setIsFlipped(f => !f)}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Controls */}
-          <div className="flex items-center justify-between mt-6">
-            <button
-              onClick={goPrev}
-              disabled={currentIndex === 0}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-card text-sm font-['DM_Sans'] text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </button>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleShuffle}
-                className="p-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-accent hover:border-accent/50 transition-all"
-                title="Shuffle"
-              >
-                <Shuffle className="w-4 h-4" />
-              </button>
-              <button
-                onClick={handleReset}
-                className="p-2 rounded-lg border border-border bg-card text-muted-foreground hover:text-primary hover:border-primary/50 transition-all"
-                title="Reset to start"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-            </div>
-
-            <button
-              onClick={goNext}
-              disabled={currentIndex === filteredCards.length - 1}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-primary/50 bg-primary/10 text-sm font-['DM_Sans'] text-primary hover:bg-primary/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Card dots navigation */}
-          {filteredCards.length <= 20 && (
-            <div className="flex justify-center gap-1.5 mt-6 flex-wrap">
-              {filteredCards.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setCurrentIndex(i);
-                    setIsFlipped(false);
-                    setCardKey(k => k + 1);
-                  }}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    i === currentIndex
-                      ? "bg-accent w-4"
-                      : i < currentIndex
-                      ? "bg-primary/60"
-                      : "bg-border"
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Quick nav to quiz */}
-        <div className="max-w-2xl mx-auto mt-12 p-4 rounded-lg border border-accent/20 bg-accent/5 flex items-center justify-between">
-          <div>
-            <div className="font-['Bebas_Neue'] text-lg tracking-wider text-accent">READY TO TEST YOURSELF?</div>
-            <div className="text-xs text-muted-foreground font-['DM_Sans']">{QUIZ_QUESTIONS.length} scenario-based quiz questions</div>
-          </div>
-          <Link href="/quiz">
-            <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-['DM_Sans'] font-semibold hover:bg-accent/90 transition-all">
-              Take Quiz
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "10px 16px",
+        background: primary ? NAVY : "transparent",
+        color: primary ? CREAM : NAVY,
+        border: `1px solid ${primary ? NAVY : HAIRLINE}`,
+        fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.1em",
+        textTransform: "uppercase",
+        borderRadius: 4,
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.4 : 1,
+      }}
+    >
+      <span style={{ color: primary ? BLUE : BLUE, display: "inline-flex" }}>{icon}</span>
+      {label}
+    </button>
   );
 }

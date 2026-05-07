@@ -1,373 +1,697 @@
-// Kingdom Sales Training - Quiz Page
-// Design: Dark Military Command Interface
-// Colors: Deep Navy bg, Kingdom Blue primary, Amber accent
-// Fonts: Bebas Neue (headers), DM Sans (body)
+/**
+ * Quiz - certification assessment page.
+ * Editorial cream + Mid Blue. Replaces the old radio list with full-width
+ * answer cards. Italic Mid Blue accent in question prompts. Magazine-style
+ * results spread with Fraunces score number.
+ *
+ * Adapter: imports existing question data from @/lib/quizData.
+ * Expected shape: { questions: { id, prompt, choices: string[], correctIndex, explanation? }[] }
+ */
+import { useMemo, useState } from "react";
+import TopNav from "@/components/TopNav";
+import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
+import { RadialFan } from "@/components/RadialFan";
+import { Check, X, ArrowRight, RotateCcw } from "lucide-react";
+import { QUIZ_QUESTIONS as RAW_QUESTIONS, type QuizQuestion } from "@/lib/trainingData";
 
-import { useState, useCallback } from "react";
-import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Home, Target, CheckCircle2, XCircle, ChevronRight,
-  RotateCcw, Trophy, AlertCircle, BookOpen
-} from "lucide-react";
-import { QUIZ_QUESTIONS, CATEGORIES, type QuizQuestion } from "@/lib/trainingData";
-
-const LOGO_URL = "https://cdn.prod.website-files.com/697241380caf4b1af9f8e8de/6977aba6f009db2a5f302b9b_kingdom-logo-white.svg";
-
-type AnswerState = "unanswered" | "correct" | "incorrect";
-
-interface QuizState {
-  currentIndex: number;
-  selectedOption: number | null;
-  answerState: AnswerState;
-  score: number;
-  answers: (number | null)[];
-  isComplete: boolean;
-  selectedCategory: string;
+// Adapter: existing shape uses `question`/`options`, redesign uses `prompt`/`choices`.
+interface Question {
+  id: string | number;
+  prompt: string;
+  choices: string[];
+  correctIndex: number;
+  explanation?: string;
+  category?: string;
 }
 
-function ScoreScreen({ score, total, onRestart, categoryLabel }: {
-  score: number;
-  total: number;
-  onRestart: () => void;
-  categoryLabel: string;
-}) {
-  const pct = Math.round((score / total) * 100);
-  const grade = pct >= 90 ? "ELITE" : pct >= 75 ? "PROFICIENT" : pct >= 60 ? "DEVELOPING" : "NEEDS WORK";
-  const gradeColor = pct >= 90 ? "text-emerald-400" : pct >= 75 ? "text-primary" : pct >= 60 ? "text-accent" : "text-destructive";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="max-w-lg mx-auto text-center"
-    >
-      <div className="p-8 rounded-xl border border-border bg-card">
-        <Trophy className="w-12 h-12 text-accent mx-auto mb-4" />
-        <div className="font-['Bebas_Neue'] text-5xl tracking-wider text-foreground mb-1">
-          {score} / {total}
-        </div>
-        <div className={`font-['Bebas_Neue'] text-2xl tracking-wider mb-2 ${gradeColor}`}>
-          {grade}
-        </div>
-        <div className="text-muted-foreground font-['DM_Sans'] text-sm mb-6">
-          {pct}% correct on {categoryLabel}
-        </div>
-
-        {/* Score bar */}
-        <div className="h-2 rounded-full bg-border mb-6 overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${pct}%` }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-            className={`h-full rounded-full ${
-              pct >= 90 ? "bg-emerald-400" : pct >= 75 ? "bg-primary" : pct >= 60 ? "bg-accent" : "bg-destructive"
-            }`}
-          />
-        </div>
-
-        <div className="text-xs font-['DM_Sans'] text-muted-foreground mb-6 leading-relaxed">
-          {pct >= 90
-            ? "Outstanding. You have internalized the Kingdom framework. You are ready for the floor."
-            : pct >= 75
-            ? "Strong performance. Review the questions you missed and run the flashcards on those modules."
-            : pct >= 60
-            ? "You have the foundation. Drill the flashcards daily until the framework is instinct."
-            : "Return to the flashcards. The framework must be automatic before you can execute under pressure."}
-        </div>
-
-        <div className="flex gap-3 justify-center">
-          <button
-            onClick={onRestart}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-['DM_Sans'] font-semibold hover:bg-primary/90 transition-all"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Retake Quiz
-          </button>
-          <Link href="/flashcards">
-            <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-accent/40 bg-accent/10 text-accent text-sm font-['DM_Sans'] font-semibold hover:bg-accent/20 transition-all">
-              <BookOpen className="w-4 h-4" />
-              Review Flashcards
-            </button>
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  );
+function adapt(q: QuizQuestion): Question {
+  return {
+    id: q.id,
+    prompt: q.question,
+    choices: q.options,
+    correctIndex: q.correctIndex,
+    explanation: q.explanation,
+    category: q.category,
+  };
 }
+
+const NAVY = "#1A2060";
+const BLUE = "#3B5BDB";
+const CREAM = "#FFFBF0";
+const PALE = "#F0F7FE";
+const HAIRLINE = "#E8DEC6";
+const INK = "#2D2A24";
+const INK_MUTED = "#6B6357";
+const SUCCESS = "#0F7B4A";
+const ERROR = "#B23A3A";
 
 export default function Quiz() {
-  const [state, setState] = useState<QuizState>({
-    currentIndex: 0,
-    selectedOption: null,
-    answerState: "unanswered",
-    score: 0,
-    answers: [],
-    isComplete: false,
-    selectedCategory: "all",
-  });
+  const questions: Question[] = (RAW_QUESTIONS ?? []).map(adapt);
 
-  const [shakeKey, setShakeKey] = useState(0);
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, number>>({});
+  const [showResult, setShowResult] = useState<Record<number, boolean>>({});
+  const [submitted, setSubmitted] = useState(false);
 
-  const filteredQuestions = state.selectedCategory === "all"
-    ? QUIZ_QUESTIONS
-    : QUIZ_QUESTIONS.filter(q => q.category === state.selectedCategory);
-
-  const currentQuestion: QuizQuestion | undefined = filteredQuestions[state.currentIndex];
-  const progress = filteredQuestions.length > 0
-    ? ((state.currentIndex) / filteredQuestions.length) * 100
-    : 0;
-
-  const handleOptionSelect = useCallback((optionIndex: number) => {
-    if (state.answerState !== "unanswered") return;
-
-    const isCorrect = optionIndex === currentQuestion.correctIndex;
-    if (!isCorrect) setShakeKey(k => k + 1);
-
-    setState(prev => ({
-      ...prev,
-      selectedOption: optionIndex,
-      answerState: isCorrect ? "correct" : "incorrect",
-      score: isCorrect ? prev.score + 1 : prev.score,
-    }));
-  }, [state.answerState, currentQuestion]);
-
-  const handleNext = useCallback(() => {
-    const newAnswers = [...state.answers, state.selectedOption];
-    const isLast = state.currentIndex === filteredQuestions.length - 1;
-
-    setState(prev => ({
-      ...prev,
-      currentIndex: isLast ? prev.currentIndex : prev.currentIndex + 1,
-      selectedOption: null,
-      answerState: "unanswered",
-      answers: newAnswers,
-      isComplete: isLast,
-    }));
-  }, [state, filteredQuestions.length]);
-
-  const handleRestart = () => {
-    setState({
-      currentIndex: 0,
-      selectedOption: null,
-      answerState: "unanswered",
-      score: 0,
-      answers: [],
-      isComplete: false,
-      selectedCategory: state.selectedCategory,
+  const total = questions.length;
+  const score = useMemo(() => {
+    let s = 0;
+    questions.forEach((q, i) => {
+      if (answers[i] === q.correctIndex) s += 1;
     });
-  };
+    return s;
+  }, [answers, questions]);
+  const pct = total === 0 ? 0 : Math.round((score / total) * 100);
+  const passed = pct >= 90;
 
-  const handleCategoryChange = (catId: string) => {
-    setState({
-      currentIndex: 0,
-      selectedOption: null,
-      answerState: "unanswered",
-      score: 0,
-      answers: [],
-      isComplete: false,
-      selectedCategory: catId,
-    });
-  };
+  function selectChoice(qIdx: number, cIdx: number) {
+    if (showResult[qIdx]) return;
+    setAnswers((a) => ({ ...a, [qIdx]: cIdx }));
+    setShowResult((s) => ({ ...s, [qIdx]: true }));
+  }
 
-  const categoryLabel = CATEGORIES.find(c => c.id === state.selectedCategory)?.label || "All Topics";
+  function next() {
+    if (step < total - 1) setStep(step + 1);
+    else setSubmitted(true);
+  }
+  function prev() {
+    if (step > 0) setStep(step - 1);
+  }
+  function reset() {
+    setStep(0);
+    setAnswers({});
+    setShowResult({});
+    setSubmitted(false);
+  }
+
+  if (submitted) {
+    return (
+      <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
+        <TopNav />
+        <ResultsSpread
+          score={score}
+          total={total}
+          pct={pct}
+          passed={passed}
+          questions={questions}
+          answers={answers}
+          onReset={reset}
+        />
+      </div>
+    );
+  }
+
+  if (total === 0) {
+    return (
+      <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
+        <TopNav />
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "120px 32px" }}>
+          <Eyebrow>§ QUIZ</Eyebrow>
+          <h1
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 400,
+              fontSize: 56,
+              color: NAVY,
+              marginTop: 16,
+            }}
+          >
+            Quiz data not loaded.
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
+  const q = questions[step];
+  const selected = answers[step];
+  const revealed = !!showResult[step];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Background grid */}
-      <div
-        className="fixed inset-0 opacity-5 pointer-events-none"
+    <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
+      <TopNav />
+
+      {/* HEADER STRIP */}
+      <section
         style={{
-          backgroundImage: `linear-gradient(rgba(59,91,219,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,91,219,0.5) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
+          position: "relative",
+          padding: "56px 32px 24px",
+          maxWidth: 1080,
+          margin: "0 auto",
+          overflow: "hidden",
         }}
-      />
+      >
+        <RadialFan
+          origin="tl"
+          color={BLUE}
+          opacity={0.06}
+          size={720}
+          rays={36}
+          arcs={4}
+          style={{
+            position: "absolute",
+            top: -160,
+            left: -200,
+            width: 720,
+            height: 720,
+            zIndex: 0,
+          }}
+        />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Eyebrow style={{ marginBottom: 16 }}>
+            § 04 · KNOWLEDGE QUIZ · QUESTION {step + 1} OF {total} · 90 TO PASS
+          </Eyebrow>
+          <h1
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(36px, 4.4vw, 56px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              color: NAVY,
+              margin: 0,
+              maxWidth: "16ch",
+            }}
+          >
+            Built for <Em>elite</Em> operators.
+          </h1>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-border/50 backdrop-blur-sm sticky top-0">
-        <div className="container flex items-center justify-between h-14">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <img src={LOGO_URL} alt="Kingdom" className="h-7 w-auto" />
-            </Link>
-            <div className="w-px h-5 bg-white/20" />
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Target className="w-4 h-4 text-accent" />
-              <span className="font-['Bebas_Neue'] text-lg tracking-wider text-foreground">KNOWLEDGE QUIZ</span>
-            </div>
+          {/* Progress bar */}
+          <div
+            style={{
+              marginTop: 28,
+              height: 4,
+              background: HAIRLINE,
+              borderRadius: 2,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${((step + 1) / total) * 100}%`,
+                height: "100%",
+                background: BLUE,
+                transition: "width 250ms ease",
+              }}
+            />
           </div>
-          {!state.isComplete && (
-            <div className="flex items-center gap-3">
-              <div className="text-xs font-['DM_Sans'] text-muted-foreground">
-                Score: <span className="text-foreground font-semibold">{state.score}</span>
-              </div>
-              <Link href="/">
-                <div className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer text-xs font-['DM_Sans']">
-                  <Home className="w-4 h-4" />
-                  <span className="hidden sm:block">Home</span>
-                </div>
-              </Link>
-            </div>
-          )}
         </div>
-      </header>
+      </section>
 
-      <div className="relative z-10 container py-6 md:py-10">
-        {/* Category filter */}
-        {!state.isComplete && (
-          <div className="flex gap-2 flex-wrap mb-6">
-            {CATEGORIES.filter(c => c.id === "all" || QUIZ_QUESTIONS.some(q => q.category === c.id)).map(cat => (
+      {/* QUESTION */}
+      <section
+        style={{
+          maxWidth: 1080,
+          margin: "0 auto",
+          padding: "32px 32px 24px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 24,
+            marginBottom: 32,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 600,
+              fontSize: 88,
+              color: BLUE,
+              letterSpacing: "-0.03em",
+              lineHeight: 0.85,
+            }}
+          >
+            {String(step + 1).padStart(2, "0")}
+          </span>
+          <h2
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(24px, 2.8vw, 34px)",
+              lineHeight: 1.25,
+              letterSpacing: "-0.015em",
+              color: NAVY,
+              margin: 0,
+              maxWidth: "32ch",
+            }}
+          >
+            {q.prompt}
+          </h2>
+        </div>
+
+        {/* CHOICE CARDS */}
+        <div style={{ display: "grid", gap: 12 }}>
+          {q.choices.map((choice, ci) => {
+            const isSelected = selected === ci;
+            const isCorrect = q.correctIndex === ci;
+            const showRight = revealed && isCorrect;
+            const showWrong = revealed && isSelected && !isCorrect;
+
+            const borderColor = showRight
+              ? SUCCESS
+              : showWrong
+                ? ERROR
+                : isSelected
+                  ? NAVY
+                  : HAIRLINE;
+            const bg = showRight
+              ? "#E8F5EE"
+              : showWrong
+                ? "#FBEDEE"
+                : isSelected
+                  ? PALE
+                  : "transparent";
+
+            return (
               <button
-                key={cat.id}
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`px-3 py-1.5 rounded-md text-xs font-['DM_Sans'] font-medium transition-all ${
-                  state.selectedCategory === cat.id
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-accent/50"
-                }`}
+                key={ci}
+                onClick={() => selectChoice(step, ci)}
+                disabled={revealed}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "40px 1fr 24px",
+                  alignItems: "center",
+                  gap: 16,
+                  padding: "20px 20px",
+                  background: bg,
+                  border: `1.5px solid ${borderColor}`,
+                  borderRadius: 6,
+                  textAlign: "left",
+                  cursor: revealed ? "default" : "pointer",
+                  transition: "all 150ms ease",
+                  fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                }}
               >
-                {cat.label}
+                <span
+                  style={{
+                    fontFamily:
+                      "var(--font-display, Fraunces), Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 20,
+                    color: BLUE,
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {String.fromCharCode(65 + ci)}
+                </span>
+                <span
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 1.5,
+                    color: INK,
+                  }}
+                >
+                  {choice}
+                </span>
+                <span style={{ display: "inline-flex", justifyContent: "flex-end" }}>
+                  {showRight && <Check size={18} style={{ color: SUCCESS }} />}
+                  {showWrong && <X size={18} style={{ color: ERROR }} />}
+                </span>
               </button>
-            ))}
+            );
+          })}
+        </div>
+
+        {/* EXPLANATION */}
+        {revealed && q.explanation && (
+          <div
+            style={{
+              marginTop: 24,
+              padding: 20,
+              background: PALE,
+              border: `1px solid ${HAIRLINE}`,
+              borderRadius: 6,
+            }}
+          >
+            <Eyebrow style={{ color: BLUE, marginBottom: 8 }}>
+              § WHY
+            </Eyebrow>
+            <p
+              style={{
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 15,
+                lineHeight: 1.55,
+                color: INK,
+                margin: 0,
+              }}
+            >
+              {q.explanation}
+            </p>
           </div>
         )}
 
-        {state.isComplete ? (
-          <ScoreScreen
-            score={state.score}
-            total={filteredQuestions.length}
-            onRestart={handleRestart}
-            categoryLabel={categoryLabel}
-          />
-        ) : currentQuestion ? (
-          <div className="max-w-2xl mx-auto">
-            {/* Progress */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-['DM_Sans'] text-muted-foreground">
-                  Question {state.currentIndex + 1} of {filteredQuestions.length}
-                </span>
-                <span className="text-xs font-['DM_Sans'] text-muted-foreground">
-                  {state.score} correct
-                </span>
-              </div>
-              <div className="h-1.5 rounded-full bg-border overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-accent to-primary progress-fill"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
+        {/* CONTROLS */}
+        <div
+          style={{
+            marginTop: 32,
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
+          }}
+        >
+          <button
+            onClick={prev}
+            disabled={step === 0}
+            style={btnGhost(step === 0)}
+          >
+            Previous
+          </button>
+          <span style={{ flex: 1 }} />
+          <button
+            onClick={next}
+            disabled={!revealed}
+            style={btnPrimary(!revealed)}
+          >
+            {step === total - 1 ? "Finish" : "Next question"}
+            <ArrowRight size={14} style={{ color: BLUE }} />
+          </button>
+        </div>
+      </section>
 
-            {/* Question card */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={state.currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-              >
-                <div className="p-6 rounded-xl border border-border bg-card mb-4">
-                  <div className="flex items-start gap-3 mb-1">
-                    <span className="text-xs font-['JetBrains_Mono'] text-accent/80 mt-0.5 shrink-0">
-                      Q{state.currentIndex + 1}
-                    </span>
-                    <p className="font-['DM_Sans'] text-base md:text-lg font-semibold text-foreground leading-relaxed">
-                      {currentQuestion.question}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Options */}
-                <div className="space-y-3 mb-4" key={shakeKey}>
-                  {currentQuestion.options.map((option, i) => {
-                    const isSelected = state.selectedOption === i;
-                    const isCorrect = i === currentQuestion.correctIndex;
-                    const showResult = state.answerState !== "unanswered";
-
-                    let optionClass = "border-border bg-card text-foreground hover:border-primary/50 hover:bg-primary/5";
-                    if (showResult && isCorrect) {
-                      optionClass = "border-emerald-500/60 bg-emerald-500/10 text-emerald-300 correct-pulse";
-                    } else if (showResult && isSelected && !isCorrect) {
-                      optionClass = `border-destructive/60 bg-destructive/10 text-red-300 ${state.answerState === "incorrect" ? "wrong-shake" : ""}`;
-                    } else if (!showResult) {
-                      optionClass = "border-border bg-card text-foreground hover:border-primary/50 hover:bg-primary/5 cursor-pointer";
-                    }
-
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => handleOptionSelect(i)}
-                        disabled={state.answerState !== "unanswered"}
-                        className={`w-full text-left p-4 rounded-lg border transition-all font-['DM_Sans'] text-sm leading-relaxed flex items-start gap-3 ${optionClass} disabled:cursor-default`}
-                      >
-                        <span className="shrink-0 w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-semibold mt-0.5">
-                          {String.fromCharCode(65 + i)}
-                        </span>
-                        <span className="flex-1">{option}</span>
-                        {showResult && isCorrect && (
-                          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-                        )}
-                        {showResult && isSelected && !isCorrect && (
-                          <XCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Explanation */}
-                <AnimatePresence>
-                  {state.answerState !== "unanswered" && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className={`p-4 rounded-lg border mb-4 ${
-                        state.answerState === "correct"
-                          ? "border-emerald-500/30 bg-emerald-500/5"
-                          : "border-amber-500/30 bg-amber-500/5"
-                      }`}>
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className={`w-4 h-4 shrink-0 mt-0.5 ${
-                            state.answerState === "correct" ? "text-emerald-400" : "text-amber-400"
-                          }`} />
-                          <div>
-                            <div className={`font-['Bebas_Neue'] text-sm tracking-wider mb-1 ${
-                              state.answerState === "correct" ? "text-emerald-400" : "text-amber-400"
-                            }`}>
-                              {state.answerState === "correct" ? "CORRECT" : "INCORRECT"}
-                            </div>
-                            <p className="font-['DM_Sans'] text-xs text-muted-foreground leading-relaxed">
-                              {currentQuestion.explanation}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={handleNext}
-                        className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-primary text-primary-foreground font-['DM_Sans'] font-semibold text-sm hover:bg-primary/90 transition-all"
-                      >
-                        {state.currentIndex === filteredQuestions.length - 1 ? "See Results" : "Next Question"}
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        ) : (
-          <div className="text-center text-muted-foreground font-['DM_Sans']">
-            No questions found for this category.
-          </div>
-        )}
-      </div>
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: 64,
+          padding: 32,
+          maxWidth: 1280,
+          margin: "64px auto 0",
+          borderTop: `1px solid ${HAIRLINE}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+        }}
+      >
+        <Eyebrow>· KNOWLEDGE QUIZ · INTERNAL ·</Eyebrow>
+        <PageNumber current={4} total={4} />
+      </footer>
     </div>
   );
+}
+
+function ResultsSpread({
+  score,
+  total,
+  pct,
+  passed,
+  questions,
+  answers,
+  onReset,
+}: {
+  score: number;
+  total: number;
+  pct: number;
+  passed: boolean;
+  questions: Question[];
+  answers: Record<number, number>;
+  onReset: () => void;
+}) {
+  return (
+    <>
+      {/* SCORE HERO */}
+      <section
+        style={{
+          position: "relative",
+          padding: "72px 32px 40px",
+          maxWidth: 1080,
+          margin: "0 auto",
+          overflow: "hidden",
+        }}
+      >
+        <RadialFan
+          origin="tr"
+          color={BLUE}
+          opacity={0.08}
+          size={900}
+          rays={48}
+          arcs={5}
+          style={{
+            position: "absolute",
+            top: -200,
+            right: -200,
+            width: 900,
+            height: 900,
+            zIndex: 0,
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Eyebrow style={{ marginBottom: 16 }}>
+            § 04 · QUIZ COMPLETE · {passed ? "PASS" : "REVIEW REQUIRED"}
+          </Eyebrow>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "auto 1fr",
+              gap: 56,
+              alignItems: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                  fontWeight: 600,
+                  fontSize: "clamp(96px, 14vw, 200px)",
+                  color: BLUE,
+                  letterSpacing: "-0.04em",
+                  lineHeight: 0.85,
+                }}
+              >
+                {pct}
+              </div>
+              <Eyebrow style={{ marginTop: 8 }}>
+                {score} of {total} correct
+              </Eyebrow>
+            </div>
+            <div>
+              <h1
+                style={{
+                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                  fontWeight: 400,
+                  fontSize: "clamp(36px, 4.4vw, 56px)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.02em",
+                  color: NAVY,
+                  margin: 0,
+                }}
+              >
+                {passed ? (
+                  <>
+                    The standard is <Em>met.</Em>
+                  </>
+                ) : (
+                  <>
+                    Below the <Em>standard.</Em>
+                  </>
+                )}
+              </h1>
+              <p
+                style={{
+                  marginTop: 16,
+                  fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                  fontSize: 16,
+                  lineHeight: 1.55,
+                  color: INK_MUTED,
+                  maxWidth: "52ch",
+                }}
+              >
+                {passed
+                  ? "Cleared the 90 threshold. Move to monitored practice and book your roleplay scoring blocks."
+                  : "Below the 90 threshold. Review the missed items, return to the curriculum, and re-take when ready."}
+              </p>
+
+              <div
+                style={{
+                  marginTop: 28,
+                  display: "flex",
+                  gap: 12,
+                  flexWrap: "wrap",
+                }}
+              >
+                <button onClick={onReset} style={btnPrimary(false)}>
+                  <RotateCcw size={14} style={{ color: BLUE }} /> Re-take quiz
+                </button>
+                <a href="/curriculum" style={btnGhost(false) as React.CSSProperties}>
+                  Back to curriculum
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEW LIST */}
+      <section
+        style={{
+          maxWidth: 1080,
+          margin: "0 auto",
+          padding: "40px 32px 96px",
+          borderTop: `1px solid ${HAIRLINE}`,
+        }}
+      >
+        <Eyebrow style={{ color: BLUE, marginBottom: 16 }}>§ ITEM BY ITEM</Eyebrow>
+        <h2
+          style={{
+            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+            fontWeight: 400,
+            fontSize: "clamp(28px, 3.4vw, 40px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            color: NAVY,
+            margin: 0,
+            marginBottom: 24,
+          }}
+        >
+          Review the answers.
+        </h2>
+
+        <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {questions.map((q, i) => {
+            const userIdx = answers[i];
+            const correct = userIdx === q.correctIndex;
+            return (
+              <li
+                key={q.id}
+                style={{
+                  padding: "20px 0",
+                  borderTop: `1px solid ${HAIRLINE}`,
+                  display: "grid",
+                  gridTemplateColumns: "60px 1fr auto",
+                  gap: 24,
+                  alignItems: "start",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily:
+                      "var(--font-display, Fraunces), Georgia, serif",
+                    fontWeight: 600,
+                    fontSize: 24,
+                    color: BLUE,
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <div
+                    style={{
+                      fontFamily:
+                        "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 15,
+                      fontWeight: 600,
+                      color: NAVY,
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {q.prompt}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 6,
+                      fontFamily:
+                        "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 13,
+                      color: INK_MUTED,
+                    }}
+                  >
+                    Correct: <strong style={{ color: SUCCESS }}>{q.choices[q.correctIndex]}</strong>
+                    {!correct && userIdx !== undefined && (
+                      <>
+                        {" · "}
+                        Yours: <strong style={{ color: ERROR }}>{q.choices[userIdx]}</strong>
+                      </>
+                    )}
+                  </div>
+                </div>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "4px 10px",
+                    borderRadius: 999,
+                    background: correct ? "#E8F5EE" : "#FBEDEE",
+                    color: correct ? SUCCESS : ERROR,
+                    fontFamily:
+                      "var(--font-body, Inter), system-ui, sans-serif",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {correct ? <Check size={12} /> : <X size={12} />}
+                  {correct ? "Correct" : "Missed"}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+
+      <footer
+        style={{
+          padding: 32,
+          maxWidth: 1280,
+          margin: "0 auto",
+          borderTop: `1px solid ${HAIRLINE}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 16,
+        }}
+      >
+        <Eyebrow>· QUIZ RESULTS · INTERNAL ·</Eyebrow>
+        <PageNumber current={4} total={4} />
+      </footer>
+    </>
+  );
+}
+
+function btnPrimary(disabled: boolean): React.CSSProperties {
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "12px 20px",
+    background: NAVY,
+    color: CREAM,
+    border: `1px solid ${NAVY}`,
+    fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+    fontSize: 12,
+    fontWeight: 600,
+    letterSpacing: "0.1em",
+    textTransform: "uppercase",
+    borderRadius: 4,
+    cursor: disabled ? "not-allowed" : "pointer",
+    opacity: disabled ? 0.4 : 1,
+    textDecoration: "none",
+  };
+}
+
+function btnGhost(disabled: boolean): React.CSSProperties {
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "12px 20px",
+    background: "transparent",
+    color: NAVY,
+    border: `1px solid ${HAIRLINE}`,
+    fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+    fontSize: 12,
+    fontWeight: 600,
+    letterSpacing: "0.1em",
+    textTransform: "uppercase",
+    borderRadius: 4,
+    cursor: disabled ? "not-allowed" : "pointer",
+    opacity: disabled ? 0.4 : 1,
+    textDecoration: "none",
+  };
 }

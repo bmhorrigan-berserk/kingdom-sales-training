@@ -1,20 +1,39 @@
+/**
+ * App - top-level routes for the redesigned Kingdom Sales Training site.
+ * Editorial cream + Mid Blue. Drops the dark theme provider in favor of
+ * the cream surface defined in index.css.
+ *
+ * Routes:
+ *   /                       Home (cover page)
+ *   /curriculum             30-day curriculum + 5 phases
+ *   /reference              Reference Binder index (8 guides)
+ *   /reference/:slug        Individual guide detail with PDF preview
+ *   /flashcards             Drill page
+ *   /quiz                   Knowledge quiz + results spread
+ */
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-import Flashcards from "./pages/Flashcards";
-import Quiz from "./pages/Quiz";
+
+import Home from "@/pages/Home";
+import Curriculum from "@/pages/Curriculum";
+import ReferenceBinder from "@/pages/ReferenceBinder";
+import ReferenceGuide from "@/pages/ReferenceGuide";
+import Flashcards from "@/pages/Flashcards";
+import Quiz from "@/pages/Quiz";
+import NotFound from "@/pages/NotFound";
 
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/flashcards"} component={Flashcards} />
-      <Route path={"/quiz"} component={Quiz} />
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/" component={Home} />
+      <Route path="/curriculum" component={Curriculum} />
+      <Route path="/reference" component={ReferenceBinder} />
+      <Route path="/reference/:slug" component={ReferenceGuide} />
+      <Route path="/flashcards" component={Flashcards} />
+      <Route path="/quiz" component={Quiz} />
+      <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -23,12 +42,10 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
     </ErrorBoundary>
   );
 }
