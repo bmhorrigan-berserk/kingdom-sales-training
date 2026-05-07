@@ -9,7 +9,9 @@ import { Link, useRoute } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
+import { MediaPanel } from "@/components/MediaPanel";
 import { PHASES, OPERATIONS_REFERENCE } from "@/lib/curriculumData";
+import { getMediaForLesson } from "@/lib/mediaData";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 
 const NAVY = "#1A2060";
@@ -227,6 +229,8 @@ export default function CurriculumLesson() {
       >
         {/* Lesson body */}
         <div>
+          <MediaPanel items={getMediaForLesson(lesson.code)} />
+
           <Eyebrow style={{ marginBottom: 16 }}>§ LESSON</Eyebrow>
           <div
             style={{

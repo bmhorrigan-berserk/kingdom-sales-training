@@ -6,8 +6,9 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em, DayBadge, PhaseStepper } from "@/components/Furniture";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Video, Headphones } from "lucide-react";
 import { DAY_SCHEDULE, PHASES, OPERATIONS_REFERENCE, CURRICULUM_OVERVIEW } from "@/lib/curriculumData";
+import { lessonMediaTypes } from "@/lib/mediaData";
 
 const NAVY = "#1A2060";
 const BLUE = "#1F6B3F"; // kingdom green (primary accent)
@@ -280,7 +281,9 @@ export default function Curriculum() {
                       borderTop: `1px solid ${onDark ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
                     }}
                   >
-                    {phase.lessons.map((l) => (
+                    {phase.lessons.map((l) => {
+                      const media = lessonMediaTypes(l.code);
+                      return (
                       <li
                         key={l.code}
                         style={{
@@ -292,8 +295,8 @@ export default function Curriculum() {
                             className={onDark ? "kingdom-lesson-dark" : "kingdom-lesson-light"}
                             style={{
                               display: "grid",
-                              gridTemplateColumns: "auto 1fr auto",
-                              gap: 16,
+                              gridTemplateColumns: "auto 1fr auto auto",
+                              gap: 12,
                               alignItems: "center",
                               padding: "14px 8px",
                               color: onDark ? CREAM : INK,
@@ -323,6 +326,18 @@ export default function Curriculum() {
                             >
                               {l.title}
                             </span>
+                            <span style={{ display: "inline-flex", gap: 6 }}>
+                              {media.hasVideo && (
+                                <span style={mediaPill("#3B5BDB", onDark)}>
+                                  <Video size={10} /> VIDEO
+                                </span>
+                              )}
+                              {media.hasAudio && (
+                                <span style={mediaPill("#D9622B", onDark)}>
+                                  <Headphones size={10} /> AUDIO
+                                </span>
+                              )}
+                            </span>
                             <ArrowRight
                               size={14}
                               style={{
@@ -333,7 +348,8 @@ export default function Curriculum() {
                           </a>
                         </Link>
                       </li>
-                    ))}
+                      );
+                    })}
                   </ol>
                 </div>
               </div>
@@ -368,7 +384,9 @@ export default function Curriculum() {
             background: HAIRLINE,
           }}
         >
-          {OPERATIONS_REFERENCE.map((r) => (
+          {OPERATIONS_REFERENCE.map((r) => {
+            const media = lessonMediaTypes(r.code);
+            return (
             <Link key={r.code} href={`/curriculum/${r.code}`}>
               <a
                 className="kingdom-ops-card"
@@ -376,8 +394,8 @@ export default function Curriculum() {
                   background: CREAM,
                   padding: "24px 24px",
                   display: "flex",
-                  alignItems: "baseline",
-                  gap: 16,
+                  alignItems: "center",
+                  gap: 12,
                   textDecoration: "none",
                   color: INK,
                   transition: "background 150ms ease",
@@ -408,10 +426,21 @@ export default function Curriculum() {
                 >
                   {r.title}
                 </span>
+                {media.hasVideo && (
+                  <span style={mediaPill("#3B5BDB", false)}>
+                    <Video size={10} /> VIDEO
+                  </span>
+                )}
+                {media.hasAudio && (
+                  <span style={mediaPill("#D9622B", false)}>
+                    <Headphones size={10} /> AUDIO
+                  </span>
+                )}
                 <ArrowRight size={14} style={{ color: BLUE, opacity: 0.85 }} />
               </a>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -440,4 +469,21 @@ export default function Curriculum() {
       </footer>
     </div>
   );
+}
+
+function mediaPill(accent: string, onDark: boolean): React.CSSProperties {
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    padding: "3px 8px",
+    background: onDark ? "rgba(255,251,240,0.08)" : "transparent",
+    color: accent,
+    border: `1px solid ${accent}`,
+    fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+    fontSize: 9,
+    fontWeight: 700,
+    letterSpacing: "0.12em",
+    borderRadius: 999,
+  };
 }
