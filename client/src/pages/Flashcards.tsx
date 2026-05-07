@@ -107,7 +107,7 @@ export default function Flashcards() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.14}
-          size={380}
+          size={1400}
           rays={48}
           arcs={5}
           style={{ zIndex: 0 }}
@@ -479,7 +479,7 @@ function CardFace({
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.10}
-          size={340}
+          size={1400}
           rays={36}
           arcs={4}
           style={{ zIndex: 0 }}

@@ -65,7 +65,7 @@ export default function Library() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.14}
-          size={420}
+          size={1400}
           rays={56}
           arcs={6}
           style={{ zIndex: 0 }}

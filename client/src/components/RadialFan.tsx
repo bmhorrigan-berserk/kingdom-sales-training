@@ -1,56 +1,69 @@
 /**
- * RadialFan / KingdomMedallion - kingdom decorative element.
+ * RadialFan - kingdom catalog-style sunburst.
  *
- * Renders a COMPLETE, CLOSED CIRCLE medallion with sunburst rays
- * radiating from its center to a clean outer ring boundary. No more
- * corner-anchored partial fans, no clipped edges, no hard rectangular
- * cutoffs. The medallion is a self-contained graphic that can be
- * positioned anywhere on a page and always reads as a full circle.
+ * Renders the kingdom catalog texture SVG with the focal point
+ * positioned INSIDE the visible section (not off-screen). The rays
+ * radiate outward from the visible focal toward a soft circular
+ * fade boundary so the design reads as a complete sunburst with no
+ * hard rectangular cutoffs.
  *
- * The visual is generated procedurally so we can tint it any kingdom
- * color (no more PNG/SVG bounding-box issues from the catalog
- * textures).
+ * Same look as the kingdom Sales Catalog landing page. Sized BIG
+ * (default 1400px) so the radiation fills the page, with per-page
+ * `focal` controlling where the empty inner circle sits and per-page
+ * `texture` controlling the hue.
+ *
+ * The catalog SVG focal point is at viewBox (676, 510) of 1150x1161,
+ * i.e. (0.587, 0.439) of the SVG. We compute the SVG top-left so the
+ * focal lands at the requested page position.
  */
 
 export type FanTexture =
-  | "hormone"   // red
-  | "peptides"  // navy/blue
-  | "weight"    // orange
-  | "wellness"  // green
-  | "footer";   // slate
+  | "hormone"   // red    #731C0D
+  | "peptides"  // navy   #0D1A73
+  | "weight"    // orange #D8730D
+  | "wellness"  // green  #40760A
+  | "footer";   // slate  #3F4559
 
-type Origin = "tl" | "tr" | "bl" | "br" | "center" | "right" | "left";
+/**
+ * Where the focal (empty inner circle) sits on the page. Each page
+ * can pick a different focal so the sunburst feels different across
+ * the site without changing the asset. Values are in CSS units that
+ * resolve against the section box.
+ */
+export type FanFocal =
+  | "tr"      // upper-right (default - matches catalog landing)
+  | "tl"      // upper-left
+  | "br"      // lower-right
+  | "bl"      // lower-left
+  | "right"   // mid-right
+  | "left"    // mid-left
+  | "top"     // top-center
+  | "bottom"  // bottom-center
+  | "center"; // dead center
 
-const TEXTURE_COLORS: Record<FanTexture, string> = {
-  hormone:  "#B23A3A",   // kingdom red
-  peptides: "#3B5BDB",   // kingdom blue
-  weight:   "#D9622B",   // kingdom orange
-  wellness: "#1F6B3F",   // kingdom green
-  footer:   "#1A2060",   // kingdom navy
-};
+// Legacy alias - older call sites pass `origin`
+type Origin = FanFocal;
 
-// Legacy palette export kept for source-compat. Ignored by the new
-// medallion renderer.
-export const KINGDOM_PALETTE = [
-  "#1F6B3F",
-  "#3B5BDB",
-  "#D9622B",
-  "#B23A3A",
-];
+// Legacy palette export kept for source-compat.
+export const KINGDOM_PALETTE = ["#1F6B3F", "#3B5BDB", "#D9622B", "#B23A3A"];
+
+const FOCAL_X_PCT = 0.587;
+const FOCAL_Y_PCT = 0.439;
 
 interface RadialFanProps {
+  /** Hue of the engraving. */
   texture?: FanTexture;
-  /** Where on the page to anchor the medallion. */
+  /** Where the focal sits on the section. */
   origin?: Origin;
-  /** 0-1; default 0.18 reads as a soft engraving on cream. */
+  /** 0-1; default 0.16 reads as a soft engraving on cream. */
   opacity?: number;
-  /** Diameter of the medallion in px. */
+  /** SVG size in px - default 1400, big so the radiation fills the page. */
   size?: number;
   className?: string;
   style?: React.CSSProperties;
   ariaHidden?: boolean;
 
-  /* Legacy props - ignored (kept so existing call sites typecheck). */
+  /* Legacy props ignored. */
   color?: string;
   palette?: string[];
   rays?: number;
@@ -58,96 +71,76 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-function originPlacement(origin: Origin): React.CSSProperties {
-  /* The medallion is a complete circle - we position it so the WHOLE
-     circle is visible inside the section. For corner placements we
-     offset just enough that the ring sits in the corner with a small
-     gutter, NOT clipped off-screen. */
-  const gutter = 32;
-  switch (origin) {
-    case "tl":     return { top: gutter, left: gutter };
-    case "tr":     return { top: gutter, right: gutter };
-    case "bl":     return { bottom: gutter, left: gutter };
-    case "br":     return { bottom: gutter, right: gutter };
-    case "left":   return { top: "50%", left: gutter, transform: "translateY(-50%)" };
-    case "right":  return { top: "50%", right: gutter, transform: "translateY(-50%)" };
+/**
+ * Resolve the focal position to CSS top/left percentages for the
+ * section. Each anchor places the focal at a recognizable point
+ * inside the visible area, NOT off-screen.
+ */
+function focalCoords(focal: FanFocal): { topPct: number; leftPct: number } {
+  switch (focal) {
+    case "tr":     return { topPct: 18, leftPct: 78 };
+    case "tl":     return { topPct: 18, leftPct: 22 };
+    case "br":     return { topPct: 82, leftPct: 78 };
+    case "bl":     return { topPct: 82, leftPct: 22 };
+    case "right":  return { topPct: 50, leftPct: 82 };
+    case "left":   return { topPct: 50, leftPct: 18 };
+    case "top":    return { topPct: 18, leftPct: 50 };
+    case "bottom": return { topPct: 82, leftPct: 50 };
     case "center":
-    default:       return { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+    default:       return { topPct: 50, leftPct: 50 };
   }
 }
 
 export function RadialFan({
   texture = "wellness",
   origin = "tr",
-  opacity = 0.18,
-  size = 360,
+  opacity = 0.16,
+  size = 1400,
   className = "",
   style,
   ariaHidden = true,
 }: RadialFanProps) {
-  const placement = originPlacement(origin);
-  const color = TEXTURE_COLORS[texture];
+  const { topPct, leftPct } = focalCoords(origin);
 
-  /* Build the medallion paths: 64 rays from inner ring to outer ring,
-     plus 3 concentric circles (outer boundary, mid dashed ring, inner
-     focal ring). */
-  const cx = size / 2;
-  const cy = size / 2;
-  const outerR = size / 2 - 1; // -1 keeps strokes inside the viewBox
-  const innerR = outerR * 0.18;
-  const midR = outerR * 0.62;
-  const numRays = 64;
+  /* Position the SVG so the focal point lands at (leftPct%, topPct%)
+     of the section.
 
-  const rayPaths: string[] = [];
-  for (let i = 0; i < numRays; i++) {
-    const angle = (i * 2 * Math.PI) / numRays - Math.PI / 2; // start at 12 o'clock
-    const x1 = cx + Math.cos(angle) * innerR;
-    const y1 = cy + Math.sin(angle) * innerR;
-    const x2 = cx + Math.cos(angle) * outerR;
-    const y2 = cy + Math.sin(angle) * outerR;
-    rayPaths.push(`M${x1.toFixed(2)},${y1.toFixed(2)} L${x2.toFixed(2)},${y2.toFixed(2)}`);
-  }
+     For a section with width W, the focal in section coords is at
+     (W * leftPct / 100). The SVG's focal (in SVG-local coords) is at
+     `size * FOCAL_X_PCT`. So the SVG's top-left needs to be at
+     section-x:  W * leftPct/100 - size * FOCAL_X_PCT
+     section-y:  H * topPct/100 - size * FOCAL_Y_PCT
+
+     We can express that with `left: calc(<leftPct>% - <focal_x>px)`. */
+  const focalLeftPx = size * FOCAL_X_PCT;
+  const focalTopPx = size * FOCAL_Y_PCT;
+
+  /* The radial mask is anchored at the SVG's focal (so the dense
+     center stays opaque) and fades to transparent before reaching the
+     SVG bounding box, giving the soft circular boundary. */
+  const fadeMask = `radial-gradient(circle at ${FOCAL_X_PCT * 100}% ${FOCAL_Y_PCT * 100}%, black 0%, black 30%, transparent 70%)`;
 
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      className={className}
+    <img
+      src={`/textures/texture-${texture}.svg`}
+      alt=""
       aria-hidden={ariaHidden}
+      className={className}
       style={{
         position: "absolute",
+        width: size,
+        height: size,
         opacity,
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
-        ...placement,
+        left: `calc(${leftPct}% - ${focalLeftPx}px)`,
+        top: `calc(${topPct}% - ${focalTopPx}px)`,
+        maskImage: fadeMask,
+        WebkitMaskImage: fadeMask,
         ...style,
       }}
-    >
-      {/* Sunburst rays */}
-      <g stroke={color} strokeWidth={0.8} fill="none">
-        {rayPaths.map((d, i) => (
-          <path key={`ray-${i}`} d={d} />
-        ))}
-      </g>
-      {/* Outer ring (closes the circle) */}
-      <circle cx={cx} cy={cy} r={outerR} stroke={color} strokeWidth={1.2} fill="none" />
-      {/* Mid dashed ring */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={midR}
-        stroke={color}
-        strokeWidth={0.6}
-        fill="none"
-        strokeDasharray="2 4"
-      />
-      {/* Inner focal ring */}
-      <circle cx={cx} cy={cy} r={innerR} stroke={color} strokeWidth={0.8} fill="none" />
-      {/* Center dot */}
-      <circle cx={cx} cy={cy} r={1.5} fill={color} />
-    </svg>
+    />
   );
 }
 
