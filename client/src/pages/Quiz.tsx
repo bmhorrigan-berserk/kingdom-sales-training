@@ -376,7 +376,7 @@ export default function Quiz() {
         style={{
           marginTop: 64,
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "64px auto 0",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",
@@ -637,7 +637,7 @@ function ResultsSpread({
       <footer
         style={{
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

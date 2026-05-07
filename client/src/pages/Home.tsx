@@ -29,7 +29,7 @@ export default function Home() {
         style={{
           position: "relative",
           padding: "80px 32px 96px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           overflow: "hidden",
         }}
@@ -200,7 +200,7 @@ export default function Home() {
           }}
         />
 
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: 1920, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <Eyebrow style={{ color: "rgba(255,251,240,0.6)", marginBottom: 16 }}>
             § THE TABLE OF CONTENTS
           </Eyebrow>
@@ -348,7 +348,7 @@ export default function Home() {
       <footer
         style={{
           padding: "32px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

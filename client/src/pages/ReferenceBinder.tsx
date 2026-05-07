@@ -33,7 +33,7 @@ export default function ReferenceBinder() {
         style={{
           position: "relative",
           padding: "72px 32px 56px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           overflow: "hidden",
         }}
@@ -93,7 +93,7 @@ export default function ReferenceBinder() {
       {/* CATEGORY SECTIONS */}
       <section
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "0 32px 96px",
         }}
@@ -222,7 +222,7 @@ export default function ReferenceBinder() {
       <footer
         style={{
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

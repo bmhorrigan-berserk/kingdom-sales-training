@@ -110,7 +110,7 @@ export default function CurriculumLesson() {
       <TopNav />
 
       {/* BACK STRIP */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 32px 0" }}>
+      <div style={{ maxWidth: 1920, margin: "0 auto", padding: "20px 32px 0" }}>
         <Link href="/curriculum">
           <a
             style={{
@@ -135,7 +135,7 @@ export default function CurriculumLesson() {
       {/* TITLE BLOCK */}
       <header
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "32px 32px 40px",
           borderBottom: `1px solid ${HAIRLINE}`,
@@ -217,7 +217,7 @@ export default function CurriculumLesson() {
       {/* MAIN GRID: lesson + sibling rail */}
       <main
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "40px 32px 64px",
           display: "grid",
@@ -337,7 +337,7 @@ export default function CurriculumLesson() {
       {/* PREV / NEXT */}
       <nav
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "0 32px 64px",
           display: "grid",
@@ -414,7 +414,7 @@ export default function CurriculumLesson() {
       <footer
         style={{
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

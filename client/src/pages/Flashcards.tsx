@@ -84,7 +84,7 @@ export default function Flashcards() {
         style={{
           position: "relative",
           padding: "56px 32px 24px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           overflow: "hidden",
         }}
@@ -130,7 +130,7 @@ export default function Flashcards() {
       {/* CATEGORY FILTER */}
       <section
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "16px 32px 0",
           display: "flex",
@@ -265,7 +265,7 @@ export default function Flashcards() {
       <footer
         style={{
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

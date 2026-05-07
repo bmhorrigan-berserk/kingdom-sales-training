@@ -26,7 +26,7 @@ export default function Curriculum() {
       <section
         style={{
           padding: "72px 32px 64px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           position: "relative",
           overflow: "hidden",
@@ -74,7 +74,7 @@ export default function Curriculum() {
       </section>
 
       {/* DAY-BY-DAY SCHEDULE */}
-      <section style={{ padding: "48px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section style={{ padding: "48px 32px", maxWidth: 1920, margin: "0 auto" }}>
         <div
           style={{
             display: "grid",
@@ -213,7 +213,7 @@ export default function Curriculum() {
                 zIndex: 0,
               }}
             />
-            <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+            <div style={{ maxWidth: 1920, margin: "0 auto", position: "relative", zIndex: 1 }}>
               <Eyebrow style={{ color: onDark ? "rgba(255,251,240,0.6)" : INK_MUTED, marginBottom: 16 }}>
                 § PHASE {phase.number} OF 05
               </Eyebrow>
@@ -343,7 +343,7 @@ export default function Curriculum() {
       })}
 
       {/* OPERATIONS REFERENCE */}
-      <section style={{ padding: "96px 32px", maxWidth: 1280, margin: "0 auto" }}>
+      <section style={{ padding: "96px 32px", maxWidth: 1920, margin: "0 auto" }}>
         <Eyebrow style={{ marginBottom: 16 }}>§ R · OPERATIONS REFERENCE</Eyebrow>
         <h2
           style={{
@@ -425,7 +425,7 @@ export default function Curriculum() {
       <footer
         style={{
           padding: "32px",
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",

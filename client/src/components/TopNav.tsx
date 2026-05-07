@@ -33,7 +33,7 @@ export default function TopNav() {
     >
       <div
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "14px 32px",
           display: "flex",

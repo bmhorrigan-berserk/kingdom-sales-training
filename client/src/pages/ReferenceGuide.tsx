@@ -68,7 +68,7 @@ export default function ReferenceGuide() {
       {/* BACK STRIP */}
       <div
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "20px 32px 0",
         }}
@@ -97,7 +97,7 @@ export default function ReferenceGuide() {
       {/* TITLE BLOCK */}
       <header
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "32px 32px 40px",
           borderBottom: `1px solid ${HAIRLINE}`,
@@ -227,7 +227,7 @@ export default function ReferenceGuide() {
       {/* MAIN GRID: PDF + sidebar */}
       <main
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "40px 32px 64px",
           display: "grid",
@@ -372,7 +372,7 @@ export default function ReferenceGuide() {
       {/* PREV / NEXT */}
       <nav
         style={{
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           padding: "0 32px 64px",
           display: "grid",
@@ -455,7 +455,7 @@ export default function ReferenceGuide() {
       <footer
         style={{
           padding: 32,
-          maxWidth: 1280,
+          maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
           display: "flex",
