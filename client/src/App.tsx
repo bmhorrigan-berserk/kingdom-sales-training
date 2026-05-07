@@ -23,6 +23,7 @@ import ReferenceBinder from "@/pages/ReferenceBinder";
 import ReferenceGuide from "@/pages/ReferenceGuide";
 import Flashcards from "@/pages/Flashcards";
 import Quiz from "@/pages/Quiz";
+import Library from "@/pages/Library";
 import NotFound from "@/pages/NotFound";
 
 function Router() {
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/reference/:slug" component={ReferenceGuide} />
       <Route path="/flashcards" component={Flashcards} />
       <Route path="/quiz" component={Quiz} />
+      <Route path="/library" component={Library} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

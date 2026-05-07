@@ -8,7 +8,7 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
-import { ArrowRight, BookOpen, Library, GraduationCap, Brain, Layers } from "lucide-react";
+import { ArrowRight, BookOpen, Library, GraduationCap, Brain, PlayCircle } from "lucide-react";
 
 const NAVY = "#1A2060";
 const BLUE = "#1F6B3F"; // kingdom green (primary accent)
@@ -237,20 +237,27 @@ export default function Home() {
               },
               {
                 n: "02",
+                href: "/library",
+                title: "Media Library",
+                desc: "Watch and listen. 7 video explainers + 6 audio recordings, including live calls.",
+                icon: PlayCircle,
+              },
+              {
+                n: "03",
                 href: "/reference",
                 title: "Reference Binder",
                 desc: "Eight working guides. Sign-up, billing, DX codes, lab panels, pipelines.",
                 icon: Library,
               },
               {
-                n: "03",
+                n: "04",
                 href: "/flashcards",
                 title: "Flashcards",
                 desc: "115 cards across 16 categories. Click to reveal. Drill until instinct.",
                 icon: BookOpen,
               },
               {
-                n: "04",
+                n: "05",
                 href: "/quiz",
                 title: "Knowledge Quiz",
                 desc: "38 scenario questions. Score 90+ to certify. Built for elite operators.",

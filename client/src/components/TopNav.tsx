@@ -10,6 +10,7 @@ import { ExternalLink } from "lucide-react";
 const NAV_ITEMS = [
   { path: "/",            label: "HOME" },
   { path: "/curriculum",  label: "CURRICULUM" },
+  { path: "/library",     label: "LIBRARY" },
   { path: "/reference",   label: "REFERENCE" },
   { path: "/flashcards",  label: "FLASHCARDS" },
   { path: "/quiz",        label: "QUIZ" },
