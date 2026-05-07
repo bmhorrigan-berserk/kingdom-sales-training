@@ -24,33 +24,33 @@ export interface Phase {
 }
 
 export const CURRICULUM_OVERVIEW =
-  "Every new sales hire completes this material before taking a live call. No exceptions.";
+  "Every new kingdom team member completes this material during their first thirty days. No exceptions.";
 
 export const DAY_SCHEDULE: DaySchedule[] = [
   {
-    day: 1, date: "Apr 6",
+    day: 1,
     title: "Admin and Systems Setup",
     description: "ADP registration, I-9 completion, HIPAA certification, ZoHo and Charm login setup. Kingdom overview with Brice.",
   },
   {
-    day: 2, date: "Apr 7",
+    day: 2,
     title: "Charm EHR Instruction",
     description: "Invoicing, billing, recurring setup, LabCorp lab ordering, lab panels, DX codes. Led by Jason.",
     references: ["Binder Guide 2", "Binder Guide 3", "Binder Guide 4", "Binder Guide 5"],
   },
   {
-    day: 3, date: "Apr 8",
+    day: 3,
     title: "ZoHo CRM and Review",
     description: "ZoHo leads, deals, pipeline. Sticky notes, new PT checklist, CS pipeline progression. Afternoon: independent review. Led by Jason.",
     references: ["Binder Guide 1", "Binder Guide 6", "Binder Guide 8"],
   },
   {
-    day: 4, date: "Apr 9",
+    day: 4,
     title: "Live Consult Observation",
     description: "Shadow live CS and AE consults. Observe NEPQ in action, note objection handling, consult prep workflow. Debrief with Jason.",
   },
   {
-    day: 5, date: "Apr 10",
+    day: 5,
     title: "Sales Methodology Introduction",
     description: "NEPQ Foundation, Hormozi Value Equation, Chris Voss Tactical Empathy, audio roleplay review. Week 1 recap.",
   },

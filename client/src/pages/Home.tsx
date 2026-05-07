@@ -53,7 +53,7 @@ export default function Home() {
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <Eyebrow style={{ marginBottom: 24 }}>
-            § INTERNAL · KINGDOM SALES TRAINING · {month} EDITION
+            § INTERNAL · KINGDOM ONBOARDING · {month} EDITION
           </Eyebrow>
 
           <h1
@@ -224,8 +224,7 @@ export default function Home() {
               marginTop: 56,
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: 0,
-              borderTop: "1px solid rgba(255,251,240,0.18)",
+              gap: 16,
             }}
           >
             {[
@@ -263,12 +262,16 @@ export default function Home() {
                   className="kingdom-toc-card"
                   style={{
                     padding: "32px 24px",
-                    borderRight: "1px solid rgba(255,251,240,0.18)",
-                    borderBottom: "1px solid rgba(255,251,240,0.18)",
+                    background: "rgba(255, 251, 240, 0.04)",
+                    backdropFilter: "blur(14px)",
+                    WebkitBackdropFilter: "blur(14px)",
+                    border: "1px solid rgba(255, 251, 240, 0.18)",
+                    borderRadius: 12,
                     color: CREAM,
                     textDecoration: "none",
                     display: "block",
-                    transition: "background 150ms ease",
+                    transition: "background 150ms ease, transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease",
+                    boxShadow: "0 1px 2px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,251,240,0.06)",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
@@ -321,7 +324,14 @@ export default function Home() {
           </div>
         </div>
 
-        <style>{`.kingdom-toc-card:hover { background: rgba(255,251,240,0.04); }`}</style>
+        <style>{`
+          .kingdom-toc-card:hover {
+            background: rgba(255,251,240,0.10) !important;
+            border-color: rgba(255,251,240,0.32) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.28), 0 12px 32px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,251,240,0.10) !important;
+          }
+        `}</style>
       </section>
 
       {/* PULL QUOTE */}

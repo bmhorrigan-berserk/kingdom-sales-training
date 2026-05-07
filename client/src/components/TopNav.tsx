@@ -89,7 +89,7 @@ export default function TopNav() {
                 marginLeft: 12,
               }}
             >
-              SALES TRAINING
+              ONBOARDING
             </span>
           </a>
         </Link>
