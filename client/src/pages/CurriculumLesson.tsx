@@ -148,7 +148,7 @@ export default function CurriculumLesson() {
         <RadialFan texture="peptides"
           origin="tr"
           palette={KINGDOM_PALETTE}
-          opacity={0.20}
+          opacity={0.10}
           size={1300}
           style={{ zIndex: 0 }}
         />

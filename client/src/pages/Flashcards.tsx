@@ -106,7 +106,7 @@ export default function Flashcards() {
         <RadialFan texture="wellness"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.3}
+          opacity={0.14}
           size={1400}
           rays={48}
           arcs={5}
@@ -478,7 +478,7 @@ function CardFace({
         <RadialFan texture="wellness"
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.18}
+          opacity={0.10}
           size={1200}
           rays={36}
           arcs={4}

@@ -41,7 +41,7 @@ export default function ReferenceBinder() {
         <RadialFan texture="hormone"
           origin="tl"
           palette={KINGDOM_PALETTE}
-          opacity={0.22}
+          opacity={0.10}
           size={1400}
           rays={48}
           arcs={5}
@@ -176,7 +176,7 @@ export default function ReferenceBinder() {
         <RadialFan texture="hormone"
           origin="br"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.30}
+          opacity={0.14}
           size={1400}
           rays={40}
           arcs={4}

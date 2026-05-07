@@ -36,7 +36,7 @@ export default function Curriculum() {
         <RadialFan texture="peptides"
           origin="tr"
           palette={KINGDOM_PALETTE}
-          opacity={0.22}
+          opacity={0.10}
           size={1400}
           style={{ zIndex: 0 }}
         />

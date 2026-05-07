@@ -37,7 +37,7 @@ export default function Home() {
         <RadialFan texture="footer"
           origin="tr"
           palette={KINGDOM_PALETTE}
-          opacity={0.24}
+          opacity={0.10}
           size={1600}
           rays={56}
           arcs={6}
@@ -179,7 +179,7 @@ export default function Home() {
         <RadialFan texture="footer"
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.30}
+          opacity={0.14}
           size={1600}
           rays={48}
           arcs={5}

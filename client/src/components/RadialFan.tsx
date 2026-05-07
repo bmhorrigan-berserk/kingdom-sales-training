@@ -87,7 +87,7 @@ function originPlacement(origin: Origin, size: number): React.CSSProperties {
 export function RadialFan({
   texture = "wellness",
   origin = "tr",
-  opacity = 0.22,
+  opacity = 0.10,
   size = 900,
   className = "",
   style,

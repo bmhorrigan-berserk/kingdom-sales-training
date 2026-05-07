@@ -149,7 +149,7 @@ export default function Quiz() {
         <RadialFan texture="hormone"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.30}
+          opacity={0.14}
           size={1400}
           rays={48}
           arcs={5}
@@ -641,7 +641,7 @@ function ResultsSpread({
         <RadialFan texture="hormone"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.30}
+          opacity={0.14}
           size={1600}
           rays={56}
           arcs={6}
