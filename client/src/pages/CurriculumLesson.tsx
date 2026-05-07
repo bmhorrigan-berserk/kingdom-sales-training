@@ -231,9 +231,10 @@ export default function CurriculumLesson() {
           <div
             style={{
               border: `1px solid ${HAIRLINE}`,
-              borderRadius: 6,
+              borderRadius: 8,
               overflow: "hidden",
               background: "#fff",
+              boxShadow: "0 12px 32px rgba(26, 32, 96, 0.08), 0 2px 6px rgba(26, 32, 96, 0.05)",
             }}
           >
             <iframe
