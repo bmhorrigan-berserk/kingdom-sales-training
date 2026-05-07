@@ -93,9 +93,9 @@ export default function ReferenceBinder() {
       >
         {REFERENCE_CATEGORIES.map((category, catIdx) => {
           const guides = REFERENCE_GUIDES.filter((g) => g.category === category);
-          const categoryTexture = (
-            ["wellness", "weight", "peptides", "hormone"] as const
-          )[catIdx % 4];
+          // Only "Billing" gets a medallion. Patient Pipeline and Clinical
+          // run clean text-only sections per spec.
+          const showMedallion = category === "Billing";
           return (
             <div
               key={category}
@@ -107,13 +107,15 @@ export default function ReferenceBinder() {
                 overflow: "hidden",
               }}
             >
-              <RadialFan
-                texture={categoryTexture}
-                origin="left"
-                opacity={0.10}
-                size={520}
-                style={{ zIndex: 0 }}
-              />
+              {showMedallion && (
+                <RadialFan
+                  texture="weight"
+                  origin="right"
+                  opacity={0.10}
+                  size={520}
+                  style={{ zIndex: 0 }}
+                />
+              )}
               <div
                 style={{
                   position: "relative",
@@ -187,11 +189,11 @@ export default function ReferenceBinder() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="hormone"
-          origin="br"
+        <RadialFan texture="footer"
+          origin="center"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.14}
-          size={680}
+          opacity={0.18}
+          size={620}
           rays={40}
           arcs={4}
           style={{ zIndex: 0 }}
