@@ -1,0 +1,69 @@
+name: Deploy to Vercel (Production)
+
+# Why this exists:
+# Build in CI, deploy the prebuilt artifact. Same pattern as the
+# dashboard workflow - faster cold starts, real build logs in the
+# Actions UI, and a reliable fallback if Vercel's cloud builder ever
+# gets flaky (which it has on the dashboard project).
+#
+# Setup (one time):
+#   1. Vercel project settings -> Git -> uncheck "Deploy from main"
+#      (so we don't double-deploy)
+#   2. Add these GitHub repo secrets:
+#        VERCEL_TOKEN       (create at https://vercel.com/account/tokens)
+#        VERCEL_ORG_ID      team_5ixbpDKrVpvKJ0cICxPGfAfH
+#        VERCEL_PROJECT_ID  prj_TIb293uB4SpII8HEwAjrrzLRhHTJ
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: pnpm add -g vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build with Vercel CLI
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy prebuilt artifact to production
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "Deployed: $DEPLOYMENT_URL"
+
+      - name: Verify deployment is reachable
+        run: |
+          curl -fsSL --max-time 30 https://onboarding.kingdomcommandcenter.com > /dev/null
+          echo "onboarding.kingdomcommandcenter.com is responding"
