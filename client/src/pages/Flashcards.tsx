@@ -107,7 +107,7 @@ export default function Flashcards() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.14}
-          size={1400}
+          size={680}
           rays={48}
           arcs={5}
           style={{ zIndex: 0 }}
@@ -284,12 +284,28 @@ export default function Flashcards() {
       {/* CARD STAGE */}
       <section
         style={{
+          position: "relative",
           maxWidth: 1920,
           margin: "0 auto",
           padding: "32px 32px 16px",
+          overflow: "hidden",
         }}
       >
-        <div style={{ maxWidth: 980, margin: "0 auto" }}>
+        <RadialFan
+          texture="wellness"
+          origin="left"
+          opacity={0.09}
+          size={680}
+          style={{ zIndex: 0 }}
+        />
+        <RadialFan
+          texture="peptides"
+          origin="right"
+          opacity={0.09}
+          size={680}
+          style={{ zIndex: 0 }}
+        />
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 980, margin: "0 auto" }}>
           {!card ? (
             <p style={{ color: INK_MUTED, textAlign: "center", padding: 48 }}>
               No cards in this category.
@@ -479,7 +495,7 @@ function CardFace({
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.10}
-          size={1400}
+          size={680}
           rays={36}
           arcs={4}
           style={{ zIndex: 0 }}

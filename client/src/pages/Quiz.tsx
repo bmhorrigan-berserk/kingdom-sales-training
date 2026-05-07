@@ -150,7 +150,7 @@ export default function Quiz() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.14}
-          size={1400}
+          size={680}
           rays={48}
           arcs={5}
           style={{ zIndex: 0 }}
@@ -301,16 +301,33 @@ export default function Quiz() {
       {/* QUESTION SURFACE - centered glass card on cream */}
       <section
         style={{
+          position: "relative",
           maxWidth: 1920,
           margin: "0 auto",
           padding: "48px 32px 32px",
+          overflow: "hidden",
         }}
       >
+        <RadialFan
+          texture="hormone"
+          origin="left"
+          opacity={0.08}
+          size={720}
+          style={{ zIndex: 0 }}
+        />
+        <RadialFan
+          texture="weight"
+          origin="right"
+          opacity={0.08}
+          size={720}
+          style={{ zIndex: 0 }}
+        />
         <div
           style={{
             maxWidth: 980,
             margin: "0 auto",
             position: "relative",
+            zIndex: 1,
           }}
         >
           {/* Question card */}
@@ -642,7 +659,7 @@ function ResultsSpread({
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.14}
-          size={1400}
+          size={680}
           rays={56}
           arcs={6}
           style={{ zIndex: 0 }}
