@@ -109,7 +109,7 @@ export default function ReferenceGuide() {
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.10}
-          size={1300}
+          size={360}
           style={{ zIndex: 0 }}
         />
         <div

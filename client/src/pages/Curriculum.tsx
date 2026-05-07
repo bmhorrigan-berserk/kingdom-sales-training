@@ -37,7 +37,7 @@ export default function Curriculum() {
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.10}
-          size={1400}
+          size={380}
           style={{ zIndex: 0 }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -205,7 +205,7 @@ export default function Curriculum() {
               origin={onDark ? "bl" : "tr"}
               palette={onDark ? ["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"] : KINGDOM_PALETTE}
               opacity={onDark ? 0.30 : 0.22}
-              size={1500}
+              size={400}
               style={{
                 position: "absolute",
                 ...(onDark ? { bottom: -250, left: -300 } : { top: -200, right: -300 }),
