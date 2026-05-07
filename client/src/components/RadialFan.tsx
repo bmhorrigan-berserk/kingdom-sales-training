@@ -65,17 +65,19 @@ interface RadialFanProps {
 }
 
 function originPlacement(origin: Origin, size: number): React.CSSProperties {
-  /* The texture is densest near the top-right of the SVG canvas (per
-     the catalog's source SVGs). For corner placements we offset so the
-     dense corner of the texture sits at the page corner with the rest
-     of the engraving radiating inward.  */
-  const offset = -size * 0.55; // pull most of the texture off-canvas
+  /* The catalog textures have their radial focal point near the SVG center,
+     not a corner. So we center the SVG ON the page corner: the SVG sits
+     half on/half off the section, and the visible quadrant inside the page
+     reads as a radial fan emanating from the corner. No transforms needed -
+     the engraving is rotationally symmetric enough that any quadrant looks
+     correct. */
+  const offset = -size / 2;
   switch (origin) {
-    case "tl": return { top: offset, left: offset, transform: "scaleX(-1) scaleY(-1)" };
-    case "tr": return { top: offset, right: offset, transform: "scaleY(-1)" };
-    case "bl": return { bottom: offset, left: offset, transform: "scaleX(-1)" };
-    case "br": return { bottom: offset, right: offset };
-    case "left":   return { top: "50%", left: offset, transform: "translateY(-50%) scaleX(-1)" };
+    case "tl":     return { top: offset, left: offset };
+    case "tr":     return { top: offset, right: offset };
+    case "bl":     return { bottom: offset, left: offset };
+    case "br":     return { bottom: offset, right: offset };
+    case "left":   return { top: "50%", left: offset, transform: "translateY(-50%)" };
     case "right":  return { top: "50%", right: offset, transform: "translateY(-50%)" };
     case "center":
     default:       return { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };

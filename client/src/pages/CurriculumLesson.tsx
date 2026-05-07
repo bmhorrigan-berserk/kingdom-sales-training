@@ -149,8 +149,8 @@ export default function CurriculumLesson() {
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.20}
-          size={800}
-          style={{ position: "absolute", top: -180, right: -200, width: 800, height: 800, zIndex: 0 }}
+          size={1300}
+          style={{ zIndex: 0 }}
         />
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 32, alignItems: "start", position: "relative", zIndex: 1 }}>
           <span

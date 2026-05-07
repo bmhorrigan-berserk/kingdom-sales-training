@@ -107,17 +107,10 @@ export default function Flashcards() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.3}
-          size={900}
+          size={1400}
           rays={48}
           arcs={5}
-          style={{
-            position: "absolute",
-            top: -250,
-            right: -250,
-            width: 900,
-            height: 900,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
         <div
           style={{
@@ -486,17 +479,10 @@ function CardFace({
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.18}
-          size={700}
+          size={1200}
           rays={36}
           arcs={4}
-          style={{
-            position: "absolute",
-            bottom: -250,
-            left: -200,
-            width: 700,
-            height: 700,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
       )}
 

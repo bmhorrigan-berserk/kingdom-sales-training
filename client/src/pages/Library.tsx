@@ -65,17 +65,10 @@ export default function Library() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.3}
-          size={1100}
+          size={1600}
           rays={56}
           arcs={6}
-          style={{
-            position: "absolute",
-            top: -300,
-            right: -300,
-            width: 1100,
-            height: 1100,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
         <div
           style={{

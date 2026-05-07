@@ -42,17 +42,10 @@ export default function ReferenceBinder() {
           origin="tl"
           palette={KINGDOM_PALETTE}
           opacity={0.22}
-          size={900}
+          size={1400}
           rays={48}
           arcs={5}
-          style={{
-            position: "absolute",
-            top: -180,
-            left: -240,
-            width: 900,
-            height: 900,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
 
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -184,17 +177,10 @@ export default function ReferenceBinder() {
           origin="br"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
-          size={900}
+          size={1400}
           rays={40}
           arcs={4}
-          style={{
-            position: "absolute",
-            bottom: -200,
-            right: -240,
-            width: 900,
-            height: 900,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
         <div
           style={{

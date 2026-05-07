@@ -150,17 +150,10 @@ export default function Quiz() {
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
-          size={900}
+          size={1400}
           rays={48}
           arcs={5}
-          style={{
-            position: "absolute",
-            top: -250,
-            right: -250,
-            width: 900,
-            height: 900,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
         <div
           style={{
@@ -649,17 +642,10 @@ function ResultsSpread({
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
-          size={1100}
+          size={1600}
           rays={56}
           arcs={6}
-          style={{
-            position: "absolute",
-            top: -300,
-            right: -300,
-            width: 1100,
-            height: 1100,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
         <div
           style={{

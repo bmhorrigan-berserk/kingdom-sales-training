@@ -37,8 +37,8 @@ export default function Curriculum() {
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.22}
-          size={900}
-          style={{ position: "absolute", top: -200, right: -250, width: 900, height: 900, zIndex: 0 }}
+          size={1400}
+          style={{ zIndex: 0 }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>
           <Eyebrow style={{ marginBottom: 16 }}>§ 02 OF 04 · CURRICULUM</Eyebrow>
@@ -205,7 +205,7 @@ export default function Curriculum() {
               origin={onDark ? "bl" : "tr"}
               palette={onDark ? ["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"] : KINGDOM_PALETTE}
               opacity={onDark ? 0.30 : 0.22}
-              size={1000}
+              size={1500}
               style={{
                 position: "absolute",
                 ...(onDark ? { bottom: -250, left: -300 } : { top: -200, right: -300 }),

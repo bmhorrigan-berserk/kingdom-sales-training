@@ -38,17 +38,10 @@ export default function Home() {
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.24}
-          size={1100}
+          size={1600}
           rays={56}
           arcs={6}
-          style={{
-            position: "absolute",
-            top: -200,
-            right: -300,
-            width: 1100,
-            height: 1100,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
 
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -187,17 +180,10 @@ export default function Home() {
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
-          size={1100}
+          size={1600}
           rays={48}
           arcs={5}
-          style={{
-            position: "absolute",
-            bottom: -250,
-            left: -300,
-            width: 1100,
-            height: 1100,
-            zIndex: 0,
-          }}
+          style={{ zIndex: 0 }}
         />
 
         <div style={{ maxWidth: 1920, margin: "0 auto", position: "relative", zIndex: 1 }}>
