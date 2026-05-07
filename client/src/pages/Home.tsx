@@ -34,7 +34,7 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="footer"
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.24}
@@ -183,7 +183,7 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="footer"
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}

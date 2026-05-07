@@ -33,7 +33,7 @@ export default function Curriculum() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="peptides"
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.22}
@@ -201,7 +201,7 @@ export default function Curriculum() {
               overflow: "hidden",
             }}
           >
-            <RadialFan
+            <RadialFan texture="peptides"
               origin={onDark ? "bl" : "tr"}
               palette={onDark ? ["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"] : KINGDOM_PALETTE}
               opacity={onDark ? 0.30 : 0.22}

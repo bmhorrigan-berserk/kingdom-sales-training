@@ -146,7 +146,7 @@ export default function Quiz() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="hormone"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
@@ -645,7 +645,7 @@ function ResultsSpread({
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="hormone"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}

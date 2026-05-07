@@ -103,7 +103,7 @@ export default function Flashcards() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="wellness"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.3}
@@ -482,7 +482,7 @@ function CardFace({
     >
       {/* Decorative fan on the back face for visual interest */}
       {isBack && (
-        <RadialFan
+        <RadialFan texture="wellness"
           origin="bl"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.18}

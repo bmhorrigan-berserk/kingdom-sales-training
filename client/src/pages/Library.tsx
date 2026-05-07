@@ -61,7 +61,7 @@ export default function Library() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="weight"
           origin="tr"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.3}

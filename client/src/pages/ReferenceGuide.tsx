@@ -105,7 +105,7 @@ export default function ReferenceGuide() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="hormone"
           origin="tr"
           palette={KINGDOM_PALETTE}
           opacity={0.20}

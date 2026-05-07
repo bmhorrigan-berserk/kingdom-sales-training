@@ -38,7 +38,7 @@ export default function ReferenceBinder() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="hormone"
           origin="tl"
           palette={KINGDOM_PALETTE}
           opacity={0.22}
@@ -180,7 +180,7 @@ export default function ReferenceBinder() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
+        <RadialFan texture="hormone"
           origin="br"
           palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
           opacity={0.30}
