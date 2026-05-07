@@ -18,9 +18,13 @@ const NAV_ITEMS = [
 // Cross-property tabs - link out to other kingdom apps. These render
 // after the in-site tabs with a small external-link icon so the user
 // knows they leave sales-training.
+//
+// Cache-bust query (?v=2) on the dashboard link forces Cloudflare to
+// fetch a fresh SPA shell from Vercel rather than serve a stale
+// cached bundle that's missing the auth-redirect returnTo logic.
 const CROSS_LINKS = [
   { url: "https://catalog.kingdomcommandcenter.com",      label: "SALES CATALOG" },
-  { url: "https://kingdomintelhq.com/tools/clinical-assistant", label: "CLINICAL ASSISTANT" },
+  { url: "https://kingdomintelhq.com/tools/clinical-assistant?v=2", label: "CLINICAL ASSISTANT" },
 ];
 
 export default function TopNav() {
