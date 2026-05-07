@@ -5,6 +5,7 @@
  * scrolling through long curriculum pages.
  */
 import { Link, useLocation } from "wouter";
+import { ExternalLink } from "lucide-react";
 
 const NAV_ITEMS = [
   { path: "/",            label: "HOME" },
@@ -12,6 +13,14 @@ const NAV_ITEMS = [
   { path: "/reference",   label: "REFERENCE" },
   { path: "/flashcards",  label: "FLASHCARDS" },
   { path: "/quiz",        label: "QUIZ" },
+];
+
+// Cross-property tabs - link out to other kingdom apps. These render
+// after the in-site tabs with a small external-link icon so the user
+// knows they leave sales-training.
+const CROSS_LINKS = [
+  { url: "https://catalog.kingdomcommandcenter.com",      label: "SALES CATALOG" },
+  { url: "https://kingdomintelhq.com/tools/clinical-assistant", label: "CLINICAL ASSISTANT" },
 ];
 
 export default function TopNav() {
@@ -86,7 +95,7 @@ export default function TopNav() {
         </Link>
 
         {/* Nav items */}
-        <nav style={{ display: "flex", gap: 28, flexWrap: "wrap" }}>
+        <nav style={{ display: "flex", gap: 28, flexWrap: "wrap", alignItems: "center" }}>
           {NAV_ITEMS.map((item, idx) => {
             const active = isActive(item.path);
             return (
@@ -116,6 +125,50 @@ export default function TopNav() {
               </Link>
             );
           })}
+
+          {/* Divider before cross-property links */}
+          <span
+            aria-hidden="true"
+            style={{
+              width: 1,
+              height: 16,
+              background: "rgba(255,251,240,0.18)",
+              alignSelf: "center",
+            }}
+          />
+
+          {CROSS_LINKS.map((item) => (
+            <a
+              key={item.url}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "rgba(255,251,240,0.7)",
+                textDecoration: "none",
+                paddingBottom: 6,
+                borderBottom: "2px solid transparent",
+                transition: "all 150ms ease",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "#FFFBF0";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,251,240,0.7)";
+              }}
+            >
+              {item.label}
+              <ExternalLink size={11} style={{ color: "#5FB286" }} />
+            </a>
+          ))}
         </nav>
       </div>
     </header>
