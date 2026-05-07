@@ -103,7 +103,7 @@ export const MEDIA_CATALOG: MediaItem[] = [
     slug: "current-clinic-commodity-trap",
     type: "audio",
     title: "Current Clinic: Commodity Trap (Price Shopping and Insurance Reframe)",
-    src: "/media/current-clinic-commodity-trap.m4a",
+    src: "/media/current-clinic-commodity-trap.mp3",
     durationMin: 12,
     description:
       "Live call. The exact reframe when a prospect leads with price comparison or insurance dependency. Hear the rep pivot from commodity to ecosystem without defending the dollar.",
@@ -112,7 +112,7 @@ export const MEDIA_CATALOG: MediaItem[] = [
     slug: "why-we-use-spouses-as-shields",
     type: "audio",
     title: "Why We Use Spouses as Shields (Spouse Objection Handling)",
-    src: "/media/why-we-use-spouses-as-shields.m4a",
+    src: "/media/why-we-use-spouses-as-shields.mp3",
     durationMin: 10,
     description:
       "Live call. Breakdown of the spouse-objection pattern. How to respect the relationship while exposing the deflection.",
@@ -121,7 +121,7 @@ export const MEDIA_CATALOG: MediaItem[] = [
     slug: "time-to-think-aggressive-approach",
     type: "audio",
     title: "Time to Think: Aggressive Approach (Timing and Delay Objection)",
-    src: "/media/time-to-think-aggressive-approach.m4a",
+    src: "/media/time-to-think-aggressive-approach.mp3",
     durationMin: 9,
     description:
       "Live call. Hold the frame on a 'I need to think about it' stall. Mirror to surface the real objection, then anchor the cost of inaction.",
@@ -130,7 +130,7 @@ export const MEDIA_CATALOG: MediaItem[] = [
     slug: "pending-labs-aggressive-empathy",
     type: "audio",
     title: "Pending Labs: Aggressive Empathy (Kingdom Sales Philosophy in Action)",
-    src: "/media/pending-labs-aggressive-empathy.m4a",
+    src: "/media/pending-labs-aggressive-empathy.mp3",
     durationMin: 14,
     description:
       "Core example of the Neutral, Calm, Detached posture. The rep diagnoses the deficit and lets the patient persuade themselves.",
@@ -151,7 +151,7 @@ export const MEDIA_CATALOG: MediaItem[] = [
     slug: "payment-delay-polite-negligence",
     type: "audio",
     title: "Payment Delay: Polite Negligence (Wallet Deflection)",
-    src: "/media/payment-delay-polite-negligence.m4a",
+    src: "/media/payment-delay-polite-negligence.mp3",
     durationMin: 8,
     description:
       "Live call. The exact response to 'I do not have my card or wallet on me'. Hold the line with calm logistics instead of letting the prospect escape.",

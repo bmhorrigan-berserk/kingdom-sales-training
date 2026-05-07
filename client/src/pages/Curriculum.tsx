@@ -386,9 +386,8 @@ export default function Curriculum() {
           style={{
             marginTop: 40,
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-            gap: 1,
-            background: HAIRLINE,
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            gap: 16,
           }}
         >
           {OPERATIONS_REFERENCE.map((r) => {
@@ -398,14 +397,20 @@ export default function Curriculum() {
               <a
                 className="kingdom-ops-card"
                 style={{
-                  background: CREAM,
-                  padding: "24px 24px",
+                  background: "rgba(255, 255, 255, 0.55)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  padding: "20px 22px",
                   display: "flex",
                   alignItems: "center",
                   gap: 12,
                   textDecoration: "none",
                   color: INK,
-                  transition: "background 150ms ease",
+                  border: `1px solid rgba(232, 222, 198, 0.7)`,
+                  borderRadius: 10,
+                  boxShadow: "0 1px 2px rgba(26,32,96,0.04), 0 4px 14px rgba(26,32,96,0.05)",
+                  transition: "background 150ms ease, transform 150ms ease, box-shadow 150ms ease",
+                  minHeight: 96,
                 }}
               >
                 <span
@@ -454,7 +459,11 @@ export default function Curriculum() {
       <style>{`
         .kingdom-lesson-light:hover { background: ${PALE}; }
         .kingdom-lesson-dark:hover { background: rgba(255,251,240,0.06); }
-        .kingdom-ops-card:hover { background: ${PALE}; }
+        .kingdom-ops-card:hover {
+          background: rgba(255, 255, 255, 0.78) !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(26,32,96,0.06), 0 8px 24px rgba(26,32,96,0.08) !important;
+        }
       `}</style>
 
       {/* FOOTER */}

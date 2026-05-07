@@ -339,81 +339,126 @@ export default function CurriculumLesson() {
         </aside>
       </main>
 
-      {/* PREV / NEXT */}
+      {/* PREV / NEXT - single connected bar across the page so the corners
+          do not read as floating brackets in the cream space. */}
       <nav
         style={{
           maxWidth: 1920,
           margin: "0 auto",
           padding: "0 32px 64px",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 16,
         }}
       >
-        {prev ? (
-          <Link href={`/curriculum/${prev.code}`}>
-            <a
-              style={{
-                padding: "20px 24px",
-                border: `1px solid ${HAIRLINE}`,
-                borderRadius: 6,
-                color: INK,
-                textDecoration: "none",
-                background: "transparent",
-              }}
-            >
-              <Eyebrow style={{ color: GREEN, marginBottom: 8 }}>
-                <ArrowLeft size={11} style={{ display: "inline", marginRight: 6 }} />
-                Previous
-              </Eyebrow>
-              <div
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            background: "rgba(255, 255, 255, 0.55)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            border: `1px solid rgba(232, 222, 198, 0.7)`,
+            borderRadius: 10,
+            overflow: "hidden",
+            boxShadow: "0 1px 2px rgba(26,32,96,0.04), 0 4px 14px rgba(26,32,96,0.05)",
+          }}
+        >
+          {prev ? (
+            <Link href={`/curriculum/${prev.code}`}>
+              <a
+                className="kingdom-prevnext"
                 style={{
-                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: NAVY,
+                  padding: "20px 24px",
+                  color: INK,
+                  textDecoration: "none",
+                  background: "transparent",
+                  borderRight: `1px solid rgba(232, 222, 198, 0.7)`,
+                  display: "block",
+                  transition: "background 150ms ease",
                 }}
               >
-                {prev.code} {prev.title}
-              </div>
-            </a>
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next ? (
-          <Link href={`/curriculum/${next.code}`}>
-            <a
+                <Eyebrow style={{ color: GREEN, marginBottom: 8 }}>
+                  <ArrowLeft size={11} style={{ display: "inline", marginRight: 6 }} />
+                  Previous
+                </Eyebrow>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: NAVY,
+                  }}
+                >
+                  {prev.code} {prev.title}
+                </div>
+              </a>
+            </Link>
+          ) : (
+            <div
               style={{
                 padding: "20px 24px",
-                border: `1px solid ${HAIRLINE}`,
-                borderRadius: 6,
-                color: INK,
-                textDecoration: "none",
-                background: "transparent",
+                borderRight: `1px solid rgba(232, 222, 198, 0.7)`,
+                color: INK_MUTED,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 12,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              First lesson in this set
+            </div>
+          )}
+          {next ? (
+            <Link href={`/curriculum/${next.code}`}>
+              <a
+                className="kingdom-prevnext"
+                style={{
+                  padding: "20px 24px",
+                  color: INK,
+                  textDecoration: "none",
+                  background: "transparent",
+                  textAlign: "right",
+                  display: "block",
+                  transition: "background 150ms ease",
+                }}
+              >
+                <Eyebrow style={{ color: GREEN, marginBottom: 8, justifyContent: "flex-end" }}>
+                  Next
+                  <ArrowRight size={11} style={{ display: "inline", marginLeft: 6 }} />
+                </Eyebrow>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                    fontSize: 18,
+                    fontWeight: 500,
+                    color: NAVY,
+                  }}
+                >
+                  {next.code} {next.title}
+                </div>
+              </a>
+            </Link>
+          ) : (
+            <div
+              style={{
+                padding: "20px 24px",
                 textAlign: "right",
+                color: INK_MUTED,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 12,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
               }}
             >
-              <Eyebrow style={{ color: GREEN, marginBottom: 8, justifyContent: "flex-end" }}>
-                Next
-                <ArrowRight size={11} style={{ display: "inline", marginLeft: 6 }} />
-              </Eyebrow>
-              <div
-                style={{
-                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                  fontSize: 18,
-                  fontWeight: 500,
-                  color: NAVY,
-                }}
-              >
-                {next.code} {next.title}
-              </div>
-            </a>
-          </Link>
-        ) : (
-          <span />
-        )}
+              Last lesson in this set
+            </div>
+          )}
+        </div>
       </nav>
+      <style>{`.kingdom-prevnext:hover { background: rgba(255, 255, 255, 0.78); }`}</style>
 
       {/* FOOTER */}
       <footer
