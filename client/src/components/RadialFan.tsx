@@ -64,24 +64,80 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
+/**
+ * The catalog SVGs draw a radial sunburst whose FOCAL POINT (where every
+ * line converges) sits at roughly (676, 510) inside a 1150x1161 viewBox.
+ * That's the upper-right region of the SVG, NOT the geometric center.
+ *
+ * So if we naively center the SVG on a page corner, the rays appear to
+ * "face the wrong way" - they point toward an off-screen focal instead of
+ * radiating from the corner outward.
+ *
+ * Fix: scale + flip the SVG so its focal point lands AT the anchor corner,
+ * with the dense radial sweep emanating into the visible page area.
+ *
+ * Focal coordinates as fractions of viewBox: (0.587, 0.439).
+ * Distances from focal to each viewBox edge:
+ *   right edge:  1 - 0.587 = 0.413
+ *   left edge:   0.587
+ *   top edge:    0.439
+ *   bottom edge: 1 - 0.439 = 0.561
+ */
+const FOCAL_X_PCT = 0.587;
+const FOCAL_Y_PCT = 0.439;
+
 function originPlacement(origin: Origin, size: number): React.CSSProperties {
-  /* The catalog textures have their radial focal point near the SVG center,
-     not a corner. So we center the SVG ON the page corner: the SVG sits
-     half on/half off the section, and the visible quadrant inside the page
-     reads as a radial fan emanating from the corner. No transforms needed -
-     the engraving is rotationally symmetric enough that any quadrant looks
-     correct. */
-  const offset = -size / 2;
+  // Distance from focal point to the SVG's right / left / top / bottom edges,
+  // in rendered pixels for the current size.
+  const focalToRight = size * (1 - FOCAL_X_PCT);   // ~0.413 * size
+  const focalToTop = size * FOCAL_Y_PCT;           // ~0.439 * size
+
+  // For each anchor we (a) flip the SVG so the focal moves to the
+  // appropriate quadrant, then (b) position so the focal lands on the
+  // page corner. The remaining SVG mass radiates inward into the page.
   switch (origin) {
-    case "tl":     return { top: offset, left: offset };
-    case "tr":     return { top: offset, right: offset };
-    case "bl":     return { bottom: offset, left: offset };
-    case "br":     return { bottom: offset, right: offset };
-    case "left":   return { top: "50%", left: offset, transform: "translateY(-50%)" };
-    case "right":  return { top: "50%", right: offset, transform: "translateY(-50%)" };
+    case "tr":
+      // Focal naturally upper-right - no flip. Focal at corner (0, 0)
+      // means SVG extends down and left from there.
+      return { top: -focalToTop, right: -focalToRight };
+    case "tl":
+      // Flip X so focal moves to upper-left. Then position symmetric.
+      return { top: -focalToTop, left: -focalToRight, transform: "scaleX(-1)" };
+    case "br":
+      return { bottom: -focalToTop, right: -focalToRight, transform: "scaleY(-1)" };
+    case "bl":
+      return {
+        bottom: -focalToTop,
+        left: -focalToRight,
+        transform: "scaleX(-1) scaleY(-1)",
+      };
+    case "left":
+      return { top: "50%", left: -focalToRight, transform: "translateY(-50%) scaleX(-1)" };
+    case "right":
+      return { top: "50%", right: -focalToRight, transform: "translateY(-50%)" };
     case "center":
-    default:       return { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
+    default:
+      return { top: "50%", left: "50%", transform: "translate(-50%, -50%)" };
   }
+}
+
+/**
+ * The mask follows the focal point, not the SVG center. We anchor the
+ * radial gradient at the focal location (in SVG-local coords expressed as
+ * percentages) so the dense sweep stays opaque and the texture fades to
+ * transparent before reaching any viewBox edge.
+ */
+function maskFor(origin: Origin): string {
+  // SVG-local position of the focal point as percentages.
+  const focalLeft = `${FOCAL_X_PCT * 100}%`;
+  const focalTop = `${FOCAL_Y_PCT * 100}%`;
+  // Mirror the percentages when the SVG is flipped so the mask stays
+  // anchored on the visible focal.
+  let cx = focalLeft;
+  let cy = focalTop;
+  if (origin === "tl" || origin === "bl" || origin === "left") cx = `${(1 - FOCAL_X_PCT) * 100}%`;
+  if (origin === "br" || origin === "bl") cy = `${(1 - FOCAL_Y_PCT) * 100}%`;
+  return `radial-gradient(circle at ${cx} ${cy}, black 0%, black 32%, transparent 72%)`;
 }
 
 export function RadialFan({
@@ -94,14 +150,7 @@ export function RadialFan({
   ariaHidden = true,
 }: RadialFanProps) {
   const placement = originPlacement(origin, size);
-  /* Radial fade mask. The catalog SVGs have dense content all the way to
-     their viewBox edges, so without a mask the SVG's bounding box shows
-     as a hard rectangle when the page is bigger than half the texture.
-     The mask is anchored at the SVG center (where the radial focal point
-     sits) and fades to transparent before reaching the bounding box,
-     giving a clean organic falloff with no visible edges. */
-  const fadeMask =
-    "radial-gradient(circle at 50% 50%, black 0%, black 35%, transparent 75%)";
+  const fadeMask = maskFor(origin);
   return (
     <img
       src={`/textures/texture-${texture}.svg`}
