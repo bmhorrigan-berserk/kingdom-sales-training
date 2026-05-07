@@ -150,8 +150,16 @@ export default function ReferenceBinder() {
                   </p>
                 </div>
 
-                {/* Right: guide rows */}
-                <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                {/* Right: guide tiles */}
+                <ol
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    display: "grid",
+                    gap: 12,
+                  }}
+                >
                   {guides.map((g) => (
                     <GuideRow key={g.slug} guide={g} />
                   ))}
@@ -244,17 +252,24 @@ function GuideRow({ guide }: { guide: ReferenceGuide }) {
     <li>
       <Link href={`/reference/${guide.slug}`}>
         <a
-          className="kingdom-binder-row"
+          className="kingdom-binder-tile"
           style={{
             display: "grid",
             gridTemplateColumns: "60px 1fr auto",
             alignItems: "center",
             gap: 24,
-            padding: "24px 16px",
+            padding: "22px 22px",
             color: INK,
             textDecoration: "none",
-            borderTop: `1px solid ${HAIRLINE}`,
-            transition: "background 150ms ease",
+            background: "rgba(255, 255, 255, 0.62)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            border: `1px solid ${HAIRLINE}`,
+            borderLeft: `4px solid ${BLUE}`,
+            borderRadius: 10,
+            boxShadow: "0 1px 2px rgba(26,32,96,0.04)",
+            transition:
+              "background 150ms ease, transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease",
           }}
         >
           <span
@@ -302,12 +317,13 @@ function GuideRow({ guide }: { guide: ReferenceGuide }) {
               alignItems: "center",
               gap: 8,
               padding: "8px 12px",
-              borderRadius: 4,
+              borderRadius: 999,
               background: PALE,
               color: NAVY,
+              border: `1px solid rgba(31, 107, 63, 0.25)`,
               fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
               fontSize: 11,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
             }}
@@ -318,7 +334,13 @@ function GuideRow({ guide }: { guide: ReferenceGuide }) {
           </span>
         </a>
       </Link>
-      <style>{`.kingdom-binder-row:hover { background: ${PALE}; }`}</style>
+      <style>{`
+        .kingdom-binder-tile:hover {
+          background: rgba(255, 255, 255, 0.85) !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(31,107,63,0.06), 0 8px 24px rgba(31,107,63,0.10) !important;
+        }
+      `}</style>
     </li>
   );
 }
