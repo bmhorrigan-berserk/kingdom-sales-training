@@ -218,7 +218,6 @@ export const OPERATIONS_REFERENCE = [
   { code: "R-4", title: "The QRF and the 5-Minute Rule" },
   { code: "R-5", title: "Core Operating Rules and Compliance" },
   { code: "R-6", title: "Technical Toolset" },
-  { code: "R-7", title: "Role-Specific Standards, Quotas, and Bonus Structure" },
-  { code: "R-8", title: "Certification Requirements and Ramp Milestones" },
-  { code: "R-9", title: "Study Resources and Supplemental Materials" },
+  { code: "R-7", title: "Certification Requirements and Ramp Milestones" },
+  { code: "R-8", title: "Study Resources and Supplemental Materials" },
 ];

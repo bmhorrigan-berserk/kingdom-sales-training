@@ -48,8 +48,10 @@
 
   /* Kingdom brand */
   --kingdom-navy: #1A2060;
-  --kingdom-blue: #3B5BDB;
-  --kingdom-pale: #F0F7FE;
+  --kingdom-blue: #1F6B3F;
+  --kingdom-green: #1F6B3F;
+  --kingdom-orange: #D9622B;
+  --kingdom-pale: #EAF4EC;
   --kingdom-cream: #FFFBF0;
   --kingdom-hairline: #E8DEC6;
   --kingdom-ink: #2D2A24;
@@ -69,25 +71,25 @@
   --popover-foreground: oklch(0.20 0.02 60);
   --primary: oklch(0.22 0.13 270);
   --primary-foreground: oklch(0.985 0.018 95);
-  --secondary: oklch(0.94 0.025 250);
+  --secondary: oklch(0.94 0.04 145);
   --secondary-foreground: oklch(0.22 0.13 270);
-  --muted: oklch(0.94 0.025 250);
+  --muted: oklch(0.94 0.04 145);
   --muted-foreground: oklch(0.45 0.02 60);
-  --accent: oklch(0.50 0.20 270);
+  --accent: oklch(0.45 0.13 145);
   --accent-foreground: oklch(0.985 0.018 95);
   --destructive: oklch(0.55 0.20 25);
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.88 0.04 90);
-  --input: oklch(0.94 0.025 250);
-  --ring: oklch(0.50 0.20 270);
+  --input: oklch(0.94 0.04 145);
+  --ring: oklch(0.45 0.13 145);
   --sidebar: oklch(0.985 0.018 95);
   --sidebar-foreground: oklch(0.20 0.02 60);
   --sidebar-primary: oklch(0.22 0.13 270);
   --sidebar-primary-foreground: oklch(0.985 0.018 95);
-  --sidebar-accent: oklch(0.94 0.025 250);
+  --sidebar-accent: oklch(0.94 0.04 145);
   --sidebar-accent-foreground: oklch(0.22 0.13 270);
   --sidebar-border: oklch(0.88 0.04 90);
-  --sidebar-ring: oklch(0.50 0.20 270);
+  --sidebar-ring: oklch(0.45 0.13 145);
 }
 
 @layer base {

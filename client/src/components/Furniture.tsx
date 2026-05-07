@@ -47,7 +47,7 @@ export function DayBadge({
   variant?: "pale" | "navy" | "cream";
 }) {
   const surfaces = {
-    pale:  { bg: "#F0F7FE", text: "#3B5BDB", border: "#D9E5F8" },
+    pale:  { bg: "#EAF4EC", text: "#1F6B3F", border: "#CFE3D5" },
     navy:  { bg: "#1A2060", text: "#FFFBF0", border: "#1A2060" },
     cream: { bg: "#FFFBF0", text: "#1A2060", border: "#EDE6D6" },
   }[variant];
@@ -103,7 +103,7 @@ export function PhaseStepper({
       {Array.from({ length: total }).map((_, i) => {
         const isDone = i < completed;
         const isCurrent = current !== undefined && i === current;
-        const bg = isDone || isCurrent ? "#3B5BDB" : "#EDE6D6";
+        const bg = isDone || isCurrent ? "#1F6B3F" : "#EDE6D6";
         return (
           <span
             key={i}
@@ -122,13 +122,13 @@ export function PhaseStepper({
   );
 }
 
-/* HeadlineAccent: italic Mid Blue word inside a Fraunces headline. */
+/* HeadlineAccent: italic kingdom Orange word inside a Fraunces headline. */
 export function Em({ children }: { children: React.ReactNode }) {
   return (
     <em
       style={{
         fontStyle: "italic",
-        color: "#3B5BDB",
+        color: "#D9622B",
         fontWeight: "inherit",
       }}
     >

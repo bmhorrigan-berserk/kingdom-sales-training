@@ -36,9 +36,9 @@ function adapt(q: QuizQuestion): Question {
 }
 
 const NAVY = "#1A2060";
-const BLUE = "#3B5BDB";
+const BLUE = "#1F6B3F"; // kingdom green (primary accent)
 const CREAM = "#FFFBF0";
-const PALE = "#F0F7FE";
+const PALE = "#EAF4EC"; // kingdom pale green
 const HAIRLINE = "#E8DEC6";
 const INK = "#2D2A24";
 const INK_MUTED = "#6B6357";

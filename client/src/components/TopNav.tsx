@@ -63,7 +63,7 @@ export default function TopNav() {
                 fontFamily: "var(--font-display, Fraunces), Georgia, serif",
                 fontWeight: 600,
                 fontSize: 22,
-                color: "#3B5BDB",
+                color: "#5FB286",
                 lineHeight: 1,
               }}
             >
@@ -101,14 +101,14 @@ export default function TopNav() {
                     color: active ? "#FFFBF0" : "rgba(255,251,240,0.7)",
                     textDecoration: "none",
                     paddingBottom: 6,
-                    borderBottom: active ? "2px solid #3B5BDB" : "2px solid transparent",
+                    borderBottom: active ? "2px solid #5FB286" : "2px solid transparent",
                     transition: "all 150ms ease",
                     display: "inline-flex",
                     alignItems: "baseline",
                     gap: 6,
                   }}
                 >
-                  <span style={{ color: "#3B5BDB", fontWeight: 600 }}>
+                  <span style={{ color: "#5FB286", fontWeight: 600 }}>
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                   {item.label}

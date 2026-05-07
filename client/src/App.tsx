@@ -18,6 +18,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 import Home from "@/pages/Home";
 import Curriculum from "@/pages/Curriculum";
+import CurriculumLesson from "@/pages/CurriculumLesson";
 import ReferenceBinder from "@/pages/ReferenceBinder";
 import ReferenceGuide from "@/pages/ReferenceGuide";
 import Flashcards from "@/pages/Flashcards";
@@ -29,6 +30,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/curriculum" component={Curriculum} />
+      <Route path="/curriculum/:code" component={CurriculumLesson} />
       <Route path="/reference" component={ReferenceBinder} />
       <Route path="/reference/:slug" component={ReferenceGuide} />
       <Route path="/flashcards" component={Flashcards} />

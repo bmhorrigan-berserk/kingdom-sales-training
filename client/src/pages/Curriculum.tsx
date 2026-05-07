@@ -10,8 +10,8 @@ import { ArrowRight, Check } from "lucide-react";
 import { DAY_SCHEDULE, PHASES, OPERATIONS_REFERENCE, CURRICULUM_OVERVIEW } from "@/lib/curriculumData";
 
 const NAVY = "#1A2060";
-const BLUE = "#3B5BDB";
-const PALE = "#F0F7FE";
+const BLUE = "#1F6B3F"; // kingdom green (primary accent)
+const PALE = "#EAF4EC"; // kingdom pale green
 const CREAM = "#FFFBF0";
 const HAIRLINE = "#E8DEC6";
 const INK = "#2D2A24";
@@ -284,43 +284,54 @@ export default function Curriculum() {
                       <li
                         key={l.code}
                         style={{
-                          display: "grid",
-                          gridTemplateColumns: "auto 1fr auto",
-                          gap: 16,
-                          alignItems: "center",
-                          padding: "14px 0",
                           borderBottom: `1px solid ${onDark ? "rgba(255,251,240,0.18)" : HAIRLINE}`,
                         }}
                       >
-                        <span
-                          style={{
-                            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                            fontSize: 11,
-                            fontWeight: 600,
-                            letterSpacing: "0.06em",
-                            color: BLUE,
-                            minWidth: 44,
-                          }}
-                        >
-                          {l.code}
-                        </span>
-                        <span
-                          style={{
-                            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                            fontSize: 15,
-                            lineHeight: 1.45,
-                            color: onDark ? CREAM : INK,
-                          }}
-                        >
-                          {l.title}
-                        </span>
-                        <ArrowRight
-                          size={14}
-                          style={{
-                            color: onDark ? "rgba(255,251,240,0.35)" : INK_MUTED,
-                            opacity: 0.7,
-                          }}
-                        />
+                        <Link href={`/curriculum/${l.code}`}>
+                          <a
+                            className={onDark ? "kingdom-lesson-dark" : "kingdom-lesson-light"}
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "auto 1fr auto",
+                              gap: 16,
+                              alignItems: "center",
+                              padding: "14px 8px",
+                              color: onDark ? CREAM : INK,
+                              textDecoration: "none",
+                              transition: "background 150ms ease",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                                fontSize: 11,
+                                fontWeight: 700,
+                                letterSpacing: "0.06em",
+                                color: onDark ? "#5FB286" : BLUE,
+                                minWidth: 44,
+                              }}
+                            >
+                              {l.code}
+                            </span>
+                            <span
+                              style={{
+                                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                                fontSize: 15,
+                                lineHeight: 1.45,
+                                color: onDark ? CREAM : INK,
+                              }}
+                            >
+                              {l.title}
+                            </span>
+                            <ArrowRight
+                              size={14}
+                              style={{
+                                color: onDark ? "#5FB286" : BLUE,
+                                opacity: 0.9,
+                              }}
+                            />
+                          </a>
+                        </Link>
                       </li>
                     ))}
                   </ol>
@@ -358,44 +369,57 @@ export default function Curriculum() {
           }}
         >
           {OPERATIONS_REFERENCE.map((r) => (
-            <div
-              key={r.code}
-              style={{
-                background: CREAM,
-                padding: "24px 24px",
-                display: "flex",
-                alignItems: "baseline",
-                gap: 16,
-              }}
-            >
-              <span
+            <Link key={r.code} href={`/curriculum/${r.code}`}>
+              <a
+                className="kingdom-ops-card"
                 style={{
-                  fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: BLUE,
-                  letterSpacing: "0.06em",
-                  minWidth: 36,
+                  background: CREAM,
+                  padding: "24px 24px",
+                  display: "flex",
+                  alignItems: "baseline",
+                  gap: 16,
+                  textDecoration: "none",
+                  color: INK,
+                  transition: "background 150ms ease",
                 }}
               >
-                {r.code}
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                  fontWeight: 500,
-                  fontSize: 18,
-                  lineHeight: 1.25,
-                  color: NAVY,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {r.title}
-              </span>
-            </div>
+                <span
+                  style={{
+                    fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: BLUE,
+                    letterSpacing: "0.06em",
+                    minWidth: 36,
+                  }}
+                >
+                  {r.code}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                    fontWeight: 500,
+                    fontSize: 18,
+                    lineHeight: 1.25,
+                    color: NAVY,
+                    letterSpacing: "-0.01em",
+                    flex: 1,
+                  }}
+                >
+                  {r.title}
+                </span>
+                <ArrowRight size={14} style={{ color: BLUE, opacity: 0.85 }} />
+              </a>
+            </Link>
           ))}
         </div>
       </section>
+
+      <style>{`
+        .kingdom-lesson-light:hover { background: ${PALE}; }
+        .kingdom-lesson-dark:hover { background: rgba(255,251,240,0.06); }
+        .kingdom-ops-card:hover { background: ${PALE}; }
+      `}</style>
 
       {/* FOOTER */}
       <footer

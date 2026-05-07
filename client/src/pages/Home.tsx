@@ -11,7 +11,7 @@ import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
 import { ArrowRight, BookOpen, Library, GraduationCap, Brain, Layers } from "lucide-react";
 
 const NAVY = "#1A2060";
-const BLUE = "#3B5BDB";
+const BLUE = "#1F6B3F"; // kingdom green (primary accent)
 const CREAM = "#FFFBF0";
 const HAIRLINE = "#E8DEC6";
 const INK = "#2D2A24";

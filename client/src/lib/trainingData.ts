@@ -758,6 +758,24 @@ export const FLASHCARDS: Flashcard[] = [
     front: "How do you handle the 'Time to Think' stall?",
     back: "This is a smoke screen. Use Mirroring first to uncover the real objection.\n\nThen establish the Cost of Inaction: make the pain of staying the same feel far worse than the pain of purchasing. The prospect is choosing to stay in their biological trap every day they delay.",
   },
+  {
+    id: "fc-087",
+    category: "Sales Framework",
+    front: "Who are kingdom's industry brand partners?",
+    back: "MegaFit Meals, Troponin Supplements, Troponin IQ, and Cutler Nutrition.\n\nThese are the brand partnerships that surround the kingdom ecosystem on the nutrition and supplement side. Mention them when stacking the value of the ecosystem, not the treatment.",
+  },
+  {
+    id: "fc-088",
+    category: "Sales Framework",
+    front: "Who is kingdom partnered with on the athlete and creator side?",
+    back: "Chuck Liddell, King of Violence, and Garand Thumb.\n\nThese partnerships signal the caliber of operator kingdom serves. Use them as social proof in the medical authority opening when patients ask 'who else uses this' or stall on credibility.",
+  },
+  {
+    id: "fc-089",
+    category: "Objection Handling",
+    front: "Someone is complaining about price. What do we never do?",
+    back: "Never defend our price.\n\nDefending the price puts you below the patient. Instead, hold the frame: pivot the conversation to the cost of inaction, the value of the ecosystem, and the identity of the legacy self. The price is the price. The diagnostician does not negotiate the prescription.",
+  },
 ];
 
 export const QUIZ_QUESTIONS: QuizQuestion[] = [

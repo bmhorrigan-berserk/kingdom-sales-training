@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>R-1. Team Architecture and Pipeline Definitions - kingdom Curriculum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1A2060;
+  --green: #1F6B3F;
+  --orange: #D9622B;
+  --pale: #F0F7FE;
+  --cream: #FFFBF0;
+  --hairline: #E8DEC6;
+  --ink: #2D2A24;
+  --muted: #6B6357;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 32px 96px;
+}
+.eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 24px;
+}
+.title-row { display: flex; align-items: baseline; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+.title-num {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 80px;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: -0.03em;
+  line-height: 0.85;
+}
+h1.title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 400;
+  font-size: 40px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--navy);
+  margin: 0;
+  max-width: 22ch;
+}
+hr.rule { border: 0; border-top: 1px solid var(--hairline); margin: 40px 0 32px; }
+p { margin: 0 0 14px; }
+strong { color: var(--navy); font-weight: 600; }
+em { color: var(--orange); font-style: italic; }
+ol, ul { padding-left: 24px; margin: 0 0 16px; }
+li { margin-bottom: 8px; }
+h1, h2, h3, h4 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin: 36px 0 12px;
+}
+h2 { font-size: 26px; }
+h3 { font-size: 20px; color: var(--green); }
+h4 { font-size: 16px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-family: "Inter", sans-serif; }
+blockquote {
+  margin: 24px 0;
+  padding: 16px 20px;
+  border-left: 3px solid var(--orange);
+  background: rgba(217, 98, 43, 0.06);
+  font-family: "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--navy);
+}
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--hairline); }
+th { background: var(--pale); font-weight: 600; color: var(--navy); }
+.foot {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+.foot .num { color: var(--green); }
+</style>
+</head>
+<body>
+<main class="page">
+  <span class="eyebrow">§ KINGDOM CURRICULUM · OPERATIONS REFERENCE</span>
+  <div class="title-row">
+    <span class="title-num">R-1</span>
+    <h1 class="title">Team Architecture and Pipeline Definitions</h1>
+  </div>
+  <hr class="rule" />
+  <article>
+    
+<table style="width:100%;">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 34%" />
+<col style="width: 44%" />
+</colgroup>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td><strong>Name(s)</strong></td>
+<td><strong>Responsibility</strong></td>
+</tr>
+<tr>
+<td><strong>CEO</strong></td>
+<td>Levi Barbee</td>
+<td>Final authority. Strategic direction.</td>
+</tr>
+<tr>
+<td><strong>Dir. of Operations</strong></td>
+<td>Brice Horrigan</td>
+<td>Strategy and oversight. Reports to CEO.</td>
+</tr>
+<tr>
+<td><strong>Dir. of Sales</strong></td>
+<td>Jason Liles</td>
+<td>External Sales: LMS1, CS, LMS2, QRF.</td>
+</tr>
+<tr>
+<td><strong>LMS1</strong></td>
+<td>Kailee, David, Christian</td>
+<td>Lead conversion strike force.</td>
+</tr>
+<tr>
+<td><strong>CS (Setters)</strong></td>
+<td>Nathan, Brandon, William</td>
+<td>Scheduled consults and $99 collection.</td>
+</tr>
+<tr>
+<td><strong>LMS2 (Closer)</strong></td>
+<td>Joseph Andruzzi</td>
+<td>Post-provider closing. Plans and recurring.</td>
+</tr>
+<tr>
+<td><strong>QRF</strong></td>
+<td>VACANT</td>
+<td>Real-time lead interception.</td>
+</tr>
+<tr>
+<td><strong>Account Exec</strong></td>
+<td>Sean Murphy, Tyler Davis (starting Apr 6)</td>
+<td>Patient success, medical inquiries. Medical Pod.</td>
+</tr>
+<tr>
+<td><strong>Patient Advocate</strong></td>
+<td>Francisco Olivas</td>
+<td>Billing, tracking, lab scheduling.</td>
+</tr>
+<tr>
+<td><strong>Lead RN/CCC</strong></td>
+<td>Brooke Bogdanovich</td>
+<td>Pharmacy orders, dosing, advocacy.</td>
+</tr>
+<tr>
+<td><strong>AR Rep</strong></td>
+<td>Katherine Speed</td>
+<td>Payment recovery and disputes.</td>
+</tr>
+<tr>
+<td><strong>Providers</strong></td>
+<td>3-5 Licensed Staff</td>
+<td>Clinical consultations only.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LEAD:</strong> Prospect with info, NOT scheduled. LMS1
+territory.</p>
+<p><strong>DEAL:</strong> Scheduled or completed consult. CS/LMS2
+territory.</p>
+<p><strong>PATIENT:</strong> Paid, labs ordered, on treatment. Medical
+Pod territory.</p>
+
+  </article>
+  <div class="foot">
+    <span>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</span>
+    <span class="num">§ R-1</span>
+  </div>
+</main>
+</body>
+</html>
