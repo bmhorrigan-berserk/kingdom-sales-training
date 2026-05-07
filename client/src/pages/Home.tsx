@@ -6,7 +6,7 @@
  */
 import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
-import { RadialFan } from "@/components/RadialFan";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
 import { ArrowRight, BookOpen, Library, GraduationCap, Brain, Layers } from "lucide-react";
 
@@ -36,8 +36,8 @@ export default function Home() {
       >
         <RadialFan
           origin="tr"
-          color={BLUE}
-          opacity={0.08}
+          palette={KINGDOM_PALETTE}
+          opacity={0.24}
           size={1100}
           rays={56}
           arcs={6}
@@ -185,8 +185,8 @@ export default function Home() {
       >
         <RadialFan
           origin="bl"
-          color="#FFFBF0"
-          opacity={0.05}
+          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
+          opacity={0.30}
           size={1100}
           rays={48}
           arcs={5}

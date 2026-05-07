@@ -6,6 +6,7 @@
 import { Link, useRoute } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { REFERENCE_GUIDES } from "@/lib/referenceData";
 import { ArrowLeft, ArrowRight, ExternalLink, Download } from "lucide-react";
 
@@ -100,14 +101,25 @@ export default function ReferenceGuide() {
           margin: "0 auto",
           padding: "32px 32px 40px",
           borderBottom: `1px solid ${HAIRLINE}`,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        <RadialFan
+          origin="tr"
+          palette={KINGDOM_PALETTE}
+          opacity={0.20}
+          size={800}
+          style={{ position: "absolute", top: -200, right: -200, width: 800, height: 800, zIndex: 0 }}
+        />
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "auto 1fr",
             gap: 32,
             alignItems: "start",
+            position: "relative",
+            zIndex: 1,
           }}
         >
           <span

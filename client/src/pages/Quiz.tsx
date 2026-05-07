@@ -10,7 +10,7 @@
 import { useMemo, useState } from "react";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
-import { RadialFan } from "@/components/RadialFan";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { Check, X, ArrowRight, RotateCcw } from "lucide-react";
 import { QUIZ_QUESTIONS as RAW_QUESTIONS, type QuizQuestion } from "@/lib/trainingData";
 
@@ -143,8 +143,8 @@ export default function Quiz() {
       >
         <RadialFan
           origin="tl"
-          color={BLUE}
-          opacity={0.06}
+          palette={KINGDOM_PALETTE}
+          opacity={0.22}
           size={720}
           rays={36}
           arcs={4}
@@ -424,8 +424,8 @@ function ResultsSpread({
       >
         <RadialFan
           origin="tr"
-          color={BLUE}
-          opacity={0.08}
+          palette={KINGDOM_PALETTE}
+          opacity={0.24}
           size={900}
           rays={48}
           arcs={5}

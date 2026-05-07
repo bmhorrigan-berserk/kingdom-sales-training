@@ -8,6 +8,7 @@
 import { Link, useRoute } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PHASES, OPERATIONS_REFERENCE } from "@/lib/curriculumData";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 
@@ -138,9 +139,18 @@ export default function CurriculumLesson() {
           margin: "0 auto",
           padding: "32px 32px 40px",
           borderBottom: `1px solid ${HAIRLINE}`,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 32, alignItems: "start" }}>
+        <RadialFan
+          origin="tr"
+          palette={KINGDOM_PALETTE}
+          opacity={0.20}
+          size={800}
+          style={{ position: "absolute", top: -180, right: -200, width: 800, height: 800, zIndex: 0 }}
+        />
+        <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 32, alignItems: "start", position: "relative", zIndex: 1 }}>
           <span
             style={{
               fontFamily: "var(--font-display, Fraunces), Georgia, serif",

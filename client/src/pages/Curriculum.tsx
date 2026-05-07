@@ -4,7 +4,7 @@
  */
 import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
-import { RadialFan } from "@/components/RadialFan";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em, DayBadge, PhaseStepper } from "@/components/Furniture";
 import { ArrowRight, Check } from "lucide-react";
 import { DAY_SCHEDULE, PHASES, OPERATIONS_REFERENCE, CURRICULUM_OVERVIEW } from "@/lib/curriculumData";
@@ -34,8 +34,8 @@ export default function Curriculum() {
       >
         <RadialFan
           origin="tr"
-          color={BLUE}
-          opacity={0.06}
+          palette={KINGDOM_PALETTE}
+          opacity={0.22}
           size={900}
           style={{ position: "absolute", top: -200, right: -250, width: 900, height: 900, zIndex: 0 }}
         />
@@ -202,8 +202,8 @@ export default function Curriculum() {
           >
             <RadialFan
               origin={onDark ? "bl" : "tr"}
-              color={onDark ? "#FFFBF0" : BLUE}
-              opacity={onDark ? 0.04 : 0.05}
+              palette={onDark ? ["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"] : KINGDOM_PALETTE}
+              opacity={onDark ? 0.30 : 0.22}
               size={1000}
               style={{
                 position: "absolute",

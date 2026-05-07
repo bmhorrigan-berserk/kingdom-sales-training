@@ -6,7 +6,7 @@
  */
 import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
-import { RadialFan } from "@/components/RadialFan";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
 import {
   REFERENCE_GUIDES,
@@ -40,8 +40,8 @@ export default function ReferenceBinder() {
       >
         <RadialFan
           origin="tl"
-          color={BLUE}
-          opacity={0.07}
+          palette={KINGDOM_PALETTE}
+          opacity={0.22}
           size={900}
           rays={48}
           arcs={5}
@@ -174,8 +174,8 @@ export default function ReferenceBinder() {
       >
         <RadialFan
           origin="br"
-          color="#FFFBF0"
-          opacity={0.05}
+          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
+          opacity={0.30}
           size={900}
           rays={40}
           arcs={4}

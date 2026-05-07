@@ -1,12 +1,27 @@
 /**
  * RadialFan - engraved-line sunburst, kingdom signature decoration.
- * Identical to the dashboard component for cross-product consistency.
+ *
+ * Two modes:
+ * 1. Single color (legacy): pass `color` (string).
+ * 2. Multi-color: pass `palette` (array). Rays alternate through the palette
+ *    so the engraving shimmers green / blue / orange / red across the
+ *    cream surface. This is what the kingdom site now uses everywhere.
+ *
+ * Pass `palette={KINGDOM_PALETTE}` for the canonical 4-color set.
  */
 type Origin = "tl" | "tr" | "bl" | "br" | "center" | "right" | "left";
+
+export const KINGDOM_PALETTE = [
+  "#1F6B3F", // kingdom green
+  "#3B5BDB", // kingdom blue
+  "#D9622B", // kingdom orange
+  "#B23A3A", // kingdom red
+];
 
 interface RadialFanProps {
   origin?: Origin;
   color?: string;
+  palette?: string[];
   opacity?: number;
   size?: number;
   rays?: number;
@@ -33,12 +48,13 @@ function originPoint(origin: Origin, size: number): { cx: number; cy: number } {
 
 export function RadialFan({
   origin = "tr",
-  color = "#3B5BDB",
-  opacity = 0.1,
+  color,
+  palette,
+  opacity = 0.18,
   size = 800,
   rays = 48,
   arcs = 5,
-  strokeWidth = 0.5,
+  strokeWidth = 0.7,
   className = "",
   style,
   ariaHidden = true,
@@ -55,16 +71,24 @@ export function RadialFan({
   else if (origin === "left") { startAngle = -Math.PI * 0.5; endAngle = Math.PI * 0.5; }
   else { startAngle = 0; endAngle = 2 * Math.PI; }
 
-  const rayPaths: string[] = [];
+  // Build per-ray records so we can color each independently when a palette
+  // is provided.
+  const rayPaths: { d: string; color: string }[] = [];
   for (let i = 0; i < rays; i++) {
     const t = rays === 1 ? 0 : i / (rays - 1);
     const angle = startAngle + (endAngle - startAngle) * t;
     const x2 = cx + Math.cos(angle) * maxRadius;
     const y2 = cy + Math.sin(angle) * maxRadius;
-    rayPaths.push(`M${cx},${cy} L${x2.toFixed(2)},${y2.toFixed(2)}`);
+    const c = palette && palette.length > 0
+      ? palette[i % palette.length]
+      : (color ?? "#3B5BDB");
+    rayPaths.push({
+      d: `M${cx},${cy} L${x2.toFixed(2)},${y2.toFixed(2)}`,
+      color: c,
+    });
   }
 
-  const arcPaths: string[] = [];
+  const arcPaths: { d: string; color: string }[] = [];
   for (let r = 1; r <= arcs; r++) {
     const radius = (maxRadius / arcs) * r;
     const segments = 80;
@@ -76,7 +100,10 @@ export function RadialFan({
       const y = cy + Math.sin(angle) * radius;
       path += s === 0 ? `M${x.toFixed(2)},${y.toFixed(2)}` : ` L${x.toFixed(2)},${y.toFixed(2)}`;
     }
-    arcPaths.push(path);
+    const c = palette && palette.length > 0
+      ? palette[(r - 1) % palette.length]
+      : (color ?? "#3B5BDB");
+    arcPaths.push({ d: path, color: c });
   }
 
   return (
@@ -87,11 +114,20 @@ export function RadialFan({
       aria-hidden={ariaHidden}
       preserveAspectRatio="xMidYMid slice"
     >
-      <g stroke={color} strokeWidth={strokeWidth} fill="none" opacity={opacity}>
-        {rayPaths.map((d, i) => <path key={`ray-${i}`} d={d} />)}
+      <g strokeWidth={strokeWidth} fill="none" opacity={opacity}>
+        {rayPaths.map((r, i) => (
+          <path key={`ray-${i}`} d={r.d} stroke={r.color} />
+        ))}
       </g>
-      <g stroke={color} strokeWidth={strokeWidth * 0.7} fill="none" opacity={opacity * 0.9} strokeDasharray="2 8">
-        {arcPaths.map((d, i) => <path key={`arc-${i}`} d={d} />)}
+      <g
+        strokeWidth={strokeWidth * 0.7}
+        fill="none"
+        opacity={opacity * 0.85}
+        strokeDasharray="2 8"
+      >
+        {arcPaths.map((a, i) => (
+          <path key={`arc-${i}`} d={a.d} stroke={a.color} />
+        ))}
       </g>
     </svg>
   );

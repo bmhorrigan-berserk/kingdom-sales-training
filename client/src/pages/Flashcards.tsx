@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useState } from "react";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
-import { RadialFan } from "@/components/RadialFan";
+import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { ChevronLeft, ChevronRight, RotateCcw, Shuffle } from "lucide-react";
 
 // ---------- adapter: existing trainingData.ts ----------
@@ -91,8 +91,8 @@ export default function Flashcards() {
       >
         <RadialFan
           origin="tr"
-          color={BLUE}
-          opacity={0.06}
+          palette={KINGDOM_PALETTE}
+          opacity={0.22}
           size={780}
           rays={40}
           arcs={4}
