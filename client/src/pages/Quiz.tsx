@@ -127,249 +127,469 @@ export default function Quiz() {
   const selected = answers[step];
   const revealed = !!showResult[step];
 
+  const answeredCount = Object.keys(answers).length;
+  const progressPct = total === 0 ? 0 : ((step + 1) / total) * 100;
+  const ORANGE = "#D9622B";
+  const NAVY_DEEP = "#141849";
+
   return (
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
       <TopNav />
 
-      {/* HEADER STRIP */}
+      {/* NAVY HERO STRIP - full width, gives the page weight at the top */}
       <section
         style={{
           position: "relative",
-          padding: "56px 32px 24px",
-          maxWidth: 1080,
-          margin: "0 auto",
+          background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`,
+          color: CREAM,
+          padding: "0",
           overflow: "hidden",
         }}
       >
         <RadialFan
-          origin="tl"
-          palette={KINGDOM_PALETTE}
-          opacity={0.22}
-          size={720}
-          rays={36}
-          arcs={4}
+          origin="tr"
+          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
+          opacity={0.30}
+          size={900}
+          rays={48}
+          arcs={5}
           style={{
             position: "absolute",
-            top: -160,
-            left: -200,
-            width: 720,
-            height: 720,
+            top: -250,
+            right: -250,
+            width: 900,
+            height: 900,
             zIndex: 0,
           }}
         />
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <Eyebrow style={{ marginBottom: 16 }}>
-            § 04 · KNOWLEDGE QUIZ · QUESTION {step + 1} OF {total} · 90 TO PASS
-          </Eyebrow>
-          <h1
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(36px, 4.4vw, 56px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              color: NAVY,
-              margin: 0,
-              maxWidth: "16ch",
-            }}
-          >
-            Built for <Em>elite</Em> operators.
-          </h1>
-
-          {/* Progress bar */}
-          <div
-            style={{
-              marginTop: 28,
-              height: 4,
-              background: HAIRLINE,
-              borderRadius: 2,
-              overflow: "hidden",
-            }}
-          >
+        <div
+          style={{
+            maxWidth: 1920,
+            margin: "0 auto",
+            padding: "56px 32px 40px",
+            position: "relative",
+            zIndex: 1,
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1.4fr) minmax(0, 1fr)",
+            gap: 48,
+            alignItems: "end",
+          }}
+        >
+          <div>
             <div
               style={{
-                width: `${((step + 1) / total) * 100}%`,
-                height: "100%",
-                background: BLUE,
-                transition: "width 250ms ease",
+                fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "#5FB286",
+                marginBottom: 14,
               }}
-            />
+            >
+              § 04 · KNOWLEDGE QUIZ · 90 TO PASS
+            </div>
+            <h1
+              style={{
+                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                fontWeight: 400,
+                fontSize: "clamp(36px, 4.4vw, 56px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                color: CREAM,
+                margin: 0,
+                maxWidth: "18ch",
+              }}
+            >
+              Built for{" "}
+              <em
+                style={{
+                  fontStyle: "italic",
+                  color: ORANGE,
+                  fontWeight: "inherit",
+                }}
+              >
+                elite
+              </em>{" "}
+              operators.
+            </h1>
+          </div>
+
+          {/* Progress block */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                marginBottom: 12,
+                fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "rgba(255,251,240,0.7)",
+              }}
+            >
+              <span>
+                Question{" "}
+                <span style={{ color: CREAM, fontSize: 14 }}>
+                  {String(step + 1).padStart(2, "0")}
+                </span>{" "}
+                /{" "}
+                <span style={{ color: "rgba(255,251,240,0.6)" }}>
+                  {String(total).padStart(2, "0")}
+                </span>
+              </span>
+              <span style={{ color: "#5FB286" }}>
+                {answeredCount} answered
+              </span>
+            </div>
+            <div
+              style={{
+                height: 6,
+                background: "rgba(255,251,240,0.12)",
+                borderRadius: 999,
+                overflow: "hidden",
+                border: "1px solid rgba(255,251,240,0.10)",
+              }}
+            >
+              <div
+                style={{
+                  width: `${progressPct}%`,
+                  height: "100%",
+                  background: `linear-gradient(90deg, #5FB286, ${ORANGE})`,
+                  transition: "width 350ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                  boxShadow: "0 0 12px rgba(95, 178, 134, 0.5)",
+                }}
+              />
+            </div>
+
+            {/* Question dots - one tiny dot per question, color-coded by status */}
+            <div
+              style={{
+                marginTop: 14,
+                display: "flex",
+                gap: 4,
+                flexWrap: "wrap",
+              }}
+            >
+              {questions.map((_, qi) => {
+                const isCurrent = qi === step;
+                const wasAnswered = qi in answers;
+                const wasCorrect = wasAnswered && answers[qi] === questions[qi].correctIndex;
+                const dotColor = isCurrent
+                  ? CREAM
+                  : wasCorrect
+                    ? "#5FB286"
+                    : wasAnswered
+                      ? "#E08585"
+                      : "rgba(255,251,240,0.25)";
+                const dotWidth = isCurrent ? 18 : 8;
+                return (
+                  <span
+                    key={qi}
+                    title={`Question ${qi + 1}`}
+                    style={{
+                      width: dotWidth,
+                      height: 4,
+                      borderRadius: 999,
+                      background: dotColor,
+                      transition: "width 200ms ease, background 200ms ease",
+                    }}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* QUESTION */}
+      {/* QUESTION SURFACE - centered glass card on cream */}
       <section
         style={{
-          maxWidth: 1080,
+          maxWidth: 1920,
           margin: "0 auto",
-          padding: "32px 32px 24px",
+          padding: "48px 32px 32px",
         }}
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 24,
-            marginBottom: 32,
+            maxWidth: 980,
+            margin: "0 auto",
+            position: "relative",
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 600,
-              fontSize: 88,
-              color: BLUE,
-              letterSpacing: "-0.03em",
-              lineHeight: 0.85,
-            }}
-          >
-            {String(step + 1).padStart(2, "0")}
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(24px, 2.8vw, 34px)",
-              lineHeight: 1.25,
-              letterSpacing: "-0.015em",
-              color: NAVY,
-              margin: 0,
-              maxWidth: "32ch",
-            }}
-          >
-            {q.prompt}
-          </h2>
-        </div>
-
-        {/* CHOICE CARDS */}
-        <div style={{ display: "grid", gap: 12 }}>
-          {q.choices.map((choice, ci) => {
-            const isSelected = selected === ci;
-            const isCorrect = q.correctIndex === ci;
-            const showRight = revealed && isCorrect;
-            const showWrong = revealed && isSelected && !isCorrect;
-
-            const borderColor = showRight
-              ? SUCCESS
-              : showWrong
-                ? ERROR
-                : isSelected
-                  ? NAVY
-                  : HAIRLINE;
-            const bg = showRight
-              ? "#E8F5EE"
-              : showWrong
-                ? "#FBEDEE"
-                : isSelected
-                  ? PALE
-                  : "transparent";
-
-            return (
-              <button
-                key={ci}
-                onClick={() => selectChoice(step, ci)}
-                disabled={revealed}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "40px 1fr 24px",
-                  alignItems: "center",
-                  gap: 16,
-                  padding: "20px 20px",
-                  background: bg,
-                  border: `1.5px solid ${borderColor}`,
-                  borderRadius: 6,
-                  textAlign: "left",
-                  cursor: revealed ? "default" : "pointer",
-                  transition: "all 150ms ease",
-                  fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily:
-                      "var(--font-display, Fraunces), Georgia, serif",
-                    fontWeight: 600,
-                    fontSize: 20,
-                    color: BLUE,
-                    letterSpacing: "0.04em",
-                  }}
-                >
-                  {String.fromCharCode(65 + ci)}
-                </span>
-                <span
-                  style={{
-                    fontSize: 16,
-                    lineHeight: 1.5,
-                    color: INK,
-                  }}
-                >
-                  {choice}
-                </span>
-                <span style={{ display: "inline-flex", justifyContent: "flex-end" }}>
-                  {showRight && <Check size={18} style={{ color: SUCCESS }} />}
-                  {showWrong && <X size={18} style={{ color: ERROR }} />}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* EXPLANATION */}
-        {revealed && q.explanation && (
+          {/* Question card */}
           <div
             style={{
-              marginTop: 24,
-              padding: 20,
-              background: PALE,
+              background: "rgba(255, 255, 255, 0.78)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
               border: `1px solid ${HAIRLINE}`,
-              borderRadius: 6,
+              borderTop: `4px solid ${BLUE}`,
+              borderRadius: 14,
+              padding: "36px 36px 32px",
+              boxShadow:
+                "0 1px 2px rgba(31,107,63,0.04), 0 12px 36px rgba(26,32,96,0.08), 0 4px 14px rgba(26,32,96,0.04)",
             }}
           >
-            <Eyebrow style={{ color: BLUE, marginBottom: 8 }}>
-              § WHY
-            </Eyebrow>
-            <p
+            <div
               style={{
-                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                fontSize: 15,
-                lineHeight: 1.55,
-                color: INK,
-                margin: 0,
+                display: "flex",
+                alignItems: "baseline",
+                gap: 24,
+                marginBottom: 28,
+                flexWrap: "wrap",
               }}
             >
-              {q.explanation}
-            </p>
-          </div>
-        )}
+              <span
+                style={{
+                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                  fontWeight: 600,
+                  fontSize: 88,
+                  color: BLUE,
+                  letterSpacing: "-0.03em",
+                  lineHeight: 0.85,
+                }}
+              >
+                {String(step + 1).padStart(2, "0")}
+              </span>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                  fontWeight: 400,
+                  fontSize: "clamp(24px, 2.8vw, 34px)",
+                  lineHeight: 1.25,
+                  letterSpacing: "-0.015em",
+                  color: NAVY,
+                  margin: 0,
+                  maxWidth: "36ch",
+                }}
+              >
+                {q.prompt}
+              </h2>
+            </div>
 
-        {/* CONTROLS */}
-        <div
-          style={{
-            marginTop: 32,
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap",
-          }}
-        >
-          <button
-            onClick={prev}
-            disabled={step === 0}
-            style={btnGhost(step === 0)}
+            {q.category && (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "4px 10px",
+                  background: PALE,
+                  color: BLUE,
+                  fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  borderRadius: 999,
+                  marginBottom: 24,
+                  border: `1px solid rgba(31, 107, 63, 0.2)`,
+                }}
+              >
+                {q.category}
+              </div>
+            )}
+
+            {/* CHOICE TILES - liquid glass */}
+            <div style={{ display: "grid", gap: 10 }}>
+              {q.choices.map((choice, ci) => {
+                const isSelected = selected === ci;
+                const isCorrect = q.correctIndex === ci;
+                const showRight = revealed && isCorrect;
+                const showWrong = revealed && isSelected && !isCorrect;
+
+                let borderColor = HAIRLINE;
+                let bg = "rgba(255, 255, 255, 0.55)";
+                let shadow = "0 1px 2px rgba(26,32,96,0.03)";
+                let letterColor = BLUE;
+
+                if (showRight) {
+                  borderColor = SUCCESS;
+                  bg = "rgba(232, 245, 238, 0.85)";
+                  shadow = "0 1px 2px rgba(15,123,74,0.10), 0 4px 14px rgba(15,123,74,0.10)";
+                  letterColor = SUCCESS;
+                } else if (showWrong) {
+                  borderColor = ERROR;
+                  bg = "rgba(251, 237, 238, 0.85)";
+                  shadow = "0 1px 2px rgba(178,58,58,0.10), 0 4px 14px rgba(178,58,58,0.10)";
+                  letterColor = ERROR;
+                } else if (isSelected) {
+                  borderColor = NAVY;
+                  bg = "rgba(234, 244, 236, 0.7)";
+                  shadow = "0 1px 2px rgba(26,32,96,0.06), 0 4px 14px rgba(26,32,96,0.08)";
+                }
+
+                return (
+                  <button
+                    key={ci}
+                    onClick={() => selectChoice(step, ci)}
+                    disabled={revealed}
+                    className="kingdom-quiz-choice"
+                    data-state={
+                      showRight ? "correct" : showWrong ? "wrong" : isSelected ? "selected" : "idle"
+                    }
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "44px 1fr 28px",
+                      alignItems: "center",
+                      gap: 16,
+                      padding: "20px 22px",
+                      background: bg,
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
+                      border: `1.5px solid ${borderColor}`,
+                      borderRadius: 10,
+                      textAlign: "left",
+                      cursor: revealed ? "default" : "pointer",
+                      transition: "all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+                      fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                      boxShadow: shadow,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily:
+                          "var(--font-display, Fraunces), Georgia, serif",
+                        fontWeight: 600,
+                        fontSize: 22,
+                        color: letterColor,
+                        letterSpacing: "0.02em",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {String.fromCharCode(65 + ci)}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 16,
+                        lineHeight: 1.5,
+                        color: INK,
+                      }}
+                    >
+                      {choice}
+                    </span>
+                    <span style={{ display: "inline-flex", justifyContent: "flex-end" }}>
+                      {showRight && (
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 24,
+                            height: 24,
+                            borderRadius: 999,
+                            background: SUCCESS,
+                          }}
+                        >
+                          <Check size={14} style={{ color: CREAM }} />
+                        </span>
+                      )}
+                      {showWrong && (
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 24,
+                            height: 24,
+                            borderRadius: 999,
+                            background: ERROR,
+                          }}
+                        >
+                          <X size={14} style={{ color: CREAM }} />
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* EXPLANATION - branded */}
+            {revealed && q.explanation && (
+              <div
+                style={{
+                  marginTop: 24,
+                  padding: "20px 22px",
+                  background: "rgba(234, 244, 236, 0.7)",
+                  backdropFilter: "blur(10px)",
+                  border: `1px solid rgba(31, 107, 63, 0.25)`,
+                  borderLeft: `4px solid ${BLUE}`,
+                  borderRadius: 8,
+                }}
+              >
+                <Eyebrow style={{ color: BLUE, marginBottom: 8 }}>§ WHY</Eyebrow>
+                <p
+                  style={{
+                    fontFamily:
+                      "var(--font-body, Inter), system-ui, sans-serif",
+                    fontSize: 15,
+                    lineHeight: 1.6,
+                    color: INK,
+                    margin: 0,
+                  }}
+                >
+                  {q.explanation}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* CONTROLS - separate glass bar below the card */}
+          <div
+            style={{
+              marginTop: 20,
+              display: "flex",
+              gap: 12,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
           >
-            Previous
-          </button>
-          <span style={{ flex: 1 }} />
-          <button
-            onClick={next}
-            disabled={!revealed}
-            style={btnPrimary(!revealed)}
-          >
-            {step === total - 1 ? "Finish" : "Next question"}
-            <ArrowRight size={14} style={{ color: BLUE }} />
-          </button>
+            <button
+              onClick={prev}
+              disabled={step === 0}
+              style={btnGhost(step === 0)}
+            >
+              Previous
+            </button>
+            <span style={{ flex: 1 }} />
+            {!revealed && (
+              <span
+                style={{
+                  fontFamily:
+                    "var(--font-body, Inter), system-ui, sans-serif",
+                  fontSize: 12,
+                  fontWeight: 500,
+                  color: INK_MUTED,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Pick an answer to reveal feedback
+              </span>
+            )}
+            <button
+              onClick={next}
+              disabled={!revealed}
+              style={btnPrimary(!revealed)}
+            >
+              {step === total - 1 ? "Finish" : "Next question"}
+              <ArrowRight size={14} style={{ color: ORANGE }} />
+            </button>
+          </div>
         </div>
       </section>
+
+      <style>{`
+        .kingdom-quiz-choice[data-state="idle"]:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.85) !important;
+          border-color: ${BLUE} !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(31,107,63,0.06), 0 8px 24px rgba(31,107,63,0.10) !important;
+        }
+      `}</style>
 
       {/* FOOTER */}
       <footer
@@ -410,41 +630,62 @@ function ResultsSpread({
   answers: Record<number, number>;
   onReset: () => void;
 }) {
+  const NAVY_DEEP = "#141849";
+  const ORANGE = "#D9622B";
+  const scoreColor = passed ? BLUE : ERROR;
+
   return (
     <>
-      {/* SCORE HERO */}
+      {/* SCORE HERO - navy bar matching the active quiz hero */}
       <section
         style={{
           position: "relative",
-          padding: "72px 32px 40px",
-          maxWidth: 1080,
-          margin: "0 auto",
+          background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`,
+          color: CREAM,
           overflow: "hidden",
         }}
       >
         <RadialFan
           origin="tr"
-          palette={KINGDOM_PALETTE}
-          opacity={0.24}
-          size={900}
-          rays={48}
-          arcs={5}
+          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
+          opacity={0.30}
+          size={1100}
+          rays={56}
+          arcs={6}
           style={{
             position: "absolute",
-            top: -200,
-            right: -200,
-            width: 900,
-            height: 900,
+            top: -300,
+            right: -300,
+            width: 1100,
+            height: 1100,
             zIndex: 0,
           }}
         />
-
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <Eyebrow style={{ marginBottom: 16 }}>
-            § 04 · QUIZ COMPLETE · {passed ? "PASS" : "REVIEW REQUIRED"}
-          </Eyebrow>
+        <div
+          style={{
+            maxWidth: 1920,
+            margin: "0 auto",
+            padding: "72px 32px 64px",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
           <div
             style={{
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: passed ? "#5FB286" : "#E08585",
+              marginBottom: 20,
+            }}
+          >
+            § 04 · QUIZ COMPLETE · {passed ? "PASS" : "REVIEW REQUIRED"}
+          </div>
+          <div
+            style={{
+              maxWidth: 980,
               display: "grid",
               gridTemplateColumns: "auto 1fr",
               gap: 56,
@@ -457,16 +698,29 @@ function ResultsSpread({
                   fontFamily: "var(--font-display, Fraunces), Georgia, serif",
                   fontWeight: 600,
                   fontSize: "clamp(96px, 14vw, 200px)",
-                  color: BLUE,
+                  color: passed ? "#5FB286" : "#E08585",
                   letterSpacing: "-0.04em",
                   lineHeight: 0.85,
+                  textShadow: passed
+                    ? "0 0 40px rgba(95, 178, 134, 0.4)"
+                    : "0 0 40px rgba(224, 133, 133, 0.4)",
                 }}
               >
                 {pct}
               </div>
-              <Eyebrow style={{ marginTop: 8 }}>
+              <div
+                style={{
+                  marginTop: 8,
+                  fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,251,240,0.7)",
+                }}
+              >
                 {score} of {total} correct
-              </Eyebrow>
+              </div>
             </div>
             <div>
               <h1
@@ -476,17 +730,23 @@ function ResultsSpread({
                   fontSize: "clamp(36px, 4.4vw, 56px)",
                   lineHeight: 1.05,
                   letterSpacing: "-0.02em",
-                  color: NAVY,
+                  color: CREAM,
                   margin: 0,
                 }}
               >
                 {passed ? (
                   <>
-                    The standard is <Em>met.</Em>
+                    The standard is{" "}
+                    <em style={{ fontStyle: "italic", color: ORANGE, fontWeight: "inherit" }}>
+                      met.
+                    </em>
                   </>
                 ) : (
                   <>
-                    Below the <Em>standard.</Em>
+                    Below the{" "}
+                    <em style={{ fontStyle: "italic", color: ORANGE, fontWeight: "inherit" }}>
+                      standard.
+                    </em>
                   </>
                 )}
               </h1>
@@ -496,7 +756,7 @@ function ResultsSpread({
                   fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
                   fontSize: 16,
                   lineHeight: 1.55,
-                  color: INK_MUTED,
+                  color: "rgba(255,251,240,0.78)",
                   maxWidth: "52ch",
                 }}
               >
@@ -513,10 +773,51 @@ function ResultsSpread({
                   flexWrap: "wrap",
                 }}
               >
-                <button onClick={onReset} style={btnPrimary(false)}>
-                  <RotateCcw size={14} style={{ color: BLUE }} /> Re-take quiz
+                <button
+                  onClick={onReset}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "12px 22px",
+                    background: CREAM,
+                    color: NAVY,
+                    border: "none",
+                    fontFamily:
+                      "var(--font-body, Inter), system-ui, sans-serif",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    borderRadius: 8,
+                    cursor: "pointer",
+                    boxShadow:
+                      "0 1px 2px rgba(0,0,0,0.18), 0 6px 16px rgba(0,0,0,0.16)",
+                  }}
+                >
+                  <RotateCcw size={14} style={{ color: ORANGE }} /> Re-take quiz
                 </button>
-                <a href="/curriculum" style={btnGhost(false) as React.CSSProperties}>
+                <a
+                  href="/curriculum"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "12px 22px",
+                    background: "rgba(255,251,240,0.08)",
+                    backdropFilter: "blur(10px)",
+                    color: CREAM,
+                    border: "1px solid rgba(255,251,240,0.20)",
+                    fontFamily:
+                      "var(--font-body, Inter), system-ui, sans-serif",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    borderRadius: 8,
+                    textDecoration: "none",
+                  }}
+                >
                   Back to curriculum
                 </a>
               </div>
@@ -528,12 +829,12 @@ function ResultsSpread({
       {/* REVIEW LIST */}
       <section
         style={{
-          maxWidth: 1080,
+          maxWidth: 1920,
           margin: "0 auto",
-          padding: "40px 32px 96px",
-          borderTop: `1px solid ${HAIRLINE}`,
+          padding: "56px 32px 96px",
         }}
       >
+        <div style={{ maxWidth: 980, margin: "0 auto" }}>
         <Eyebrow style={{ color: BLUE, marginBottom: 16 }}>§ ITEM BY ITEM</Eyebrow>
         <h2
           style={{
@@ -550,7 +851,7 @@ function ResultsSpread({
           Review the answers.
         </h2>
 
-        <ol style={{ listStyle: "none", padding: 0, margin: 0 }}>
+        <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 12 }}>
           {questions.map((q, i) => {
             const userIdx = answers[i];
             const correct = userIdx === q.correctIndex;
@@ -558,12 +859,18 @@ function ResultsSpread({
               <li
                 key={q.id}
                 style={{
-                  padding: "20px 0",
-                  borderTop: `1px solid ${HAIRLINE}`,
+                  padding: "20px 22px",
+                  background: "rgba(255, 255, 255, 0.62)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: `1px solid ${HAIRLINE}`,
+                  borderLeft: `4px solid ${correct ? SUCCESS : ERROR}`,
+                  borderRadius: 10,
                   display: "grid",
                   gridTemplateColumns: "60px 1fr auto",
                   gap: 24,
                   alignItems: "start",
+                  boxShadow: "0 1px 2px rgba(26,32,96,0.04)",
                 }}
               >
                 <span
@@ -632,6 +939,7 @@ function ResultsSpread({
             );
           })}
         </ol>
+        </div>
       </section>
 
       <footer
@@ -659,19 +967,23 @@ function btnPrimary(disabled: boolean): React.CSSProperties {
     display: "inline-flex",
     alignItems: "center",
     gap: 10,
-    padding: "12px 20px",
-    background: NAVY,
+    padding: "12px 22px",
+    background: disabled ? "rgba(26,32,96,0.18)" : `linear-gradient(135deg, ${NAVY}, #2A2F7A)`,
     color: CREAM,
-    border: `1px solid ${NAVY}`,
+    border: "none",
     fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
     fontSize: 12,
-    fontWeight: 600,
-    letterSpacing: "0.1em",
+    fontWeight: 700,
+    letterSpacing: "0.12em",
     textTransform: "uppercase",
-    borderRadius: 4,
+    borderRadius: 8,
     cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.4 : 1,
+    opacity: disabled ? 0.5 : 1,
     textDecoration: "none",
+    boxShadow: disabled
+      ? "none"
+      : "0 1px 2px rgba(26,32,96,0.18), 0 6px 16px rgba(26,32,96,0.16)",
+    transition: "transform 150ms ease, box-shadow 150ms ease",
   };
 }
 
@@ -680,16 +992,18 @@ function btnGhost(disabled: boolean): React.CSSProperties {
     display: "inline-flex",
     alignItems: "center",
     gap: 10,
-    padding: "12px 20px",
-    background: "transparent",
+    padding: "12px 22px",
+    background: "rgba(255, 255, 255, 0.55)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
     color: NAVY,
     border: `1px solid ${HAIRLINE}`,
     fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
     fontSize: 12,
     fontWeight: 600,
-    letterSpacing: "0.1em",
+    letterSpacing: "0.12em",
     textTransform: "uppercase",
-    borderRadius: 4,
+    borderRadius: 8,
     cursor: disabled ? "not-allowed" : "pointer",
     opacity: disabled ? 0.4 : 1,
     textDecoration: "none",
