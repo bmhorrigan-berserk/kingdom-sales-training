@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
+import ShiftingBand from "@/components/ShiftingBand";
 import {
   REFERENCE_GUIDES,
   REFERENCE_CATEGORIES,
@@ -179,54 +180,9 @@ export default function ReferenceBinder() {
         })}
       </section>
 
-      {/* PULL QUOTE */}
-      <section
-        style={{
-          background: NAVY,
-          color: CREAM,
-          padding: "80px 32px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <RadialFan texture="footer"
-          origin="center"
-          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.18}
-          size={620}
-          rays={40}
-          arcs={4}
-          style={{ zIndex: 0 }}
-        />
-        <div
-          style={{
-            maxWidth: 900,
-            margin: "0 auto",
-            position: "relative",
-            zIndex: 1,
-            textAlign: "center",
-          }}
-        >
-          <Eyebrow style={{ color: "rgba(255,251,240,0.6)", marginBottom: 20 }}>
-            · BINDER DISCIPLINE ·
-          </Eyebrow>
-          <blockquote
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(28px, 3.5vw, 40px)",
-              lineHeight: 1.25,
-              letterSpacing: "-0.015em",
-              color: CREAM,
-              margin: 0,
-            }}
-          >
-            Memory drifts. The binder does not. <Em>Pull from the binder</Em>{" "}
-            and the patient hears the same standard the prior nine operators
-            delivered.
-          </blockquote>
-        </div>
-      </section>
+      <ShiftingBand eyebrow="· BINDER DISCIPLINE ·">
+        Memory drifts. The binder does not. <Em>Pull from the binder.</Em>
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer

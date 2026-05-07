@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
+import ShiftingBand from "@/components/ShiftingBand";
 import { ArrowRight, BookOpen, Library, GraduationCap, Brain, PlayCircle } from "lucide-react";
 
 const NAVY = "#1A2060";
@@ -327,55 +328,10 @@ export default function Home() {
         `}</style>
       </section>
 
-      {/* PULL QUOTE */}
-      <section
-        style={{
-          position: "relative",
-          padding: "120px 32px",
-          overflow: "hidden",
-        }}
-      >
-        <RadialFan
-          texture="wellness"
-          origin="left"
-          opacity={0.12}
-          size={760}
-          style={{ zIndex: 0 }}
-        />
-        <RadialFan
-          texture="hormone"
-          origin="right"
-          opacity={0.10}
-          size={760}
-          style={{ zIndex: 0 }}
-        />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 900,
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <Eyebrow style={{ marginBottom: 24 }}>· THE KINGDOM STANDARD ·</Eyebrow>
-          <blockquote
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(28px, 3.5vw, 42px)",
-              lineHeight: 1.25,
-              letterSpacing: "-0.015em",
-              color: NAVY,
-              margin: 0,
-            }}
-          >
-            You are not selling hormones. You are <Em>diagnosing a deficit</Em>{" "}
-            and prescribing the corrective protocol. The patient says yes to
-            themselves, not to you.
-          </blockquote>
-        </div>
-      </section>
+      <ShiftingBand eyebrow="· THE KINGDOM STANDARD ·">
+        You are not selling hormones. You are{" "}
+        <Em>diagnosing a deficit</Em> and prescribing the corrective protocol.
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer

@@ -11,6 +11,7 @@ import { useMemo, useState } from "react";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
+import ShiftingBand from "@/components/ShiftingBand";
 import { Check, X, ArrowRight, RotateCcw } from "lucide-react";
 import { QUIZ_QUESTIONS as RAW_QUESTIONS, type QuizQuestion } from "@/lib/trainingData";
 
@@ -585,57 +586,9 @@ export default function Quiz() {
         </div>
       </section>
 
-      {/* SHIFTING BLUE/GREEN GRADIENT BOTTOM */}
-      <section
-        style={{
-          position: "relative",
-          padding: "72px 32px 96px",
-          marginTop: 32,
-          background:
-            `linear-gradient(115deg, #1F6B3F 0%, #2A6F8E 38%, #3B5BDB 70%, #1F6B3F 100%)`,
-          backgroundSize: "240% 240%",
-          animation: "kingdomShift 18s ease-in-out infinite",
-          color: CREAM,
-          overflow: "hidden",
-        }}
-      >
-        <RadialFan
-          texture="footer"
-          origin="center"
-          opacity={0.16}
-          size={520}
-          style={{ zIndex: 0 }}
-        />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 980,
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <Eyebrow style={{ color: "rgba(255,251,240,0.7)", marginBottom: 16 }}>
-            · 90 TO PASS · BUILT FOR ELITE OPERATORS ·
-          </Eyebrow>
-          <h2
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(28px, 3.5vw, 42px)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.015em",
-              color: CREAM,
-              margin: 0,
-              maxWidth: "22ch",
-              marginInline: "auto",
-            }}
-          >
-            The protocol you cannot recite is the patient you{" "}
-            <em style={{ fontStyle: "italic", color: "#FFE3A8" }}>lose.</em>
-          </h2>
-        </div>
-      </section>
+      <ShiftingBand eyebrow="· 90 TO PASS · BUILT FOR ELITE OPERATORS ·">
+        The protocol you cannot recite is the patient you <Em>lose.</Em>
+      </ShiftingBand>
 
       <style>{`
         .kingdom-quiz-choice[data-state="idle"]:hover:not(:disabled) {
@@ -643,10 +596,6 @@ export default function Quiz() {
           border-color: ${BLUE} !important;
           transform: translateY(-1px);
           box-shadow: 0 2px 4px rgba(31,107,63,0.06), 0 8px 24px rgba(31,107,63,0.10) !important;
-        }
-        @keyframes kingdomShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
         }
       `}</style>
 

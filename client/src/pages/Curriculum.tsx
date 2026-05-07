@@ -6,6 +6,7 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em, DayBadge, PhaseStepper } from "@/components/Furniture";
+import ShiftingBand from "@/components/ShiftingBand";
 import { ArrowRight, Check, Video, Headphones } from "lucide-react";
 import { DAY_SCHEDULE, PHASES, OPERATIONS_REFERENCE, CURRICULUM_OVERVIEW } from "@/lib/curriculumData";
 import { lessonMediaTypes } from "@/lib/mediaData";
@@ -465,6 +466,10 @@ export default function Curriculum() {
           box-shadow: 0 2px 4px rgba(26,32,96,0.06), 0 8px 24px rgba(26,32,96,0.08) !important;
         }
       `}</style>
+
+      <ShiftingBand eyebrow="· 30 DAYS · 5 PHASES · ONE STANDARD ·">
+        Read first. Practice second. <Em>Never sell.</Em>
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer

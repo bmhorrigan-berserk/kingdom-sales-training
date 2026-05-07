@@ -13,6 +13,7 @@ import { Link } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
+import ShiftingBand from "@/components/ShiftingBand";
 import { MEDIA_CATALOG, LESSON_MEDIA, type MediaItem } from "@/lib/mediaData";
 import { Play, Headphones, Video, ArrowRight, Clock } from "lucide-react";
 
@@ -250,6 +251,10 @@ export default function Library() {
           ))}
         </div>
       </section>
+
+      <ShiftingBand eyebrow="· WATCH · LISTEN · DRILL ·">
+        Every recording is a <Em>real call.</Em>
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer

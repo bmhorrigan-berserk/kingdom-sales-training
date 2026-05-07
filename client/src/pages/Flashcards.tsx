@@ -7,8 +7,9 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import TopNav from "@/components/TopNav";
-import { Eyebrow, PageNumber } from "@/components/Furniture";
+import { Eyebrow, Em, PageNumber } from "@/components/Furniture";
 import { RadialFan } from "@/components/RadialFan";
+import ShiftingBand from "@/components/ShiftingBand";
 import { ChevronLeft, ChevronRight, RotateCcw, Shuffle } from "lucide-react";
 
 import { FLASHCARDS as RAW_FLASHCARDS, type Flashcard } from "@/lib/trainingData";
@@ -414,67 +415,15 @@ export default function Flashcards() {
         </div>
       </section>
 
-      {/* SHIFTING BLUE/GREEN GRADIENT BOTTOM */}
-      <section
-        style={{
-          position: "relative",
-          padding: "72px 32px 96px",
-          marginTop: 32,
-          background:
-            `linear-gradient(115deg, #1F6B3F 0%, #2A6F8E 38%, #3B5BDB 70%, #1F6B3F 100%)`,
-          backgroundSize: "240% 240%",
-          animation: "kingdomShift 18s ease-in-out infinite",
-          color: CREAM,
-          overflow: "hidden",
-        }}
-      >
-        <RadialFan
-          texture="footer"
-          origin="center"
-          opacity={0.16}
-          size={520}
-          style={{ zIndex: 0 }}
-        />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 980,
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          <Eyebrow style={{ color: "rgba(255,251,240,0.7)", marginBottom: 16 }}>
-            · DRILL UNTIL INSTINCT ·
-          </Eyebrow>
-          <h2
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(28px, 3.5vw, 42px)",
-              lineHeight: 1.2,
-              letterSpacing: "-0.015em",
-              color: CREAM,
-              margin: 0,
-              maxWidth: "20ch",
-              marginInline: "auto",
-            }}
-          >
-            The card you blank on is the call you{" "}
-            <em style={{ fontStyle: "italic", color: "#FFE3A8" }}>lose.</em>
-          </h2>
-        </div>
-      </section>
+      <ShiftingBand eyebrow="· DRILL UNTIL INSTINCT ·">
+        The card you blank on is the call you <Em>lose.</Em>
+      </ShiftingBand>
 
       <style>{`
         .kingdom-cat-pill[data-active="0"]:hover {
           background: rgba(234, 244, 236, 0.85) !important;
           border-color: ${GREEN} !important;
           color: ${GREEN} !important;
-        }
-        @keyframes kingdomShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
         }
       `}</style>
 

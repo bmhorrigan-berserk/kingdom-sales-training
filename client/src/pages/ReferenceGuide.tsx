@@ -7,6 +7,7 @@ import { Link, useRoute } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
+import ShiftingBand from "@/components/ShiftingBand";
 import { REFERENCE_GUIDES } from "@/lib/referenceData";
 import { ArrowLeft, ArrowRight, ExternalLink, Download } from "lucide-react";
 
@@ -487,6 +488,10 @@ export default function ReferenceGuide() {
           )}
         </div>
       </nav>
+
+      <ShiftingBand eyebrow="· PULL FROM THE BINDER ·">
+        The binder is the standard. <Em>Memory is not.</Em>
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer

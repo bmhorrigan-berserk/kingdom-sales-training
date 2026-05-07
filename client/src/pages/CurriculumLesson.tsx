@@ -9,6 +9,7 @@ import { Link, useRoute } from "wouter";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
+import ShiftingBand from "@/components/ShiftingBand";
 import { MediaPanel } from "@/components/MediaPanel";
 import { PHASES, OPERATIONS_REFERENCE } from "@/lib/curriculumData";
 import { getMediaForLesson } from "@/lib/mediaData";
@@ -459,6 +460,10 @@ export default function CurriculumLesson() {
         </div>
       </nav>
       <style>{`.kingdom-prevnext:hover { background: rgba(255, 255, 255, 0.78); }`}</style>
+
+      <ShiftingBand eyebrow="· READ FIRST · PRACTICE SECOND ·">
+        Mastery is the lesson you can <Em>teach back.</Em>
+      </ShiftingBand>
 
       {/* FOOTER */}
       <footer
