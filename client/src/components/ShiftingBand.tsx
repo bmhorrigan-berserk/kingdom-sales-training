@@ -35,10 +35,12 @@ export default function ShiftingBand({
         position: "relative",
         padding: "72px 32px 96px",
         marginTop: 32,
+        /* kingdom brand colors: red → blue → orange → green, looping back
+           to red so the gradient drifts continuously without a seam. */
         background:
-          "linear-gradient(115deg, #1F6B3F 0%, #2A6F8E 38%, #3B5BDB 70%, #1F6B3F 100%)",
-        backgroundSize: "240% 240%",
-        animation: "kingdomShift 18s ease-in-out infinite",
+          "linear-gradient(115deg, #B23A3A 0%, #3B5BDB 33%, #D9622B 66%, #1F6B3F 100%)",
+        backgroundSize: "260% 260%",
+        animation: "kingdomShift 22s ease-in-out infinite",
         color: CREAM,
         overflow: "hidden",
       }}
