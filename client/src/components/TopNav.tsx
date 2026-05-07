@@ -25,7 +25,7 @@ const NAV_ITEMS = [
 // cached bundle that's missing the auth-redirect returnTo logic.
 const CROSS_LINKS = [
   { url: "https://catalog.kingdomcommandcenter.com",      label: "SALES CATALOG" },
-  { url: "https://kingdomintelhq.com/tools/alfred?v=5", label: "ALFRED" },
+  { url: "https://kingdomcommandcenter.com/tools/alfred?v=6", label: "ALFRED" },
 ];
 
 export default function TopNav() {
