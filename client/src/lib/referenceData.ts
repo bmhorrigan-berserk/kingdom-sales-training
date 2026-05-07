@@ -1,7 +1,7 @@
 /**
- * Reference Binder data - the 8 working guides used by the kingdom sales team.
- * The PDFs themselves live in /public/reference/[slug].pdf and are uploaded
- * with the build.
+ * Reference Binder data - the working guides used by the kingdom sales team.
+ * The HTML files themselves live in /public/reference/[slug].html and are
+ * uploaded with the build.
  */
 
 export interface ReferenceGuide {
@@ -9,7 +9,7 @@ export interface ReferenceGuide {
   slug: string;
   title: string;
   description: string;
-  category: "Patient Pipeline" | "Billing" | "Clinical";
+  category: "Patient Pipeline" | "Billing" | "Clinical" | "Standards";
   pdfPath: string;
   pages?: number;
 }
@@ -79,10 +79,35 @@ export const REFERENCE_GUIDES: ReferenceGuide[] = [
     category: "Clinical",
     pdfPath: "/reference/labcorp-templates.html",
   },
+  {
+    number: "10",
+    slug: "clinical-guidelines",
+    title: "Kingdom Clinical Guidelines",
+    description: "Official clinical guidelines v1.0. Hormone therapy protocols, dosing, monitoring, and standards of care.",
+    category: "Clinical",
+    pdfPath: "/reference/clinical-guidelines.html",
+  },
+  {
+    number: "11",
+    slug: "investigational-therapy-guidelines",
+    title: "Investigational Therapy Guidelines",
+    description: "Official guidelines v1.0 for investigational therapies including peptides. Indications, exclusions, monitoring.",
+    category: "Clinical",
+    pdfPath: "/reference/investigational-therapy-guidelines.html",
+  },
+  {
+    number: "09",
+    slug: "team-operating-guide",
+    title: "Team Operating Guide",
+    description: "Official kingdom team operating standards v1.0. How the team runs and what every operator owns.",
+    category: "Standards",
+    pdfPath: "/reference/team-operating-guide.html",
+  },
 ];
 
 export const REFERENCE_CATEGORIES = [
   "Patient Pipeline",
   "Billing",
   "Clinical",
+  "Standards",
 ] as const;

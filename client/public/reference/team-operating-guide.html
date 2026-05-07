@@ -1,0 +1,1588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Team Operating Guide - kingdom Reference Binder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1A2060;
+  --green: #1F6B3F;
+  --orange: #D9622B;
+  --pale: #F0F7FE;
+  --cream: #FFFBF0;
+  --hairline: #E8DEC6;
+  --ink: #2D2A24;
+  --muted: #6B6357;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #FFFFFF;
+  color: var(--ink);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.page { max-width: 760px; margin: 0 auto; padding: 56px 32px 96px; }
+.eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted);
+  display: inline-block; padding-bottom: 4px;
+  border-bottom: 1px solid var(--hairline); margin-bottom: 24px;
+}
+.title-row { display: flex; align-items: baseline; gap: 24px; margin-bottom: 12px; }
+.title-num {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 88px; font-weight: 600;
+  color: var(--accent, var(--navy));
+  letter-spacing: -0.03em; line-height: 0.85;
+}
+h1.title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 400; font-size: 48px;
+  letter-spacing: -0.02em; line-height: 1.05;
+  color: var(--navy); margin: 0; max-width: 22ch;
+}
+hr.rule { border: 0; border-top: 1px solid var(--hairline); margin: 40px 0 32px; }
+p { margin: 0 0 14px; }
+strong { color: var(--navy); font-weight: 600; }
+ol, ul { padding-left: 24px; margin: 0 0 16px; }
+li { margin-bottom: 8px; }
+em { color: var(--accent, var(--navy)); font-style: italic; }
+h1, h2, h3, h4 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 500; letter-spacing: -0.015em;
+  color: var(--navy); margin: 32px 0 12px;
+}
+h2 { font-size: 26px; }
+h3 { font-size: 20px; }
+h4 {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+table {
+  width: 100%; border-collapse: collapse;
+  margin: 16px 0; font-size: 14px;
+}
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--hairline); }
+th { background: var(--pale); font-weight: 600; color: var(--navy); }
+blockquote {
+  margin: 16px 0; padding: 14px 18px;
+  border-left: 3px solid var(--accent, var(--navy));
+  background: rgba(0,0,0,0.02);
+  color: var(--ink); font-style: italic;
+}
+.foot {
+  margin-top: 48px; padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; justify-content: space-between;
+}
+.foot .num { color: var(--accent, var(--navy)); }
+.body { --accent: #1F6B3F; }
+</style>
+</head>
+<body>
+<main class="page body">
+  <span class="eyebrow">§ KINGDOM REFERENCE BINDER · GUIDE 09</span>
+  <div class="title-row">
+    <span class="title-num">09</span>
+    <h1 class="title">Team Operating Guide.</h1>
+  </div>
+  <hr class="rule" />
+<p><strong>Team Operating Guide</strong></p>
+<p>Therapy Eligibility, Lab Thresholds, and Escalation Rules</p>
+<p>Non-Clinical Staff Reference | Version 1.0 | 2026</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>⚠️ IMPORTANT: Read Before Using This Guide</strong></p>
+<p>This guide is for non-clinical staff to understand eligibility criteria, lab schedules, and when to flag a patient to a provider.</p>
+<p>You do NOT make clinical decisions. You route information.</p>
+<p>If you are unsure whether something is a patient concern or a lab flag, always escalate to the provider.</p>
+<p>This document does not replace provider judgment and does not authorize clinical action by non-clinical team members.</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>How to Use This Guide</strong></p>
+<p>This guide is organized by therapy type. For each therapy, you will find:</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 24%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"></th>
+<th><strong>Meaning</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">✅ Green Light</td>
+<td>What it looks like when a patient qualifies, and everything is normal. No flag needed.</td>
+</tr>
+<tr>
+<td colspan="2">⛔ Red Flag</td>
+<td>Lab values or situations that must be escalated to a provider immediately.</td>
+</tr>
+<tr>
+<td colspan="2">⚠️ Amber Flag</td>
+<td>Situations that need provider awareness but are not immediately urgent.</td>
+</tr>
+<tr>
+<td colspan="2">ℹ️ Lab Schedule</td>
+<td>When labs are due and what to check for.</td>
+</tr>
+<tr>
+<td colspan="2">Decision Table</td>
+<td>Lab-by-lab guide: what the value means and what you do with it.</td>
+</tr>
+<tr>
+<td></td>
+<td colspan="2"><p><strong>ℹ️ Your job in the patient journey</strong></p>
+<p>1. Confirm the patient has completed required labs before therapy starts.</p>
+<p>2. Check that labs are within acceptable range using this guide.</p>
+<p>3. Flag anything outside the range to the provider before processing.</p>
+<p>4. Follow up on overdue labs and notify the provider.</p>
+<p>5. Never tell a patient their labs are "fine" or that they "qualify": that is a provider call.</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p><strong>SECTION 1</strong></p>
+<p>Male Hormone Therapies</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Male TRT: Testosterone Cypionate Injections</strong></p>
+<p>Used for: men with symptoms of low testosterone (fatigue, low libido, ED, muscle loss, mood changes).</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>✅ A patient is likely eligible if...</strong></p>
+<p>• He has completed baseline labs (CBC, CMP, Total Testosterone, Estradiol, Lipid Panel)</p>
+<p>• His testosterone is below or at the lower end of the target range AND he has symptoms</p>
+<p>• His hematocrit is below 52% and estradiol is below 60 pg/mL</p>
+<p>• No active cancer, no recent blood clot (within 12 months), no severe heart disease</p>
+<p>• Starting dose: 120 mg weekly SC or IM (or matching prior stable dose if transferring care)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⛔ STOP: Flag to provider immediately if...</strong></p>
+<p>• Hematocrit is above 56%: hold on processing</p>
+<p>• Estradiol is above 60 pg/mL and patient has symptoms (breast tenderness, water retention)</p>
+<p>• PSA was flagged or elevated (age 45+ must have PSA on file)</p>
+<p>• Patient reports history of blood clots, cancer, or severe heart disease: provider must clear</p>
+<p>• Patient is asking about fertility or trying to conceive: do not proceed to TRT without provider review</p></td>
+</tr>
+<tr>
+<td><p><strong>⚠️ Flag to provider (not urgent but needed)</strong></p>
+<p>• Hematocrit between 52-56%: provider will advise next steps</p>
+<p>• RBC above 6.0 or hemoglobin above 18: flag before processing next dose</p>
+<p>• Estradiol above 60 pg/mL but patient is asymptomatic: flag, provider decides</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab Schedule</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>When</strong></th>
+<th><strong>Labs Required</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Baseline</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol, Lipid Panel | PSA if age 45+</td>
+</tr>
+<tr>
+<td><strong>6-8 Weeks (after start or dose change)</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol</td>
+</tr>
+<tr>
+<td><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol</td>
+</tr>
+<tr>
+<td><strong>Annual</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol, Lipid Panel | PSA if age 45+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab Decision Table: TRT Male</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 22%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"><strong>Lab / Parameter</strong></th>
+<th><strong>What It Means</strong></th>
+<th><strong>Team Action</strong></th>
+<th><strong>Escalate?</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">Total Testosterone</td>
+<td>Below 800 ng/dL + symptoms</td>
+<td>Flag to provider: possible dose adjustment</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td colspan="2">Total Testosterone</td>
+<td>800-1200 ng/dL, patient feels good</td>
+<td>All good: document and continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td colspan="2">Total Testosterone</td>
+<td>Above 1200 ng/dL + symptoms of excess</td>
+<td>Flag to provider: possible dose reduction</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">Hematocrit</td>
+<td>Below 52%</td>
+<td>Normal: no action needed</td>
+<td>NO</td>
+</tr>
+<tr>
+<td colspan="2">Hematocrit</td>
+<td>52-54%</td>
+<td>Note in chart: provider to advise on hydration/donation</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td colspan="2">Hematocrit</td>
+<td>54-56%</td>
+<td>Flag to provider this week: dose may need to split or reduce</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">Hematocrit</td>
+<td>Above 56%</td>
+<td>FLAG IMMEDIATELY: hold next shipment until provider clears</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">Estradiol</td>
+<td>Below 60 pg/mL</td>
+<td>Normal range: continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td colspan="2">Estradiol</td>
+<td>Above 60 pg/mL + symptoms</td>
+<td>Flag to provider: AI may be needed</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">Estradiol</td>
+<td>Above 60 pg/mL + no symptoms</td>
+<td>Flag to provider at next check-in</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td colspan="2">Estradiol (on AI)</td>
+<td>Below 15 pg/mL</td>
+<td>FLAG immediately: over-suppression</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">AST / ALT (oral androgens)</td>
+<td>Above 100 IU/L</td>
+<td>FLAG: do not process oral androgen orders</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">PSA (age 45+)</td>
+<td>Elevated or flagged by lab</td>
+<td>FLAG: provider must review before continuing</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td></td>
+<td colspan="4"><p><strong>ℹ️ Dose Escalation: What You Need to Know</strong></p>
+<p>Doses go up in 20 mg increments: 120 → 140 → 160 → 180 → 200 mg.</p>
+<p>The provider approves the escalation: you process it. You do not approve it.</p>
+<p>Never process a dose above 200 mg/week without explicit provider authorization for that specific patient.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Male TRT: Kyzatrex (Oral Testosterone)</strong></p>
+<p>Used for: men with low testosterone symptoms who prefer oral therapy. Must take with fat-containing meals.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>✅ Processing is clear if...</strong></p>
+<p>• Patient has completed baseline labs (same as injectable TRT)</p>
+<p>• He prefers oral over injection or cannot do injections</p>
+<p>• Starting dose: 200 mg twice daily with fatty meals (10-12 hours apart)</p>
+<p>• Remind patient: MUST take with fat-containing food: skipping fat kills absorption</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⛔ STOP: Same red flags as injectable TRT apply here</strong></p>
+<p>• Hematocrit, estradiol, PSA thresholds all the same</p>
+<p>• Patient reports taking with low-fat meals: flag for provider education note</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab Schedule</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>When</strong></th>
+<th><strong>Labs Required</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Baseline</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol, Lipid Panel | PSA if age 45+</td>
+</tr>
+<tr>
+<td><strong>6-8 Weeks</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol</td>
+</tr>
+<tr>
+<td><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol</td>
+</tr>
+<tr>
+<td><strong>Annual</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol, Lipid Panel | PSA if age 45+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Oxandrolone: Oral Anabolic Adjunct</strong></p>
+<p>Used for: men (and some women) with muscle wasting, poor lean mass response, or recovery needs. Only added AFTER TRT is optimized. NEVER prescribed standalone without TRT for males.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>⚠️ This therapy requires extra vigilance on labs</strong></p>
+<p>Maximum course: 90 days for men and women. A 30-day break is REQUIRED between courses.</p>
+<p>Provider MUST approve a new course. Repeat CMP and lipid panel required before restarting.</p>
+<p>This is a 17-alpha-alkylated oral androgen: it stresses the liver and suppresses HDL.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>✅ Processing is clear if...</strong></p>
+<p>• AST is below 100 IU/L AND ALT is below 100 IU/L AND bilirubin is below 2 mg/dL</p>
+<p>• Patient is already on TRT (male patients)</p>
+<p>• Provider has explicitly approved the course</p>
+<p>• Male dose: 25 mg daily (up to 50 mg only with explicit provider note)</p>
+<p>• Female dose: 5 mg daily (10 mg max)</p></td>
+</tr>
+<tr>
+<td><p><strong>⛔ STOP: Do not process if...</strong></p>
+<p>• AST or ALT is above 100 IU/L: flag and hold</p>
+<p>• Course has been running more than 90 days without a break</p>
+<p>• No 30-day break before restarting a new course</p>
+<p>• Patient is female and pregnant or breastfeeding</p>
+<p>• Male patient is NOT on TRT without provider confirmation</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lab Decision Table: Oxandrolone</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Lab / Parameter</strong></th>
+<th><strong>What It Means</strong></th>
+<th><strong>Team Action</strong></th>
+<th><strong>Escalate?</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AST (baseline)</td>
+<td>Below 100 IU/L</td>
+<td>OK to proceed per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>AST (baseline)</td>
+<td>Above 100 IU/L</td>
+<td>Do not process: flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>ALT (baseline)</td>
+<td>Below 100 IU/L</td>
+<td>OK to proceed per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>ALT (baseline)</td>
+<td>Above 100 IU/L</td>
+<td>Do not process: flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Total Bilirubin</td>
+<td>Below 2 mg/dL</td>
+<td>OK to proceed</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Total Bilirubin</td>
+<td>Above 2 mg/dL</td>
+<td>Flag: hold order</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>AST or ALT during course</td>
+<td>2-3x above upper limit of normal</td>
+<td>Flag immediately: provider will discontinue</td>
+<td><strong>YES</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Stanozolol:</strong> If a stanozolol order is received, apply the same eligibility rules as oxandrolone. Same AST/ALT and bilirubin thresholds apply (AST and ALT below 100 IU/L, bilirubin below 2 mg/dL). Maximum course is 60 days (not 90). Mandatory 30-day break between courses. Flag to provider if any liver threshold is exceeded. Male patients only.</p>
+<p><strong>Nandrolone Decanoate: Joint / Lean Mass Support</strong></p>
+<p>Used for: men on TRT with joint pain, tendon issues, or lean mass preservation needs. ONLY for men already on TRT.</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 29%" />
+<col style="width: 66%" />
+<col style="width: 0%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>✅ Dosing rule</strong></p>
+<p>• If patient's weekly testosterone is LESS than 150 mg → nandrolone dose is 50 mg/week</p>
+<p>• If patient's weekly testosterone is 150 mg OR MORE → nandrolone dose is 100 mg/week</p>
+<p>• Maximum nandrolone: 100 mg/week. Never process above this without explicit provider override.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td colspan="3"><p><strong>⛔ STOP: Do not process if...</strong></p>
+<p>• Patient is NOT on testosterone therapy</p>
+<p>• Patient has history of prostate cancer</p>
+<p>• Patient is female: nandrolone is not for female patients in this protocol</p>
+<p>• Hematocrit flags apply (see TRT table)</p>
+<p>• Significant polycythemia or elevated hematocrit (see TRT hematocrit thresholds)</p>
+<p>• Severe dyslipidemia</p>
+<p>• Untreated or poorly controlled obstructive sleep apnea</p></td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td><strong>Labs Required</strong></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol, Lipid Panel</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Annual</strong></td>
+<td>CBC, CMP, Total Testosterone, PSA (age 45+ or indicated), Estradiol, Lipid Panel</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>hCG: Fertility Preservation / Testicular Support</strong></p>
+<p>Used for: men on TRT who want to preserve fertility or maintain testicular volume. May also be used standalone for secondary hypogonadism.</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 29%" />
+<col style="width: 66%" />
+<col style="width: 0%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>✅ Standard hCG protocol</strong></p>
+<p>• Typical dose: 250-500 IU SC twice weekly</p>
+<p>• Fertility management dose: 1,000 IU three times weekly (provider must specify)</p>
+<p>• Patient must have completed baseline labs including LH</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td colspan="3"><p><strong>⛔ STOP: Flag if...</strong></p>
+<p>• Patient's estradiol is above 60 pg/mL before starting: provider must clear</p>
+<p>• Patient has active cancer history: provider must clear</p>
+<p>• Patient showing signs of gynecomastia (breast tenderness): flag for AI assessment</p></td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td><strong>Labs Required</strong></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Baseline</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol, LH, Lipid Panel, PSA (age 45+)</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Annual</strong></td>
+<td>CBC, CMP, Total/Free Testosterone, Estradiol, Lipid Panel, LH, PSA (age 45+)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Enclomiphene: Testosterone Stimulation</strong></p>
+<p>Used for: men who want to increase their own testosterone production without exogenous testosterone. Preferred option for fertility. Dose: 12.5 mg three times weekly (may increase to 25 mg if no response).</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 29%" />
+<col style="width: 66%" />
+<col style="width: 0%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>⛔ STOP if...</strong></p>
+<p>• Patient has had a blood clot within the past 12 months</p>
+<p>• Patient has severe liver problems</p>
+<p>• Patient has active cancer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td colspan="3"><p><strong>⚠️ Flag if patient mentions these symptoms</strong></p>
+<p>• Mood changes or irritability</p>
+<p>• Visual disturbances or blurred vision: flag immediately</p>
+<p>• Persistent headaches</p></td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td><strong>Labs Required</strong></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Baseline</strong></td>
+<td>CBC, CMP, Total Testosterone, Estradiol, LH</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months / Annual</strong></td>
+<td>Per lab flow chart</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>AI Management: Anastrozole / Exemestane</strong></p>
+<p>Used for: men on TRT with elevated estradiol AND symptoms. NOT for elevated estradiol alone.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>ℹ️ The most common team mistake with AI</strong></p>
+<p>A patient with a high estradiol number is NOT automatically an AI candidate.</p>
+<p>The provider decides. High estradiol without symptoms = no treatment needed.</p>
+<p>Do not answer patient questions about "whether their estradiol is too high": route to provider.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>✅ First-line AI protocol</strong></p>
+<p>• Anastrozole 0.25 mg orally once weekly: first line</p>
+<p>• Exemestane 12.5 mg orally once weekly: second line or if anastrozole not tolerated</p>
+<p>• Dose can increase to twice weekly if symptoms persist (provider must approve)</p></td>
+</tr>
+<tr>
+<td><p><strong>⛔ Over-suppression risk: flag these</strong></p>
+<p>• Estradiol below 15-20 pg/mL on any lab while on AI: flag immediately</p>
+<p>• Patient reports joint pain, fatigue, low libido, or mood changes while on AI</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>ED Medications: Tadalafil, Sildenafil, PT-141</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 24%" />
+<col style="width: 35%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>⛔ HARD STOPS: Do not process if patient reports...</strong></p>
+<p>• Using nitrates (nitroglycerin, isosorbide): life-threatening combination with PDE-5 inhibitors</p>
+<p>• Uncontrolled high blood pressure (for PT-141)</p>
+<p>• Unstable cardiovascular disease: flag to provider for clearance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2"><strong>Medication</strong></td>
+<td><strong>Standard Dose</strong></td>
+<td><strong>Key Note</strong></td>
+</tr>
+<tr>
+<td colspan="2">Tadalafil (daily)</td>
+<td>2.5-5 mg daily</td>
+<td>Consistent timing; can take with food</td>
+</tr>
+<tr>
+<td colspan="2">Tadalafil (as needed)</td>
+<td>10-20 mg, 30-60 min before</td>
+<td>Max once per 24 hours</td>
+</tr>
+<tr>
+<td colspan="2">Sildenafil</td>
+<td>25-100 mg, 30-60 min before</td>
+<td>Take on empty stomach for best effect; max once per 24 hours</td>
+</tr>
+<tr>
+<td colspan="2">PT-141 (Bremelanotide)</td>
+<td>1-2 mg SC, 30-60 min before</td>
+<td>Max 8 doses per month; inject abdomen or thigh</td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p><strong>SECTION 2</strong></p>
+<p>Female Hormone Therapies</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Female Testosterone</strong></p>
+<p>Used for: women with low libido, fatigue, poor muscle recovery, or menopausal symptoms. Much lower doses than male TRT.</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 29%" />
+<col style="width: 66%" />
+<col style="width: 0%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>✅ Processing is clear if...</strong></p>
+<p>• Patient has completed baseline labs: CBC, CMP, Total Testosterone, Progesterone, Estradiol, Lipid Panel</p>
+<p>• Starting dose: 5 mg once weekly SC or IM (or split twice weekly)</p>
+<p>• Typical range: 5-10 mg weekly | Target testosterone: 30-80 ng/dL</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td colspan="3"><p><strong>⛔ STOP: Flag if...</strong></p>
+<p>• Patient reports acne, facial hair growth, or voice deepening: provider reviews dosing</p>
+<p>• Testosterone above 80 ng/dL and patient is symptomatic</p></td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td><strong>Labs Required</strong></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Baseline</strong></td>
+<td>CBC, CMP, Total Testosterone, Progesterone, Estradiol, Lipid Panel</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>6-8 Weeks</strong></td>
+<td>CBC, CMP, Total Testosterone, Progesterone, Estradiol</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, Total Testosterone, Progesterone, Estradiol</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>Annual</strong></td>
+<td>CBC, CMP, Total Testosterone, Progesterone, Estradiol, Lipid Panel</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Estradiol (Transdermal Cream)</strong></p>
+<p>Used for: menopausal / perimenopausal symptoms. Applied topically: lower clot risk than oral.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>✅ Standard protocol</strong></p>
+<p>• Starting dose: 0.5 mg applied topically once daily (inner thigh, wrist, or forearm)</p>
+<p>• Typical clinical range: 0.5-1 mg daily | Target estradiol: 40-80 pg/mL for optimal outcomes</p>
+<p>• No dose adjustment more frequently than every 6-8 weeks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⚠️ Common situations the team needs to know</strong></p>
+<p>• Patient with uterus: she MUST also be on progesterone: flag if progesterone is not in her plan</p>
+<p>• Patient complaining of breast tenderness, bloating, or irritability while on estradiol: do not assume she needs more estradiol; flag to provider</p>
+<p>• Estradiol above 80 pg/mL and patient still has symptoms: flag to provider before assuming dose needs to increase</p></td>
+</tr>
+<tr>
+<td><p><strong>⛔ STOP: Do not process if...</strong></p>
+<p>• Patient has active cancer (estrogen-sensitive)</p>
+<p>• Patient has had a blood clot within the past 12 months</p>
+<p>• Patient has unexplained vaginal bleeding: provider must clear before starting</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Progesterone</strong></p>
+<p>Used for: women with a uterus on estrogen therapy (required for endometrial protection), sleep disturbance, anxiety, mood instability.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>✅ Standard protocol</strong></p>
+<p>• Dose: 100 mg orally at bedtime (start) | May increase to 200 mg nightly</p>
+<p>• Warn patient: causes drowsiness: do not drive after taking</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⚠️ Common patient complaints: how to route them</strong></p>
+<p>• "I'm too groggy in the morning": flag to provider, may need dose reduction</p>
+<p>• "I'm still not sleeping": flag to provider, may need dose increase or timing change</p>
+<p>• "I feel more anxious": flag to provider, can happen at wrong dose levels</p></td>
+</tr>
+<tr>
+<td><p><strong>ℹ️ The estrogen / progesterone balance rule (simplified)</strong></p>
+<p>If a female patient is on estradiol AND has symptoms like breast tenderness, bloating, or mood swings:</p>
+<p>1. DO NOT assume she needs more estradiol.</p>
+<p>2. The provider may need to increase progesterone first.</p>
+<p>3. Route any symptom report involving these two hormones to the provider.</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p><strong>SECTION 3</strong></p>
+<p>Weight Loss Therapies</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>GLP-1 Therapies: Semaglutide and Tirzepatide</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>✅ Eligibility</strong></p>
+<p>• BMI 25 or above</p>
+<p>• BMI below 25 ONLY if they previously completed medically supervised weight loss and need maintenance</p>
+<p>• No labs required before starting: labs required at the 3-month mark</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⛔ HARD STOPS: Do not process if patient reports...</strong></p>
+<p>• Personal or family history of medullary thyroid cancer or MEN2</p>
+<p>• History of pancreatitis</p>
+<p>• Pregnancy or breastfeeding</p>
+<p>• Severe GI disease or gastroparesis</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dosing Protocol</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 30%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"><strong>Step</strong></th>
+<th><strong>Dose</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">Semaglutide: Weeks 1-4</td>
+<td>0.25 mg weekly</td>
+</tr>
+<tr>
+<td colspan="2">Semaglutide: Weeks 5-8</td>
+<td>0.5 mg weekly</td>
+</tr>
+<tr>
+<td colspan="2">Semaglutide: Weeks 9-12</td>
+<td>1 mg weekly</td>
+</tr>
+<tr>
+<td colspan="2">Semaglutide: Week 13+</td>
+<td>1.5-2 mg weekly</td>
+</tr>
+<tr>
+<td colspan="2">Tirzepatide</td>
+<td>2.5 mg → 5 mg → 7.5 mg → 10 mg → 12.5 mg → 15 mg (increase every 4 weeks as tolerated)</td>
+</tr>
+<tr>
+<td></td>
+<td colspan="2"><p><strong>⚠️ Microdosing: for maintenance patients</strong></p>
+<p>Semaglutide microdose: 0.25 mg weekly (non-escalating)</p>
+<p>Tirzepatide microdose: 2.5 mg weekly (non-escalating)</p>
+<p>Used for BMI under 25 who need appetite maintenance: not aggressive weight loss.</p></td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td><strong>Labs Required</strong></td>
+</tr>
+<tr>
+<td colspan="2"><strong>No baseline labs required before starting</strong></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2"><strong>3 Month Required Panel</strong></td>
+<td>CBC, CMP, TSH, Hemoglobin A1C, Lipid Panel</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months</strong></td>
+<td>CBC, CMP, TSH, Hemoglobin A1C, Lipid Panel</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Phentermine</strong></p>
+<p>Short-term appetite suppression. BMI 30+ or BMI 27+ with weight-related health conditions. Dose: 37.5 mg in the morning (start 18.75 mg for sensitive patients). Duration: typically 8-12 weeks.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>⛔ HARD STOPS</strong></p>
+<p>• Uncontrolled high blood pressure</p>
+<p>• Heart disease or arrhythmias</p>
+<p>• Hyperthyroidism</p>
+<p>• Glaucoma</p>
+<p>• History of drug or stimulant abuse</p>
+<p>• Pregnancy or breastfeeding</p>
+<p>• Taking MAOIs</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Lipo B and L-Carnitine</strong></p>
+<p>Energy and fat metabolism support. No required labs. Lipo B: 1 mL weekly SC or IM. L-Carnitine: 500 mg (1 mL) IM twice weekly.</p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>⛔ Flag if...</strong></p>
+<p>• Patient has severe liver disease (Lipo B: relative contraindication)</p>
+<p>• Patient reports history of seizures (L-Carnitine: flag to provider)</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p><strong>SECTION 4</strong></p>
+<p>Cellular Health, Energy, and Cognitive Support</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Glutathione, NAD+, Vitamin B12, Modafinil</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 24%" />
+<col style="width: 27%" />
+<col style="width: 24%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"><strong>Therapy</strong></th>
+<th><strong>Standard Dose</strong></th>
+<th><strong>Frequency</strong></th>
+<th><strong>Labs</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2">Glutathione</td>
+<td>200 mg (1 mL) IM</td>
+<td>Once weekly</td>
+<td>No labs required</td>
+</tr>
+<tr>
+<td colspan="2">NAD+</td>
+<td>50 mg SC (may increase to twice weekly)</td>
+<td>Once to twice weekly</td>
+<td>No labs required</td>
+</tr>
+<tr>
+<td colspan="2">Vitamin B12 (Methylcobalamin)</td>
+<td>1,000 mcg (1 mL) IM</td>
+<td>Once weekly</td>
+<td>No labs required</td>
+</tr>
+<tr>
+<td colspan="2">Modafinil</td>
+<td>200 mg oral (may start 100 mg)</td>
+<td>Once daily (morning only)</td>
+<td>No labs required</td>
+</tr>
+<tr>
+<td></td>
+<td colspan="4"><p><strong>⛔ Flag if...</strong></p>
+<p>• Patient reports allergic reaction (hives, difficulty breathing) after injection: call 911; flag to provider</p>
+<p>• B12: patient has Leber's disease: flag before starting</p>
+<p>• Modafinil: uncontrolled heart condition, significant anxiety history, or rash/skin reaction after starting: flag immediately</p></td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 96%" />
+<col style="width: 0%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2" style="text-align: center;"><p><strong>SECTION 5</strong></p>
+<p>Investigational Peptide Therapies</p></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td colspan="2"><p><strong>⚠️ IMPORTANT: Peptide Therapy Context</strong></p>
+<p>All peptide therapies are investigational: not FDA-approved for the indications used.</p>
+<p>Informed consent is required before any peptide therapy can be processed.</p>
+<p>If informed consent is not documented, hold the order and flag to the provider.</p>
+<p>When patients ask if peptides are "proven" or "FDA-approved," the correct response is:</p>
+<p>"These are investigational therapies used under medical supervision. Your provider can answer specific questions about them."</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Growth Hormone Secretagogues: Sermorelin, Tesamorelin, CJC-1295/Ipamorelin</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 20%" />
+<col style="width: 9%" />
+<col style="width: 16%" />
+<col style="width: 6%" />
+<col style="width: 17%" />
+<col style="width: 1%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="7"><p><strong>⛔ HARD STOP: Do not process if...</strong></p>
+<p>• Patient has active cancer (any type): GH secretagogues are contraindicated</p>
+<p>• Patient is pregnant or breastfeeding</p>
+<p>• Informed consent is not on file</p>
+<p><strong>Tesamorelin additional hard stop: Uncontrolled diabetes</strong> - flag to provider, do not process.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3"><strong>Therapy</strong></td>
+<td colspan="2"><strong>Dose</strong></td>
+<td><strong>Frequency</strong></td>
+<td colspan="2"><strong>Timing</strong></td>
+</tr>
+<tr>
+<td colspan="3">Sermorelin (Male)</td>
+<td colspan="2">500-1000 mcg SC nightly</td>
+<td>5-7 nights/week</td>
+<td colspan="2">Bedtime, 2-3 hrs after last meal</td>
+</tr>
+<tr>
+<td colspan="3">Sermorelin (Female)</td>
+<td colspan="2">300 mcg SC nightly</td>
+<td>5-7 nights/week</td>
+<td colspan="2">Bedtime, 2-3 hrs after last meal</td>
+</tr>
+<tr>
+<td colspan="3">Tesamorelin (Male)</td>
+<td colspan="2">500-1000 mcg SC nightly</td>
+<td>5-6 nights/week</td>
+<td colspan="2">Bedtime; avoid after meals</td>
+</tr>
+<tr>
+<td colspan="3">Tesamorelin (Female)</td>
+<td colspan="2">300 mcg SC nightly</td>
+<td>5-6 nights/week</td>
+<td colspan="2">Bedtime; avoid after meals</td>
+</tr>
+<tr>
+<td colspan="3">CJC-1295/Ipamorelin (Male)</td>
+<td colspan="2">100-200 mcg / 300-400 mcg SC</td>
+<td>5 nights/week</td>
+<td colspan="2">Bedtime, 2-3 hrs after last meal</td>
+</tr>
+<tr>
+<td colspan="3">CJC-1295/Ipamorelin (Female)</td>
+<td colspan="2">50-150 mcg / 150-250 mcg SC</td>
+<td>5 nights/week</td>
+<td colspan="2">Bedtime, 2-3 hrs after last meal</td>
+</tr>
+<tr>
+<td colspan="3"><strong>When</strong></td>
+<td colspan="5"><strong>Labs Required</strong></td>
+</tr>
+<tr>
+<td colspan="3"><strong>No labs required before starting</strong></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td colspan="3"><strong>3 Month Peptide Panel</strong></td>
+<td colspan="5">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="3"><strong>Every 6 Months</strong></td>
+<td colspan="5">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Lab / Parameter</strong></td>
+<td colspan="2"><strong>What It Means</strong></td>
+<td colspan="3"><strong>Team Action</strong></td>
+<td><strong>Escalate?</strong></td>
+</tr>
+<tr>
+<td colspan="2">IGF-1 (3-month check)</td>
+<td colspan="2">Within normal range for age/sex</td>
+<td colspan="3">Continue per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td colspan="2">IGF-1 (3-month check)</td>
+<td colspan="2">Supraphysiologic (elevated above range)</td>
+<td colspan="3">Flag to provider: dose reduction likely needed</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td colspan="2">Hemoglobin A1C</td>
+<td colspan="2">Below 6.5%</td>
+<td colspan="3">Continue per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td colspan="2">Hemoglobin A1C</td>
+<td colspan="2">6.5% or above</td>
+<td colspan="3">Flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>BPC-157, Wolverine Stack, Glow Stack</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 30%" />
+<col style="width: 38%" />
+<col style="width: 27%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="3"><p><strong>⛔ STOP: Do not process if...</strong></p>
+<p>• Active cancer</p>
+<p>• Pregnancy or breastfeeding</p>
+<p>• Informed consent not documented</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2"><strong>Therapy</strong></td>
+<td><strong>Dose</strong></td>
+<td><strong>Cycle</strong></td>
+</tr>
+<tr>
+<td colspan="2">BPC-157 (solo)</td>
+<td>500 mcg SC daily</td>
+<td>4-8 week cycle; repeat after 4-6 week break</td>
+</tr>
+<tr>
+<td colspan="2">Wolverine Stack (BPC-157 + TB-500)</td>
+<td>BPC-157: 150-500 mcg SC daily | TB-500: 250-500 mcg SC daily</td>
+<td>8-12 week cycle; reassess at 6-8 weeks</td>
+</tr>
+<tr>
+<td colspan="2">Glow Stack (GHK-Cu + BPC-157 + TB-500)</td>
+<td>GHK-Cu 900 mcg / BPC-157 166 mcg / TB-500 333 mcg SC once daily</td>
+<td>4-8 week cycle; up to 12 weeks</td>
+</tr>
+<tr>
+<td colspan="2"><strong>When</strong></td>
+<td colspan="2"><strong>Labs Required</strong></td>
+</tr>
+<tr>
+<td colspan="2"><strong>BPC-157 (solo) - 3 Month Panel</strong></td>
+<td colspan="2">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="2"><strong>BPC-157 (solo) - Every 6 Months</strong></td>
+<td colspan="2">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Wolverine Stack (BPC-157 + TB-500)</strong></td>
+<td colspan="2">Labs not routinely required</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Glow Stack - 3 Month Panel</strong></td>
+<td colspan="2">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Glow Stack - Every 6 Months</strong></td>
+<td colspan="2">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SS-31 (Elamipretide) and Retatrutide</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 0%" />
+<col style="width: 24%" />
+<col style="width: 27%" />
+<col style="width: 24%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th colspan="4"><p><strong>⛔ HARD STOP</strong></p>
+<p>• Active cancer, pregnancy, informed consent not on file for either therapy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2"><strong>Therapy</strong></td>
+<td><strong>Dose</strong></td>
+<td><strong>Protocol Notes</strong></td>
+<td><strong>Labs</strong></td>
+</tr>
+<tr>
+<td colspan="2">SS-31 (Elamipretide)</td>
+<td>5-10 mg SC daily</td>
+<td>4-8 week cycle</td>
+<td><p>3 Month: CBC, CMP, HbA1c, IGF-1</p>
+<p>Every 6 Months: CBC, CMP, HbA1c, IGF-1</p></td>
+</tr>
+<tr>
+<td colspan="2">Retatrutide (standard)</td>
+<td>1 mg SC weekly → titrate to 6-8 mg</td>
+<td>Slow titration; informed consent required</td>
+<td>3 Month Weight Loss Panel</td>
+</tr>
+<tr>
+<td colspan="2">Retatrutide (microdose)</td>
+<td>1-2 mg SC weekly</td>
+<td>Non-escalating; maintenance protocol</td>
+<td>3 Month Weight Loss Panel</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IGF-1 LR3</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th><p><strong>⚠️ Restricted therapy: male only</strong></p>
+<p>IGF-1 LR3 is generally reserved for male patients. Do not process for female patients without explicit provider note.</p>
+<p>Must be used AFTER testosterone therapy is optimized: not standalone.</p>
+<p>On/off cycle: 8-12 weeks on, 4 weeks off.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p><strong>⛔ STOP if...</strong></p>
+<p>• Active cancer</p>
+<p>• Uncontrolled diabetes or diabetic retinopathy</p>
+<p>• Pregnancy</p>
+<p>• Female patient without explicit provider authorization</p>
+<p>• Informed consent not on file</p>
+<p>• Personal or family history of medullary thyroid carcinoma</p>
+<p>• Multiple Endocrine Neoplasia Type 2 (MEN2)</p>
+<p>• History of pancreatitis</p>
+<p>• Severe gastrointestinal disease or gastroparesis</p></td>
+</tr>
+</tbody>
+</table>
+<p>Male dose: 20-40 mcg SC 5 days per week. Morning or post-exercise.</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 9%" />
+<col style="width: 15%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th colspan="2"><strong>When</strong></th>
+<th colspan="3"><strong>Labs Required</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2"><strong>No initial labs required</strong></td>
+<td colspan="3"></td>
+</tr>
+<tr>
+<td colspan="2"><strong>3 Month Peptide Panel</strong></td>
+<td colspan="3">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td colspan="2"><strong>Every 6 Months</strong></td>
+<td colspan="3">CBC, CMP, Hemoglobin A1C, IGF-1</td>
+</tr>
+<tr>
+<td><strong>Lab / Parameter</strong></td>
+<td colspan="2"><strong>What It Means</strong></td>
+<td><strong>Team Action</strong></td>
+<td><strong>Escalate?</strong></td>
+</tr>
+<tr>
+<td>IGF-1 (3-month check)</td>
+<td colspan="2">Normal range for age</td>
+<td>Continue per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>IGF-1 (3-month check)</td>
+<td colspan="2">Elevated above normal range</td>
+<td>Flag to provider: dose reduction likely needed</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Blood glucose symptoms (patient-reported)</td>
+<td colspan="2">Dizziness, shakiness, sweating</td>
+<td>Flag IMMEDIATELY: hypoglycemia possible</td>
+<td><strong>YES</strong></td>
+</tr>
+</tbody>
+</table>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 96%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: center;"><p><strong>QUICK REFERENCE</strong></p>
+<p>Universal Escalation and Lab Thresholds</p></th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<p><strong>Universal Escalation Rules: Apply Across ALL Therapies</strong></p>
+<table style="width:96%;">
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Always Escalate Immediately</strong></th>
+<th><strong>Always Route to Provider Before Proceeding</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p>• Patient reports chest pain, shortness of breath, or leg swelling</p>
+<p>• Hematocrit above 56% on any male TRT patient</p>
+<p>• AST or ALT above 100 IU/L on any oral androgen patient</p>
+<p>• Patient reports visual disturbances on enclomiphene</p>
+<p>• Any suspected allergic reaction to an injectable</p>
+<p>• Patient mentions blood clot, stroke, or ER visit</p></td>
+<td><p>• Informed consent is not on file for any peptide therapy</p>
+<p>• A patient's lab is outside any threshold in this guide</p>
+<p>• Patient mentions pregnancy or trying to conceive</p>
+<p>• Patient adds a new prescription medication</p>
+<p>• Any cancer history not previously documented</p>
+<p>• Patient has been off therapy more than 90 days</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Master Lab Threshold Reference</strong></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr>
+<th><strong>Lab / Parameter</strong></th>
+<th><strong>What It Means</strong></th>
+<th><strong>Team Action</strong></th>
+<th><strong>Escalate?</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hematocrit (males on TRT)</td>
+<td>Below 52%</td>
+<td>Normal, no action</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Hematocrit (males on TRT)</td>
+<td>52-54% (Mild)</td>
+<td>Note in chart; increase hydration; cardiovascular exercise; evaluate for OSA; reduce alcohol; consider splitting injections; consider voluntary blood donation</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td>Hematocrit (males on TRT)</td>
+<td>54-56% (Moderate - more urgent)</td>
+<td>Flag to provider this week; increase injection frequency; strongly encourage blood donation; evaluate secondary causes; consider dose decrease; repeat CBC in 6-8 weeks</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Hematocrit (males on TRT)</td>
+<td>Above 56%</td>
+<td>FLAG IMMEDIATELY: hold next shipment until provider clears</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Hemoglobin (males on TRT)</td>
+<td>Below 18 g/dL</td>
+<td>Normal, continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Hemoglobin (males on TRT)</td>
+<td>18 g/dL or above</td>
+<td>Flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>RBC (males on TRT)</td>
+<td>Below 6.0 x10⁶/uL</td>
+<td>Normal, continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>RBC (males on TRT)</td>
+<td>Above 6.0 x10⁶/uL</td>
+<td>Flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Estradiol (males on TRT)</td>
+<td>Below 60 pg/mL</td>
+<td>Normal range, continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Estradiol (males on TRT)</td>
+<td>Above 60 pg/mL + symptoms</td>
+<td>Flag to provider: AI may be needed</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Estradiol (males on TRT)</td>
+<td>Above 60 pg/mL, no symptoms</td>
+<td>Flag at next check-in</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td>Estradiol (males on AI)</td>
+<td>Below 15 pg/mL</td>
+<td>FLAG IMMEDIATELY: over-suppression</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Total Testosterone (males)</td>
+<td>800-1200 ng/dL, patient feels good</td>
+<td>All good, document and continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Total Testosterone (males)</td>
+<td>Below 800 + symptoms</td>
+<td>Flag to provider: possible dose adjustment</td>
+<td>MAYBE</td>
+</tr>
+<tr>
+<td>Total Testosterone (males)</td>
+<td>Above 1200 + symptoms of excess</td>
+<td>Flag to provider: possible dose reduction</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Testosterone (females)</td>
+<td>30-80 ng/dL</td>
+<td>Normal range, continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Testosterone (females)</td>
+<td>Above 80 + androgenic symptoms</td>
+<td>Flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>AST / ALT (oral androgens)</td>
+<td>Below 100 IU/L</td>
+<td>OK to proceed per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>AST / ALT (oral androgens)</td>
+<td>Above 100 IU/L</td>
+<td>Do not process: flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Total Bilirubin (oral androgens)</td>
+<td>Below 2 mg/dL</td>
+<td>OK to proceed</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Total Bilirubin (oral androgens)</td>
+<td>Above 2 mg/dL</td>
+<td>Do not process: flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>IGF-1 (GH peptides)</td>
+<td>Within normal range</td>
+<td>Continue per provider order</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>IGF-1 (GH peptides)</td>
+<td>Supraphysiologic (elevated above range)</td>
+<td>Flag to provider: dose reduction likely needed</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>Hemoglobin A1C (GLP-1 / GH)</td>
+<td>Below 6.5%</td>
+<td>Normal, continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>Hemoglobin A1C (GLP-1 / GH)</td>
+<td>6.5% or above</td>
+<td>Flag to provider</td>
+<td><strong>YES</strong></td>
+</tr>
+<tr>
+<td>PSA (males 45+ on TRT)</td>
+<td>Within normal range</td>
+<td>Continue</td>
+<td>NO</td>
+</tr>
+<tr>
+<td>PSA (males 45+ on TRT)</td>
+<td>Elevated or flagged by lab</td>
+<td>FLAG: provider must review before continuing</td>
+<td><strong>YES</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>This guide is for internal non-clinical staff use only. It does not constitute medical advice and does not authorize clinical action by non-clinical personnel.</em></p>
+<p><em>kingdom | REM Health Medical Group, P.A. | Version 1.0 | 2026</em></p>
+  <div class="foot">
+    <span>kingdom confidential · internal use only</span>
+    <span class="num">GUIDE 09</span>
+  </div>
+</main>
+</body>
+</html>
