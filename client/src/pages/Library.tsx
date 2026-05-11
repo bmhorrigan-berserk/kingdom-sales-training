@@ -16,6 +16,7 @@ import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import ShiftingBand from "@/components/ShiftingBand";
 import { MEDIA_CATALOG, LESSON_MEDIA, type MediaItem } from "@/lib/mediaData";
 import { Play, Headphones, Video, ArrowRight, Clock } from "lucide-react";
+import { DurationBadge } from "@/components/DurationBadge";
 
 const NAVY = "#1A2060";
 const NAVY_DEEP = "#141849";
@@ -430,21 +431,24 @@ function MediaTile({
             >
               {item.type}
             </span>
-            {item.durationMin ? (
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 4,
-                  fontFamily:
-                    "var(--font-body, Inter), system-ui, sans-serif",
-                  fontSize: 12,
-                  color: INK_MUTED,
-                }}
-              >
-                <Clock size={11} /> {item.durationMin} min
-              </span>
-            ) : null}
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+                fontFamily:
+                  "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 12,
+                color: INK_MUTED,
+              }}
+            >
+              <Clock size={11} />{" "}
+              <DurationBadge
+                src={item.src}
+                type={item.type}
+                fallbackMin={item.durationMin}
+              />
+            </span>
             {lessonCode && (
               <Link href={`/curriculum/${lessonCode}`}>
                 <a

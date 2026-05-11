@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Eyebrow, Em } from "@/components/Furniture";
 import type { MediaItem } from "@/lib/mediaData";
 import { Play, Headphones, Video, AlertCircle } from "lucide-react";
+import { DurationBadge } from "@/components/DurationBadge";
 
 const NAVY = "#1A2060";
 const GREEN = "#1F6B3F";
@@ -159,7 +160,9 @@ function MediaCard({ item }: { item: MediaItem }) {
             <span style={{ textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600, color: accent }}>
               {item.type}
             </span>
-            {item.durationMin ? <span>{item.durationMin} min</span> : null}
+            <span>
+              <DurationBadge src={item.src} type={item.type} fallbackMin={item.durationMin} />
+            </span>
           </div>
         </div>
       </div>
