@@ -21,6 +21,13 @@
 
 export type MediaType = "video" | "audio";
 
+// MediaCategory groups items in the Library page. "sales-method" items
+// teach the kingdom selling system (one video per phase + the call
+// recordings). "treatment-catalog" items teach the clinical product
+// catalog itself - reps drink these in to understand what they're
+// actually selling. Defaults to "sales-method" if omitted for back-compat.
+export type MediaCategory = "sales-method" | "treatment-catalog";
+
 export interface MediaItem {
   slug: string;        // unique within manifest, used for routing + filenames
   type: MediaType;
@@ -29,6 +36,7 @@ export interface MediaItem {
   poster?: string;     // optional thumbnail for video
   durationMin?: number;
   description: string;
+  category?: MediaCategory;
 }
 
 /* ------------------------------------------------------------------
@@ -166,6 +174,57 @@ export const MEDIA_CATALOG: MediaItem[] = [
     durationMin: 48,
     description:
       "End-to-end walkthrough of the full kingdom sales engine. Watch as the capstone before certification.",
+  },
+
+  // ─── Treatment Catalog ────────────────────────────────────────────
+  // Clinical / product education. Reps listen to understand WHAT they
+  // are selling - the hormones, peptides, and protocol mechanics behind
+  // the catalog. These are companion onboarding references, not phase-
+  // specific lessons.
+  {
+    slug: "male-hormonal-command-center",
+    type: "audio",
+    title: "Rebuilding the Male Hormonal Command Center",
+    src: "/media/male-hormonal-command-center.m4a",
+    description:
+      "Foundational walk-through of male hormone optimization. Use this to ground every TRT and recovery-protocol conversation in the biology beneath the labels.",
+    category: "treatment-catalog",
+  },
+  {
+    slug: "bioidentical-hormones-female-biology",
+    type: "audio",
+    title: "How Bioidentical Hormones Repair Female Biology",
+    src: "/media/bioidentical-hormones-female-biology.m4a",
+    description:
+      "Female hormone restoration explained from first principles. Why bioidenticals match the body's native signaling instead of overriding it.",
+    category: "treatment-catalog",
+  },
+  {
+    slug: "targeted-peptide-signaling",
+    type: "audio",
+    title: "Targeted Peptide Signaling for Biological Restoration",
+    src: "/media/targeted-peptide-signaling.m4a",
+    description:
+      "How peptide protocols restore signaling pathways the body has stopped firing. Use to position peptides as precision tools, not generic supplements.",
+    category: "treatment-catalog",
+  },
+  {
+    slug: "targeted-protocols-optimization",
+    type: "audio",
+    title: "Targeted Protocols for Biological Optimization",
+    src: "/media/targeted-protocols-optimization.m4a",
+    description:
+      "Walkthrough of the kingdom protocol design philosophy. Why we stack specific molecules in specific sequences instead of treating symptoms in isolation.",
+    category: "treatment-catalog",
+  },
+  {
+    slug: "why-biology-defends-weight",
+    type: "audio",
+    title: "Why Your Biology Defends Your Weight",
+    src: "/media/why-biology-defends-weight.m4a",
+    description:
+      "The metabolic set-point problem and how GLP-1 plus peptide therapy resets it. Frames the weight-loss conversation around biology, not willpower.",
+    category: "treatment-catalog",
   },
 ];
 

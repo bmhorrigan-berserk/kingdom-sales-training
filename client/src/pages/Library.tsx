@@ -48,7 +48,17 @@ function lessonLabel(code: string | null): string {
 
 export default function Library() {
   const videos = MEDIA_CATALOG.filter((m) => m.type === "video");
-  const audios = MEDIA_CATALOG.filter((m) => m.type === "audio");
+  // Audio splits two ways: sales-method recordings (live calls, deep
+  // dives keyed to phases) vs treatment-catalog onboarding (clinical
+  // product education added May 2026). The treatment section is its
+  // own block on the page so a rep learning the product catalog isn't
+  // intermixed with sales-call examples.
+  const audios = MEDIA_CATALOG.filter(
+    (m) => m.type === "audio" && (m.category ?? "sales-method") === "sales-method"
+  );
+  const treatmentMedia = MEDIA_CATALOG.filter(
+    (m) => m.category === "treatment-catalog"
+  );
 
   return (
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
@@ -98,7 +108,7 @@ export default function Library() {
               }}
             >
               § 05 · MEDIA LIBRARY · {videos.length} VIDEOS · {audios.length}{" "}
-              AUDIO
+              AUDIO · {treatmentMedia.length} TREATMENT
             </div>
             <h1
               style={{
@@ -143,7 +153,7 @@ export default function Library() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
+              gridTemplateColumns: "1fr 1fr 1fr",
               gap: 12,
             }}
           >
@@ -166,6 +176,16 @@ export default function Library() {
                 {String(audios.length).padStart(2, "0")}
               </div>
               <div style={statTileLabel}>Audio + podcasts</div>
+            </a>
+            <a
+              href="#treatment"
+              style={statTile(GREEN, treatmentMedia.length, "Treatment", "catalog")}
+            >
+              <Headphones size={18} style={{ color: CREAM }} />
+              <div style={statTileNumber}>
+                {String(treatmentMedia.length).padStart(2, "0")}
+              </div>
+              <div style={statTileLabel}>Treatment catalog</div>
             </a>
           </div>
         </div>
@@ -252,6 +272,53 @@ export default function Library() {
           ))}
         </div>
       </section>
+
+      {/* TREATMENT CATALOG ─────────────────────────────────────────
+          Clinical / product education. Reps listen here to understand
+          what they're selling. Separate from the sales-method audio
+          above because the use case is "learning the catalog," not
+          "drilling sales tactics." */}
+      {treatmentMedia.length > 0 && (
+        <section
+          id="treatment"
+          style={{
+            maxWidth: 1920,
+            margin: "0 auto",
+            padding: "32px 32px 96px",
+            scrollMarginTop: 80,
+          }}
+        >
+          <SectionHeader
+            eyebrow="§ C · TREATMENT CATALOG"
+            eyebrowColor={GREEN}
+            headline={
+              <>
+                Know <Em>what you sell.</Em>
+              </>
+            }
+            subline="Clinical onboarding companions. Listen end-to-end before any patient call so the catalog isn't a list of names - it's the biology behind every protocol."
+            count={treatmentMedia.length}
+            accent={GREEN}
+          />
+          <div
+            style={{
+              marginTop: 40,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
+              gap: 20,
+            }}
+          >
+            {treatmentMedia.map((m) => (
+              <MediaTile
+                key={m.slug}
+                item={m}
+                accent={GREEN}
+                lessonCode={lessonForSlug(m.slug)}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <ShiftingBand eyebrow="· WATCH · LISTEN · DRILL ·">
         Every recording is a <Em>real call.</Em>
