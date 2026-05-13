@@ -131,16 +131,19 @@ export default function TreatmentTopic() {
   const slug = params?.slug ?? "";
   const topic = getTreatmentTopic(slug);
 
+  // IMPORTANT: every hook below must run on every render. Computing
+  // `otherTopics` against the slug here keeps hook order stable even
+  // when the slug points at a missing topic (we still call useMemo
+  // before the conditional return).
+  const otherTopics = useMemo(
+    () => TREATMENT_TOPICS.filter((t) => t.slug !== slug),
+    [slug]
+  );
+
   if (!topic) return <NotFoundView slug={slug} />;
 
   const theme = TOPIC_THEME[topic.slug] ?? DEFAULT_THEME;
   const available = topicAvailableFormats(topic);
-
-  // Other modules for the "Continue learning" strip.
-  const otherTopics = useMemo(
-    () => TREATMENT_TOPICS.filter((t) => t.slug !== topic.slug),
-    [topic.slug]
-  );
 
   return (
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
@@ -152,22 +155,8 @@ export default function TreatmentTopic() {
       {/* ── WHAT YOU'LL LEARN STRIP ──────────────────────────────────── */}
       <LearningStrip topic={topic} accent={theme.accent} />
 
-      {/* ── ASSET SECTIONS (one full-width tile per format) ─────────── */}
-      <main>
-        {(["audio", "video", "infographic", "slides"] as AssetType[]).map(
-          (type, idx) => (
-            <AssetBlock
-              key={type}
-              type={type}
-              asset={topic.assets[type]}
-              accent={theme.accent}
-              soft={theme.soft}
-              texture={theme.texture}
-              reverse={idx % 2 === 1}
-            />
-          )
-        )}
-      </main>
+      {/* ── FORMAT SECTIONS (one shared band, four white tiles) ─────── */}
+      <FormatBand topic={topic} theme={theme} />
 
       {/* ── CONTINUE LEARNING ───────────────────────────────────────── */}
       <ContinueLearning topics={otherTopics} />
@@ -230,12 +219,14 @@ function Hero({
         overflow: "hidden",
       }}
     >
-      {/* Corner medallion */}
+      {/* Big medallion anchored to the top-left, matching the Sales
+          Catalog hero treatment. Only one - no other vector pieces in
+          the header. */}
       <RadialFan
         texture={theme.texture}
-        origin="tr"
+        origin="tl"
         opacity={0.16}
-        size={720}
+        size={760}
         style={{ zIndex: 0 }}
       />
       {/* Subtle bottom hairline */}
@@ -582,186 +573,218 @@ function LearningStrip({
   );
 }
 
-/* ─── Format tile (one per format) ────────────────────────────────────────
-   Each section gets the topic's soft tint as its full-bleed background
-   plus two RadialFan vector medallions (left + right) flanking the
-   white content tile. The asymmetric two-column layout (text | media)
-   alternates which side the text lives on so the page reads with a
-   rhythm rather than four identical bricks. */
-function AssetBlock({
-  type,
-  asset,
-  accent,
-  soft,
-  texture,
-  reverse,
+/* ─── Format band (one shared section wrapping all four format tiles) ──
+   The four format tiles (audio, video, infographic, slides) share a
+   single soft-tinted band so the page reads as one Treatment Catalog
+   spread instead of four stacked stripes. Two giant medallions, one
+   anchored top-left and one bottom-right, frame the entire band -
+   matching the Sales Catalog hero treatment. */
+function FormatBand({
+  topic,
+  theme,
 }: {
-  type: AssetType;
-  asset: TreatmentTopicAsset | undefined;
-  accent: string;
-  soft: string;
-  texture: FanTexture;
-  reverse: boolean;
+  topic: TopicType;
+  theme: { accent: string; texture: FanTexture; soft: string };
 }) {
-  const meta = FORMAT_META[type];
-  const { Icon } = meta;
-
   return (
     <section
-      id={type}
       style={{
         position: "relative",
-        scrollMarginTop: 80,
-        background: soft,
-        padding: "64px 32px",
+        background: theme.soft,
+        padding: "72px 32px 88px",
         overflow: "hidden",
       }}
     >
-      {/* Two big medallions like the Sales Catalog: one anchored to the
-          top-left corner, one to the bottom-right. They radiate inward
-          and frame the white content tile diagonally. */}
+      {/* Giant Sales-Catalog-scale medallions. ONE top-left, ONE
+          bottom-right. Nothing else. */}
       <RadialFan
-        texture={texture}
+        texture={theme.texture}
         origin="tl"
-        opacity={0.14}
-        size={680}
+        opacity={0.16}
+        size={820}
         style={{ zIndex: 0 }}
       />
       <RadialFan
-        texture={texture}
+        texture={theme.texture}
         origin="br"
-        opacity={0.14}
-        size={680}
+        opacity={0.16}
+        size={820}
         style={{ zIndex: 0 }}
       />
 
-      {/* The white tile holding the actual content. */}
       <div
         style={{
           position: "relative",
           zIndex: 1,
           maxWidth: 1200,
           margin: "0 auto",
-          background: CREAM,
-          border: `1px solid ${HAIRLINE}`,
-          borderRadius: 18,
-          padding: "44px 44px",
-          boxShadow:
-            "0 1px 2px rgba(26,32,96,0.04), 0 24px 60px -28px rgba(26,32,96,0.18)",
+          display: "flex",
+          flexDirection: "column",
+          gap: 28,
         }}
       >
+        {(["audio", "video", "infographic", "slides"] as AssetType[]).map(
+          (type, idx) => (
+            <FormatTile
+              key={type}
+              type={type}
+              asset={topic.assets[type]}
+              accent={theme.accent}
+              reverse={idx % 2 === 1}
+            />
+          )
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* ─── Format tile (one per format, plain white card) ──────────────────────
+   No background, no vectors of its own - those live on FormatBand.
+   Each tile is just the white card with text on one side, media on
+   the other. The text column alternates sides so the rhythm reads. */
+function FormatTile({
+  type,
+  asset,
+  accent,
+  reverse,
+}: {
+  type: AssetType;
+  asset: TreatmentTopicAsset | undefined;
+  accent: string;
+  reverse: boolean;
+}) {
+  const meta = FORMAT_META[type];
+  const { Icon } = meta;
+
+  return (
+    <article
+      id={type}
+      style={{
+        scrollMarginTop: 80,
+        background: CREAM,
+        border: `1px solid ${HAIRLINE}`,
+        borderRadius: 18,
+        padding: "40px 44px",
+        boxShadow:
+          "0 1px 2px rgba(26,32,96,0.04), 0 24px 60px -28px rgba(26,32,96,0.18)",
+      }}
+    >
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.6fr)",
+          gap: 44,
+          alignItems: "center",
+        }}
+      >
+        {/* Text column */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.6fr)",
-            gap: 44,
-            alignItems: "center",
+            gridColumn: reverse ? 2 : 1,
+            gridRow: 1,
+            minWidth: 0,
           }}
         >
-          {/* Text column (alternates side via grid-column override) */}
           <div
             style={{
-              gridColumn: reverse ? 2 : 1,
-              gridRow: 1,
-              minWidth: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 14,
             }}
           >
-            <div
+            <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 10,
-                marginBottom: 14,
+                justifyContent: "center",
+                width: 36,
+                height: 36,
+                borderRadius: 9,
+                background: asset ? accent : "rgba(45,42,36,0.10)",
+                color: asset ? CREAM : INK_MUTED,
+                boxShadow: asset ? `0 6px 16px ${accent}33` : "none",
               }}
             >
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 36,
-                  height: 36,
-                  borderRadius: 9,
-                  background: asset ? accent : "rgba(45,42,36,0.10)",
-                  color: asset ? CREAM : INK_MUTED,
-                  boxShadow: asset ? `0 6px 16px ${accent}33` : "none",
-                }}
-              >
-                <Icon size={16} />
-              </span>
-              <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
-                {meta.eyebrow}
-              </Eyebrow>
-            </div>
-            <h2
-              style={{
-                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                fontWeight: 500,
-                fontSize: "clamp(28px, 3vw, 40px)",
-                lineHeight: 1.08,
-                letterSpacing: "-0.018em",
-                color: NAVY,
-                margin: 0,
-                maxWidth: "18ch",
-              }}
-            >
-              {meta.label}
-              <Em style={{ color: accent }}>.</Em>
-            </h2>
-            <p
-              style={{
-                marginTop: 14,
-                marginBottom: 0,
-                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                fontSize: 15,
-                lineHeight: 1.6,
-                color: INK_MUTED,
-                maxWidth: "44ch",
-              }}
-            >
-              {asset
-                ? meta.blurb
-                : `This format is on the production list. The ${type} variation will live here as soon as it ships.`}
-            </p>
-            {!asset && (
-              <div style={{ marginTop: 12 }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    fontFamily: "var(--font-mono, ui-monospace, monospace)",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: INK_MUTED,
-                    padding: "4px 10px",
-                    background: "rgba(45,42,36,0.06)",
-                    borderRadius: 4,
-                  }}
-                >
-                  Coming soon
-                </span>
-              </div>
-            )}
+              <Icon size={16} />
+            </span>
+            <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
+              {meta.eyebrow}
+            </Eyebrow>
           </div>
-
-          {/* Media column */}
-          <div
+          <h2
             style={{
-              gridColumn: reverse ? 1 : 2,
-              gridRow: 1,
-              minWidth: 0,
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 500,
+              fontSize: "clamp(28px, 3vw, 40px)",
+              lineHeight: 1.08,
+              letterSpacing: "-0.018em",
+              color: NAVY,
+              margin: 0,
+              maxWidth: "18ch",
             }}
           >
-            {asset ? (
-              <MediaRender type={type} asset={asset} accent={accent} />
-            ) : (
-              <PlaceholderMedia accent={accent} soft={soft} Icon={Icon} />
-            )}
-          </div>
+            {meta.label}
+            <Em style={{ color: accent }}>.</Em>
+          </h2>
+          <p
+            style={{
+              marginTop: 14,
+              marginBottom: 0,
+              fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: INK_MUTED,
+              maxWidth: "44ch",
+            }}
+          >
+            {asset
+              ? meta.blurb
+              : `This format is on the production list. The ${type} variation will live here as soon as it ships.`}
+          </p>
+          {!asset && (
+            <div style={{ marginTop: 12 }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: INK_MUTED,
+                  padding: "4px 10px",
+                  background: "rgba(45,42,36,0.06)",
+                  borderRadius: 4,
+                }}
+              >
+                Coming soon
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Media column */}
+        <div
+          style={{
+            gridColumn: reverse ? 1 : 2,
+            gridRow: 1,
+            minWidth: 0,
+          }}
+        >
+          {asset ? (
+            <MediaRender type={type} asset={asset} accent={accent} />
+          ) : (
+            <PlaceholderMedia
+              accent={accent}
+              soft="rgba(45,42,36,0.04)"
+              Icon={Icon}
+            />
+          )}
         </div>
       </div>
-    </section>
+    </article>
   );
 }
 
