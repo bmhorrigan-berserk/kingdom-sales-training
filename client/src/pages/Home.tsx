@@ -413,11 +413,11 @@ function TreatmentDirectorySection() {
         overflow: "hidden",
       }}
     >
-      {/* Single medallion top-right, matching the Curriculum page's
-          vector treatment. */}
+      {/* Single bottom-right medallion - butts up against the
+          ShiftingBand footer band that comes next. */}
       <RadialFan
         texture="peptides"
-        origin="tr"
+        origin="br"
         opacity={0.36}
         size={1100}
         style={{ zIndex: 0 }}

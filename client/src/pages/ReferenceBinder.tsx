@@ -87,7 +87,7 @@ export default function ReferenceBinder() {
         style={{
           maxWidth: 1920,
           margin: "0 auto",
-          padding: "56px 32px 96px",
+          padding: "0 32px 96px",
         }}
       >
         {REFERENCE_CATEGORIES.map((category, catIdx) => {
@@ -104,30 +104,26 @@ export default function ReferenceBinder() {
               : category === "Clinical"
               ? "hormone"
               : "wellness";
+          /* Patient Pipeline (first category) anchors its medallion
+             to the TOP so it butts up against the green hero above.
+             Every other category anchors to the BOTTOM so each
+             medallion butts against the section that follows. */
+          const medallionOrigin: "tr" | "tl" | "br" | "bl" =
+            catIdx === 0 ? "tr" : "br";
           return (
             <div
               key={category}
               style={{
                 position: "relative",
                 marginTop: catIdx === 0 ? 0 : 96,
-                paddingTop: catIdx === 0 ? 32 : 64,
+                paddingTop: catIdx === 0 ? 0 : 64,
                 borderTop: catIdx === 0 ? "none" : `1px solid ${HAIRLINE}`,
                 overflow: "hidden",
               }}
             >
               <RadialFan
                 texture={categoryTexture}
-                /* Billing keeps its right-anchored medallion. Patient
-                   Pipeline + Clinical use natural corner placements
-                   (bl/tl) so they stay flush against the section
-                   edges without bleeding off the page. */
-                origin={
-                  category === "Billing"
-                    ? "tr"
-                    : category === "Patient Pipeline"
-                    ? "bl"
-                    : "tl"
-                }
+                origin={medallionOrigin}
                 opacity={0.30}
                 size={760}
                 style={{ zIndex: 0 }}
