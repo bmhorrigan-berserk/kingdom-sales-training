@@ -35,19 +35,19 @@ export const DAY_SCHEDULE: DaySchedule[] = [
   {
     day: 2,
     title: "Charm EHR Instruction",
-    description: "Invoicing, billing, recurring setup, LabCorp lab ordering, lab panels, DX codes. Led by Jason.",
+    description: "Invoicing, billing, recurring setup, LabCorp lab ordering, lab panels, DX codes. Led by Kailee/Rachel.",
     references: ["Binder Guide 2", "Binder Guide 3", "Binder Guide 4", "Binder Guide 5"],
   },
   {
     day: 3,
     title: "ZoHo CRM and Review",
-    description: "ZoHo leads, deals, pipeline. Sticky notes, new PT checklist, CS pipeline progression. Afternoon: independent review. Led by Jason.",
+    description: "ZoHo leads, deals, pipeline. Sticky notes, new PT checklist, CS pipeline progression. Afternoon: independent review. Led by Kailee/Rachel.",
     references: ["Binder Guide 1", "Binder Guide 6", "Binder Guide 8"],
   },
   {
     day: 4,
     title: "Live Consult Observation",
-    description: "Shadow live CS and AE consults. Observe NEPQ in action, note objection handling, consult prep workflow. Debrief with Jason.",
+    description: "Shadow live CS and AE consults. Observe NEPQ in action, note objection handling, consult prep workflow. Debrief with Kailee/Rachel.",
   },
   {
     day: 5,
