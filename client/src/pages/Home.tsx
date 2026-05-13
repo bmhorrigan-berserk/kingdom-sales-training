@@ -373,6 +373,17 @@ const TOPIC_ACCENTS: Record<string, string> = {
   "targeted-molecules-cellular-energy":   "#1F6B3F", // green
 };
 
+/* Soft tint that pairs with each topic accent. Mirrors what the
+   Library tile + Treatment Catalog detail page already use, so the
+   home directory reads as one consistent product line. */
+const TOPIC_SOFT_BG: Record<string, string> = {
+  "fixing-male-energy-crisis":            "#E8EDFB", // sky blue
+  "why-women-need-testosterone":          "#FBE5EB", // rose
+  "peptides-targeted-cellular-repair":    "#FBEBDD", // peach
+  "retatrutide-human-survival-algorithm": "#F8E8E5", // soft red
+  "targeted-molecules-cellular-energy":   "#E5F0E9", // pale green
+};
+
 const TOPIC_PHRASES: Record<string, string> = {
   "fixing-male-energy-crisis":
     "Reignite the male engine. Reset testosterone, sleep, and recovery as one signal.",
@@ -476,6 +487,7 @@ function TreatmentDirectorySection() {
         >
           {TREATMENT_TOPICS.map((t) => {
             const accent = TOPIC_ACCENTS[t.slug] ?? "#1F6B3F";
+            const soft = TOPIC_SOFT_BG[t.slug] ?? CREAM;
             const phrase = TOPIC_PHRASES[t.slug] ?? t.tagline;
             return (
               <Link key={t.slug} href={`/library/treatment/${t.slug}`}>
@@ -487,7 +499,7 @@ function TreatmentDirectorySection() {
                     height: "100%",
                     minHeight: 240,
                     padding: "28px 24px 24px",
-                    background: CREAM,
+                    background: soft,
                     border: `1px solid ${HAIRLINE}`,
                     borderTop: `4px solid ${accent}`,
                     borderRadius: 14,
