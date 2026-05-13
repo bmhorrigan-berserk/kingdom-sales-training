@@ -68,60 +68,44 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* Position the SVG so its FLAT outer rim aligns with the section
-   corner / edge, and the FOCAL points inward into the page. Inverse
-   of the previous "focal at corner" placement - the fan opens away
-   from the page center instead of into it, which is the look Brice
-   wants: the wide flat side facing outward.
+/* Flat rim against the section edge, focal pointing inward.
 
-   Mechanics: the SVG's natural focal sits at (58.7%, 43.9%) of the
-   viewBox; its rim sits at the top of the viewBox (y near 0). To put
-   the RIM at the section corner, the SVG is offset so its rim lands
-   at the corner and the focal sits inward by 43.9% of the size in
-   one axis and 58.7% in the other. Mirroring transforms route the
-   rim to the requested corner. */
-function placementFor(
-  origin: Origin,
-  size: number
-): React.CSSProperties {
-  /* The rim (top of viewBox) sits at the very edge; the focal sits
-     ~44% inward vertically and ~41% from the rim's far side.
-     The negative inset values push the SVG so the rim's outer edge
-     coincides with the section edge while the focal lands inside. */
-  const RIM_OFFSET = -Math.round(0.06 * size); // tiny bleed so the bounding box edge isn't visible
-
+   The catalog SVG has its rim at the very top of the viewBox (y near
+   0). Position the div FLUSH to the section corner (zero inset) and
+   the rim coincides with the section edge naturally. Mirroring
+   transforms (scaleX/scaleY/rotate) move the focal to whichever
+   interior quadrant the caller asks for, but the offset stays at 0
+   so the design hugs the edge. */
+function placementFor(origin: Origin): React.CSSProperties {
   switch (origin) {
     case "tr":
-      return { top: RIM_OFFSET, right: RIM_OFFSET, transform: "rotate(180deg)" };
+      // natural orientation: focal in upper-right interior, rim
+      // along top + right edges
+      return { top: 0, right: 0, transform: "none" };
     case "tl":
-      return { top: RIM_OFFSET, left: RIM_OFFSET, transform: "scaleY(-1)" };
+      // mirror horizontally: focal in upper-left interior
+      return { top: 0, left: 0, transform: "scaleX(-1)" };
     case "br":
-      return { bottom: RIM_OFFSET, right: RIM_OFFSET, transform: "scaleX(-1)" };
+      // mirror vertically: focal in lower-right interior
+      return { bottom: 0, right: 0, transform: "scaleY(-1)" };
     case "bl":
-      return { bottom: RIM_OFFSET, left: RIM_OFFSET, transform: "none" };
+      // mirror both: focal in lower-left interior
+      return { bottom: 0, left: 0, transform: "rotate(180deg)" };
     case "right":
-      return {
-        top: "50%",
-        right: RIM_OFFSET,
-        transform: "translateY(-50%) rotate(180deg)",
-      };
+      return { top: "50%", right: 0, transform: "translateY(-50%)" };
     case "left":
       return {
         top: "50%",
-        left: RIM_OFFSET,
-        transform: "translateY(-50%)",
+        left: 0,
+        transform: "translateY(-50%) scaleX(-1)",
       };
     case "top":
-      return {
-        top: RIM_OFFSET,
-        left: "50%",
-        transform: "translateX(-50%) rotate(180deg)",
-      };
+      return { top: 0, left: "50%", transform: "translateX(-50%)" };
     case "bottom":
       return {
-        bottom: RIM_OFFSET,
+        bottom: 0,
         left: "50%",
-        transform: "translateX(-50%)",
+        transform: "translateX(-50%) scaleY(-1)",
       };
     case "center":
     default:
@@ -143,7 +127,7 @@ export function RadialFan({
   style,
   ariaHidden = true,
 }: RadialFanProps) {
-  const placement = placementFor(origin, size);
+  const placement = placementFor(origin);
 
   /* Very soft outer-edge fade only - just enough to land the
      bounding box. The catalog's natural fan shape stays intact. */
