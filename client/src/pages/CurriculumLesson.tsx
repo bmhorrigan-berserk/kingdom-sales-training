@@ -146,11 +146,11 @@ export default function CurriculumLesson() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="peptides"
+        <RadialFan
+          texture="peptides"
           origin="tr"
-          palette={KINGDOM_PALETTE}
-          opacity={0.10}
-          size={680}
+          opacity={0.36}
+          size={1100}
           style={{ zIndex: 0 }}
         />
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 32, alignItems: "start", position: "relative", zIndex: 1 }}>

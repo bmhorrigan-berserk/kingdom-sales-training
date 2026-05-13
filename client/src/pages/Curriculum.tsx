@@ -34,11 +34,11 @@ export default function Curriculum() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="peptides"
+        <RadialFan
+          texture="peptides"
           origin="tr"
-          palette={KINGDOM_PALETTE}
-          opacity={0.10}
-          size={680}
+          opacity={0.36}
+          size={1100}
           style={{ zIndex: 0 }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -202,18 +202,13 @@ export default function Curriculum() {
               overflow: "hidden",
             }}
           >
-            <RadialFan texture="peptides"
+            <RadialFan
+              texture="peptides"
               origin={onDark ? "bl" : "tr"}
-              palette={onDark ? ["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"] : KINGDOM_PALETTE}
-              opacity={onDark ? 0.30 : 0.22}
-              size={680}
-              style={{
-                position: "absolute",
-                ...(onDark ? { bottom: -250, left: -300 } : { top: -200, right: -300 }),
-                width: 1000,
-                height: 1000,
-                zIndex: 0,
-              }}
+              opacity={onDark ? 0.45 : 0.36}
+              size={1100}
+              blendMode={onDark ? "screen" : "multiply"}
+              style={{ zIndex: 0 }}
             />
             <div style={{ maxWidth: 1920, margin: "0 auto", position: "relative", zIndex: 1 }}>
               <Eyebrow style={{ color: onDark ? "rgba(255,251,240,0.6)" : INK_MUTED, marginBottom: 16 }}>

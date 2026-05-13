@@ -104,13 +104,12 @@ export default function Flashcards() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="wellness"
+        <RadialFan
+          texture="wellness"
           origin="tr"
-          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.14}
-          size={680}
-          rays={48}
-          arcs={5}
+          opacity={0.48}
+          size={1100}
+          blendMode="screen"
           style={{ zIndex: 0 }}
         />
         <div
@@ -295,8 +294,8 @@ export default function Flashcards() {
         <RadialFan
           texture="wellness"
           origin="right"
-          opacity={0.09}
-          size={620}
+          opacity={0.28}
+          size={1000}
           style={{ zIndex: 0 }}
         />
         <div style={{ position: "relative", zIndex: 1, maxWidth: 980, margin: "0 auto" }}>
@@ -504,13 +503,11 @@ function CardFace({
     >
       {/* Decorative fan on the back face for visual interest */}
       {isBack && (
-        <RadialFan texture="wellness"
+        <RadialFan
+          texture="wellness"
           origin="bl"
-          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.10}
-          size={680}
-          rays={36}
-          arcs={4}
+          opacity={0.30}
+          size={800}
           style={{ zIndex: 0 }}
         />
       )}

@@ -36,13 +36,11 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="footer"
+        <RadialFan
+          texture="footer"
           origin="tr"
-          palette={KINGDOM_PALETTE}
-          opacity={0.10}
-          size={680}
-          rays={56}
-          arcs={6}
+          opacity={0.42}
+          size={1100}
           style={{ zIndex: 0 }}
         />
 
@@ -178,13 +176,12 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="footer"
+        <RadialFan
+          texture="footer"
           origin="bl"
-          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.14}
-          size={680}
-          rays={48}
-          arcs={5}
+          opacity={0.48}
+          size={1100}
+          blendMode="screen"
           style={{ zIndex: 0 }}
         />
 
@@ -408,15 +405,15 @@ function TreatmentDirectorySection() {
       <RadialFan
         texture="wellness"
         origin="tr"
-        opacity={0.08}
-        size={640}
+        opacity={0.32}
+        size={1000}
         style={{ zIndex: 0 }}
       />
       <RadialFan
         texture="peptides"
         origin="bl"
-        opacity={0.08}
-        size={560}
+        opacity={0.30}
+        size={960}
         style={{ zIndex: 0 }}
       />
 

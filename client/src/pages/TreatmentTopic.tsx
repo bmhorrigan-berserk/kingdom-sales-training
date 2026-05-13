@@ -220,13 +220,14 @@ function Hero({
       }}
     >
       {/* Big medallion anchored to the top-left, matching the Sales
-          Catalog hero treatment. Only one - no other vector pieces in
-          the header. */}
+          Catalog hero treatment. Screen blend so the faceted sunburst
+          lightens against the navy gradient instead of disappearing. */}
       <RadialFan
         texture={theme.texture}
         origin="tl"
-        opacity={0.16}
-        size={760}
+        opacity={0.50}
+        size={1100}
+        blendMode="screen"
         style={{ zIndex: 0 }}
       />
       {/* Subtle bottom hairline */}
@@ -595,20 +596,21 @@ function FormatBand({
         overflow: "hidden",
       }}
     >
-      {/* Giant Sales-Catalog-scale medallions. ONE top-left, ONE
-          bottom-right. Nothing else. */}
+      {/* Giant Sales-Catalog-scale faceted sunbursts: ONE top-left,
+          ONE bottom-right. Multiply blend so each topic's accent ink
+          shows through on the soft cream tint. */}
       <RadialFan
         texture={theme.texture}
         origin="tl"
-        opacity={0.16}
-        size={820}
+        opacity={0.36}
+        size={1180}
         style={{ zIndex: 0 }}
       />
       <RadialFan
         texture={theme.texture}
         origin="br"
-        opacity={0.16}
-        size={820}
+        opacity={0.36}
+        size={1180}
         style={{ zIndex: 0 }}
       />
 
@@ -1506,8 +1508,9 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
       <RadialFan
         texture="footer"
         origin="center"
-        opacity={0.14}
-        size={620}
+        opacity={0.28}
+        size={1100}
+        blendMode="screen"
         style={{ zIndex: 0 }}
       />
       <div

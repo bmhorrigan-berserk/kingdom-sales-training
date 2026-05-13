@@ -90,13 +90,12 @@ export default function Library() {
           overflow: "hidden",
         }}
       >
-        <RadialFan texture="weight"
+        <RadialFan
+          texture="weight"
           origin="tr"
-          palette={["#5FB286", "#9CB3FF", "#F2A06E", "#E08585"]}
-          opacity={0.14}
-          size={680}
-          rays={56}
-          arcs={6}
+          opacity={0.48}
+          size={1100}
+          blendMode="screen"
           style={{ zIndex: 0 }}
         />
         <div
