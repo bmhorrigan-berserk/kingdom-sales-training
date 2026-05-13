@@ -413,13 +413,16 @@ function TreatmentDirectorySection() {
         overflow: "hidden",
       }}
     >
-      {/* Single bottom-right medallion - butts up against the
-          ShiftingBand footer band that comes next. */}
+      {/* Bottom-right medallion sized so the full fan (focal + rays)
+          fits inside the section. With "br" + scaleY(-1) the focal
+          lands at 0.439*size from the section bottom; size=700
+          places the focal ~307px up - comfortably inside this
+          section's height rather than clipped above. */}
       <RadialFan
         texture="peptides"
         origin="br"
         opacity={0.36}
-        size={1100}
+        size={700}
         style={{ zIndex: 0 }}
       />
 
