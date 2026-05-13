@@ -1,20 +1,24 @@
 /**
- * RadialFan - Sales Catalog-style faceted sunburst vector.
+ * RadialFan - Sales Catalog faceted sunburst, fully enclosed.
  *
- * Renders the same crystalline radial textures the Sales Catalog uses
- * at catalog.kingdomcommandcenter.com - five color variants stored at
- * /textures/texture-<name>.svg. Previously this component clipped the
- * SVG to a perfect circle; that was wrong. The catalog leaves the SVG
- * un-clipped so the natural faceted edges show, bleeds it off the
- * section corner via negative inset, and blends it into the surface
- * with mix-blend-mode (multiply for light surfaces, screen for dark).
+ * Renders the catalog texture SVGs (/textures/texture-<name>.svg) with
+ * a soft radial mask so the faceted edges fade out cleanly instead of
+ * clipping at the SVG bounding box. The texture sits fully inside the
+ * parent section - no negative inset, no corner bleed-off that
+ * created hard cutoffs mid-page.
  *
- * The original prop API is preserved so every existing call site
- * keeps working without modification - `texture`, `origin`, `size`,
- * `opacity`, `style`, `className` all behave the same way. The
- * `blendMode` prop is new; default "multiply" works on cream/paper
- * sections, pass "screen" on navy/dark hero bands so the texture
- * lightens instead of disappearing.
+ * Visual recipe:
+ *   - div with background-image (no circular clip, no clip-path)
+ *   - positive inset places the texture fully inside the parent
+ *   - radial-gradient mask centered on the SVG's natural focal point
+ *     fades the edges to transparent so the bounding box is invisible
+ *   - mix-blend-mode integrates the line ink into the surface
+ *     (multiply on cream, screen on navy/dark gradients)
+ *
+ * Existing call sites pass `texture`, `origin`, `size`, `opacity`,
+ * `style` - those still work. Optional `blendMode` defaults to
+ * "multiply" (right for cream surfaces); pass "screen" on dark hero
+ * bands so the texture lightens instead of disappearing.
  */
 
 export type FanTexture =
@@ -49,27 +53,20 @@ export const KINGDOM_PALETTE = ["#1F6B3F", "#3B5BDB", "#D9622B", "#B23A3A"];
 
 interface RadialFanProps {
   texture?: FanTexture;
-  /** Which corner / edge the sunburst anchors to. The SVG's natural
-      focal sits in the upper-right area; this component flips/rotates
-      to put the focal at the requested origin. Default "tr". */
+  /** Which corner / edge the texture sits in. Texture is fully inside
+      the section - never bleeds off the page. Default "tr". */
   origin?: Origin;
-  /** 0-1. Default 0.40 to match the Sales Catalog. Pair with the
-      right `blendMode` for the surface (multiply on light, screen on
-      dark). */
+  /** 0-1. Default 0.36 for paper / 0.45 for screen blend on dark. */
   opacity?: number;
-  /** Visual width of the sunburst square in px. The SVG is rendered
-      as a square background-image, so this controls both width and
-      height. The sunburst bleeds off the section corner so a large
-      portion is intentionally off-canvas. */
+  /** Square diameter in px. The full faceted sunburst fits inside
+      this box. Sized so it doesn't crowd the section content. */
   size?: number;
-  /** mix-blend-mode. Default "multiply" works on cream/paper. Use
-      "screen" on navy/dark hero bands. */
+  /** mix-blend-mode. "multiply" on light surfaces, "screen" on dark. */
   blendMode?: BlendMode;
   className?: string;
   style?: React.CSSProperties;
   ariaHidden?: boolean;
-  /* Legacy props (still accepted, still ignored, so existing call
-     sites that pass them keep type-checking). */
+  /* Legacy props (still accepted, still ignored). */
   color?: string;
   palette?: string[];
   rays?: number;
@@ -77,30 +74,30 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* Anchor + transform for each origin. The catalog anchors textures
-   with negative inset so the focal sits just inside the section
-   corner and the rest of the sunburst bleeds off the edge. Transforms
-   are picked so the SVG's natural focal (upper-right) lands at the
-   requested origin. */
+/* The SVG's natural focal is around (58.7%, 43.9%) of its viewBox -
+   slightly right of center, slightly above middle. After per-origin
+   transform the focal lands inside the requested corner. */
+const FOCAL_X = "58.7%";
+const FOCAL_Y = "43.9%";
+
+/* Anchor + transform for each origin. Texture is FULLY ENCLOSED -
+   sits with a positive inset from the section edge, no negative
+   bleed. */
 function placementFor(origin: Origin): React.CSSProperties {
-  const NEG = "-26%"; // negative inset that lets the sunburst bleed off the corner
-  const EDGE = "-22%"; // softer negative for edge-anchored variants
+  const TIGHT = "0"; // flush to the corner
+  const EDGE = "0"; // edge-anchored, no inset
 
   switch (origin) {
     case "tr":
-      return { top: NEG, right: NEG, transform: "none" };
+      return { top: TIGHT, right: TIGHT, transform: "none" };
     case "tl":
-      return { top: NEG, left: NEG, transform: "scaleX(-1)" };
+      return { top: TIGHT, left: TIGHT, transform: "scaleX(-1)" };
     case "br":
-      return { bottom: NEG, right: NEG, transform: "scaleY(-1)" };
+      return { bottom: TIGHT, right: TIGHT, transform: "scaleY(-1)" };
     case "bl":
-      return { bottom: NEG, left: NEG, transform: "rotate(180deg)" };
+      return { bottom: TIGHT, left: TIGHT, transform: "rotate(180deg)" };
     case "right":
-      return {
-        top: "50%",
-        right: EDGE,
-        transform: "translateY(-50%)",
-      };
+      return { top: "50%", right: EDGE, transform: "translateY(-50%)" };
     case "left":
       return {
         top: "50%",
@@ -108,11 +105,7 @@ function placementFor(origin: Origin): React.CSSProperties {
         transform: "translateY(-50%) scaleX(-1)",
       };
     case "top":
-      return {
-        top: EDGE,
-        left: "50%",
-        transform: "translateX(-50%)",
-      };
+      return { top: EDGE, left: "50%", transform: "translateX(-50%)" };
     case "bottom":
       return {
         bottom: EDGE,
@@ -132,14 +125,21 @@ function placementFor(origin: Origin): React.CSSProperties {
 export function RadialFan({
   texture = "wellness",
   origin = "tr",
-  opacity = 0.40,
-  size = 980,
+  opacity = 0.36,
+  size = 720,
   blendMode = "multiply",
   className = "",
   style,
   ariaHidden = true,
 }: RadialFanProps) {
   const placement = placementFor(origin);
+
+  /* Radial mask centered on the SVG's natural focal point. The
+     densest part of the sunburst (around the focal) stays fully
+     opaque; the bounding-box edges fade smoothly to transparent so
+     the SVG rectangle is invisible - no hard cutoff lines, no
+     visible edge. */
+  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 45%, rgba(0,0,0,0.6) 70%, transparent 100%)`;
 
   return (
     <div
@@ -149,19 +149,23 @@ export function RadialFan({
         position: "absolute",
         width: size,
         height: size,
+        maxWidth: "100%",
+        maxHeight: "100%",
         backgroundImage: `url('/textures/texture-${texture}.svg')`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "contain",
         opacity,
         mixBlendMode: blendMode,
+        WebkitMaskImage: maskImage,
+        maskImage: maskImage,
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
         ...placement,
-        // Per-call style overrides win, but if the caller passes a
-        // `transform` the placement transform is concatenated.
         ...style,
+        /* If caller passed `transform`, concatenate with our placement
+           transform (otherwise theirs would clobber ours). */
         ...(style?.transform
           ? {
               transform: `${placement.transform ?? ""} ${style.transform}`.trim(),
