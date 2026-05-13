@@ -260,6 +260,29 @@ const SLIDES_FIXING_MALE_ENERGY_CRISIS: string[] = [
   `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-14-ilHKGmNeupUcqa0ubLCa3SDte706Ge.png`,
 ];
 
+const SLIDES_PEPTIDES_TARGETED_CELLULAR_REPAIR: string[] = [
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-01-N9B3pyv0hxavSotIaOIQ3GA90FUqiM.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-02-AGdUrGANVFDLAADDruktUjfqK17kFR.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-03-SiRC2BV0kboKJPLCGx0Wk1succgZod.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-04-SR2wedkGbT961m3sEdvPICSIAKOVxS.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-05-jtflBUnQ6oCp0Sk5u5SLZe5lr4LlR2.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-06-2A9uHwOC8g885vB8MHA1DyGFk2I8fR.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-07-fKmWp5hrSeuyBTWnCGH4Rzyaqihe1O.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-08-26Z5LfYvVNJGxLz99gh7MpfpDNy7Yu.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-09-7Dmh1eZSJ4o9Cc8C2hON5l35DISRXO.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-10-E3AbgYmJ6qnSqOWJ4Szc4NjXweOnZr.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-11-sWu78S5WBOG2r7lIg2aCijRXibRSwX.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-12-XS33leR5i1ZJbOpAn0qHAjU1HA08bz.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-13-eyGBToTQlILqNQj12V2XZz6YzWONRq.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-14-daImHvfs3DLywJeUakIsxU1rY6t0uN.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-15-hZFpdWkuVUJrBBi0ctsghl5phbkgiW.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-16-G8HhLON0X4c5VUrS3bhSkFGhhLwf53.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-17-Q8anUSOJMrY5QyxgALtXxkQb7Ozn19.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-18-sOVNHnRb1H6ovPCWb2IYZnB7Ipo3Go.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-19-EGL1Y5vMKMXkuuzEiHYhKDJlmfN7et.jpg`,
+  `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-20-TCjWLLcVnXR2PaejjvW7qZ07XWnphA.jpg`,
+];
+
 const SLIDES_WHY_WOMEN_NEED_TESTOSTERONE: string[] = [
   `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-01-CT2WLjibPP1CtXbrPlmlSeKPomXSkq.png`,
   `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-02-eMLK2vi1rVJvKIAHxaQag1G9A4GD2O.png`,
@@ -368,6 +391,11 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
       infographic: {
         src: `${BLOB_INFOGRAPHIC_BASE}/peptides-targeted-cellular-repair.jpg`,
         alt: "Kingdom Module 03 - The Peptide Catalog: Precision Signaling for Repair and Performance. Covers peptides vs hormones, the Wolverine Stack (BPC-157 + TB-500), growth hormone secretagogues, aesthetic/libido peptides (GHK-Cu, PT-141), and cognitive/immune peptides.",
+      },
+      slides: {
+        src: SLIDES_PEPTIDES_TARGETED_CELLULAR_REPAIR[0],
+        pages: SLIDES_PEPTIDES_TARGETED_CELLULAR_REPAIR,
+        pageCount: SLIDES_PEPTIDES_TARGETED_CELLULAR_REPAIR.length,
       },
     },
   },
