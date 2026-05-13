@@ -10,6 +10,7 @@ import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import { PageNumber, Eyebrow, Em } from "@/components/Furniture";
 import ShiftingBand from "@/components/ShiftingBand";
 import { ArrowRight, BookOpen, Library, GraduationCap, Brain, PlayCircle } from "lucide-react";
+import { TREATMENT_TOPICS } from "@/lib/mediaData";
 
 const NAVY = "#1A2060";
 const BLUE = "#1F6B3F"; // kingdom green (primary accent)
@@ -328,6 +329,12 @@ export default function Home() {
         `}</style>
       </section>
 
+      {/* TREATMENT CATALOG — what reps actually prescribe.
+          Five tiles, one per module, each linking into the topic
+          detail page. Tone matches "What you will master" - same
+          structure, alternated to cream surface for visual rhythm. */}
+      <TreatmentDirectorySection />
+
       <ShiftingBand eyebrow="· THE KINGDOM STANDARD ·">
         You are not selling hormones. You are{" "}
         <Em>diagnosing a deficit</Em> and prescribing the corrective protocol.
@@ -351,5 +358,224 @@ export default function Home() {
         <PageNumber current={1} total={4} />
       </footer>
     </div>
+  );
+}
+
+/* ─── Treatment Catalog directory ────────────────────────────────────────
+   Sibling to "What you will master." Same composition - eyebrow +
+   Fraunces headline + 5 equal tiles - but on a cream surface with
+   per-topic accent borders so each module reads as its own product
+   line. Each tile is a one-line catchy phrase that frames what the
+   rep is actually restoring on the call. */
+
+const TOPIC_ACCENTS: Record<string, string> = {
+  "fixing-male-energy-crisis":            "#3B5BDB", // blue
+  "why-women-need-testosterone":          "#C95371", // rose
+  "peptides-targeted-cellular-repair":    "#D9622B", // orange
+  "retatrutide-human-survival-algorithm": "#B23A3A", // red
+  "targeted-molecules-cellular-energy":   "#1F6B3F", // green
+};
+
+const TOPIC_PHRASES: Record<string, string> = {
+  "fixing-male-energy-crisis":
+    "Reignite the male engine. Reset testosterone, sleep, and recovery as one signal.",
+  "why-women-need-testosterone":
+    "Lead with testosterone, not estrogen. Restore the female signal hierarchy.",
+  "peptides-targeted-cellular-repair":
+    "Signal precise cellular repair. The Wolverine Stack and the precision catalog.",
+  "retatrutide-human-survival-algorithm":
+    "Override the survival algorithm. Reset the metabolic set-point that defends weight.",
+  "targeted-molecules-cellular-energy":
+    "Fuel the cellular orchestra. NAD+, methylation support, and the wellness stack.",
+};
+
+function TreatmentDirectorySection() {
+  const NAVY = "#1A2060";
+  const CREAM = "#FFFBF0";
+  const HAIRLINE = "#E8DEC6";
+  const INK_MUTED = "#6B6357";
+
+  return (
+    <section
+      style={{
+        position: "relative",
+        background: CREAM,
+        padding: "84px 32px 96px",
+        borderTop: `1px solid ${HAIRLINE}`,
+        overflow: "hidden",
+      }}
+    >
+      <RadialFan
+        texture="wellness"
+        origin="tr"
+        opacity={0.08}
+        size={640}
+        style={{ zIndex: 0 }}
+      />
+      <RadialFan
+        texture="peptides"
+        origin="bl"
+        opacity={0.08}
+        size={560}
+        style={{ zIndex: 0 }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: 1920,
+          margin: "0 auto",
+        }}
+      >
+        <Eyebrow style={{ color: INK_MUTED, marginBottom: 16 }}>
+          § THE TREATMENT CATALOG
+        </Eyebrow>
+        <h2
+          style={{
+            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+            fontWeight: 400,
+            fontSize: "clamp(36px, 5vw, 56px)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.05,
+            color: NAVY,
+            margin: 0,
+            maxWidth: "20ch",
+          }}
+        >
+          What you will <Em>restore.</Em>
+        </h2>
+        <p
+          style={{
+            marginTop: 18,
+            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+            fontSize: 16,
+            lineHeight: 1.55,
+            color: INK_MUTED,
+            maxWidth: "60ch",
+          }}
+        >
+          Five modules, five protocols. The biology beneath every kingdom
+          call. Audio, video, infographic, and the patient-facing deck for
+          each.
+        </p>
+
+        <div
+          style={{
+            marginTop: 56,
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gridAutoRows: "1fr",
+            gap: 16,
+            alignItems: "stretch",
+          }}
+        >
+          {TREATMENT_TOPICS.map((t) => {
+            const accent = TOPIC_ACCENTS[t.slug] ?? "#1F6B3F";
+            const phrase = TOPIC_PHRASES[t.slug] ?? t.tagline;
+            return (
+              <Link key={t.slug} href={`/library/treatment/${t.slug}`}>
+                <a
+                  className="kingdom-treatment-card"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    minHeight: 240,
+                    padding: "28px 24px 24px",
+                    background: CREAM,
+                    border: `1px solid ${HAIRLINE}`,
+                    borderTop: `4px solid ${accent}`,
+                    borderRadius: 14,
+                    textDecoration: "none",
+                    color: "inherit",
+                    transition:
+                      "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+                    boxShadow:
+                      "0 1px 2px rgba(26,32,96,0.04), 0 12px 24px -18px rgba(26,32,96,0.12)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginBottom: 18,
+                    }}
+                  >
+                    <Eyebrow style={{ color: accent }}>
+                      § {t.moduleNumber}
+                    </Eyebrow>
+                    <span
+                      aria-hidden
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: "50%",
+                        background: accent,
+                        boxShadow: `0 0 0 4px ${accent}1F`,
+                      }}
+                    />
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily:
+                        "var(--font-display, Fraunces), Georgia, serif",
+                      fontWeight: 500,
+                      fontSize: 26,
+                      lineHeight: 1.1,
+                      letterSpacing: "-0.018em",
+                      color: NAVY,
+                      margin: 0,
+                    }}
+                  >
+                    {t.shortLabel}
+                  </h3>
+                  <p
+                    style={{
+                      marginTop: 12,
+                      fontFamily:
+                        "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 14,
+                      lineHeight: 1.55,
+                      color: INK_MUTED,
+                      flex: 1,
+                    }}
+                  >
+                    {phrase}
+                  </p>
+                  <div
+                    style={{
+                      marginTop: 20,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      color: accent,
+                      fontFamily:
+                        "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Open module <ArrowRight size={12} />
+                  </div>
+                </a>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      <style>{`
+        .kingdom-treatment-card:hover {
+          transform: translateY(-3px);
+          box-shadow:
+            0 4px 10px rgba(26,32,96,0.08),
+            0 22px 42px -22px rgba(26,32,96,0.28);
+        }
+      `}</style>
+    </section>
   );
 }
