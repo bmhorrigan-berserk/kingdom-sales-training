@@ -1,15 +1,31 @@
 /**
  * TreatmentTopic - detail page for one Treatment Catalog topic.
  *
- * Renders every available format variation (audio, video,
- * infographic, slide deck) for a single topic, stacked vertically.
- * Reached via /library/treatment/<slug>.
+ * Layout (top to bottom):
+ *   1. TopNav
+ *   2. Hero band - navy gradient with corner medallion, breadcrumb,
+ *      module number, short label, long serif title, summary,
+ *      format pill rail with jump links.
+ *   3. "What you'll learn" strip - three bullet points framing the
+ *      module before the rep dives into any format.
+ *   4. Four asymmetric stacked sections (audio, video, infographic,
+ *      slides). The text + meta side alternates left/right so the page
+ *      breathes instead of stacking as a column of bricks.
+ *   5. Continue Learning - links to the other four modules so the rep
+ *      can flow through the catalog without bouncing to Library.
+ *   6. Footer.
  *
- * Each format section is rendered if and only if the topic's
- * `assets.<format>` is set in mediaData.ts. Missing formats show a
- * compact placeholder so the rep knows it's intentional and coming,
- * not a broken link.
+ * Format rendering:
+ *   - audio       -> <audio controls> with duration + download
+ *   - video       -> <video controls> or embed iframe (YouTube/Vimeo)
+ *   - infographic -> high-res <img> with download
+ *   - slides      -> image-page carousel (asset.pages[]) with prev /
+ *                    next + keyboard nav, or iframe fallback for
+ *                    PDF/Google Slides URLs
+ *
+ * Reached via /library/treatment/<slug>.
  */
+import { useEffect, useMemo, useState } from "react";
 import { Link, useRoute } from "wouter";
 import {
   Headphones,
@@ -18,246 +34,141 @@ import {
   Layers,
   Download,
   ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
   Clock,
+  Sparkles,
 } from "lucide-react";
 import TopNav from "@/components/TopNav";
 import { Eyebrow, Em } from "@/components/Furniture";
 import { DurationBadge } from "@/components/DurationBadge";
+import { RadialFan, type FanTexture } from "@/components/RadialFan";
 import {
   getTreatmentTopic,
   topicAvailableFormats,
+  TREATMENT_TOPICS,
   type TreatmentTopic as TopicType,
   type TreatmentTopicAsset,
 } from "@/lib/mediaData";
 
+/* ─── kingdom palette ────────────────────────────────────────────────────── */
 const NAVY = "#1A2060";
 const NAVY_DEEP = "#141849";
 const GREEN = "#1F6B3F";
 const ORANGE = "#D9622B";
+const RED = "#B23A3A";
+const BLUE = "#3B5BDB";
 const CREAM = "#FFFBF0";
+const CREAM_WARM = "#FAF3E2";
 const PALE = "#EAF4EC";
 const HAIRLINE = "#E8DEC6";
 const INK = "#2D2A24";
 const INK_MUTED = "#6B6357";
-const ACCENT = GREEN;
+
+/* ─── per-topic accent + medallion texture ───────────────────────────────── */
+const TOPIC_THEME: Record<
+  string,
+  { accent: string; texture: FanTexture; soft: string }
+> = {
+  "fixing-male-energy-crisis":          { accent: RED,    texture: "hormone",  soft: "#F8E8E5" },
+  "why-women-need-testosterone":        { accent: ORANGE, texture: "weight",   soft: "#FBEBDD" },
+  "peptides-targeted-cellular-repair":  { accent: BLUE,   texture: "peptides", soft: "#E3E8FB" },
+  "retatrutide-human-survival-algorithm": { accent: ORANGE, texture: "weight", soft: "#FBEBDD" },
+  "targeted-molecules-cellular-energy": { accent: GREEN,  texture: "wellness", soft: PALE },
+};
+const DEFAULT_THEME = { accent: GREEN, texture: "wellness" as FanTexture, soft: PALE };
+
+/* ─── format meta (label + icon + section blurb) ─────────────────────────── */
+type AssetType = "audio" | "video" | "infographic" | "slides";
+
+const FORMAT_META: Record<
+  AssetType,
+  { label: string; eyebrow: string; blurb: string; Icon: typeof Headphones }
+> = {
+  audio: {
+    label: "Audio",
+    eyebrow: "§ A · AUDIO DEEP DIVE",
+    blurb: "Long-form recording. Headphones in, walk through the biology end to end before the next live call.",
+    Icon: Headphones,
+  },
+  video: {
+    label: "Video",
+    eyebrow: "§ B · VIDEO OVERVIEW",
+    blurb: "Watch the kingdom narrative version. Same content, visual pacing - useful before a roleplay or shadow call.",
+    Icon: VideoIcon,
+  },
+  infographic: {
+    label: "Infographic",
+    eyebrow: "§ C · INFOGRAPHIC",
+    blurb: "One-page visual map of the protocol. Save it, print it, share it with a patient on a follow-up call.",
+    Icon: ImageIcon,
+  },
+  slides: {
+    label: "Slide Deck",
+    eyebrow: "§ D · SLIDE DECK",
+    blurb: "The patient-facing deck. Walk a patient through it on a call, or use it as a study reference between recordings.",
+    Icon: Layers,
+  },
+};
+
+/* ──────────────────────────────────────────────────────────────────────────── */
 
 export default function TreatmentTopic() {
   const [, params] = useRoute<{ slug: string }>("/library/treatment/:slug");
   const slug = params?.slug ?? "";
   const topic = getTreatmentTopic(slug);
 
-  if (!topic) {
-    return (
-      <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
-        <TopNav />
-        <div style={{ maxWidth: 720, margin: "0 auto", padding: "96px 32px" }}>
-          <Eyebrow style={{ color: ACCENT }}>· TOPIC NOT FOUND ·</Eyebrow>
-          <h1
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(36px, 4vw, 56px)",
-              color: NAVY,
-              marginTop: 14,
-            }}
-          >
-            We could not find that topic.
-          </h1>
-          <p style={{ marginTop: 16, color: INK_MUTED }}>
-            The Treatment Catalog topic <code>{slug}</code> is not in the
-            library. It may have been renamed or removed.
-          </p>
-          <div style={{ marginTop: 28 }}>
-            <Link href="/library">
-              <a
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "10px 18px",
-                  background: ACCENT,
-                  color: CREAM,
-                  textDecoration: "none",
-                  borderRadius: 8,
-                  fontFamily:
-                    "var(--font-body, Inter), system-ui, sans-serif",
-                  fontWeight: 600,
-                }}
-              >
-                <ArrowLeft size={16} />
-                Back to Library
-              </a>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (!topic) return <NotFoundView slug={slug} />;
 
+  const theme = TOPIC_THEME[topic.slug] ?? DEFAULT_THEME;
   const available = topicAvailableFormats(topic);
+
+  // Other modules for the "Continue learning" strip.
+  const otherTopics = useMemo(
+    () => TREATMENT_TOPICS.filter((t) => t.slug !== topic.slug),
+    [topic.slug]
+  );
 
   return (
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
       <TopNav />
 
-      {/* HERO */}
-      <section
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <Hero topic={topic} theme={theme} available={available} />
+
+      {/* ── WHAT YOU'LL LEARN STRIP ──────────────────────────────────── */}
+      <LearningStrip topic={topic} accent={theme.accent} />
+
+      {/* ── ASSET SECTIONS (asymmetric alternating) ─────────────────── */}
+      <main
         style={{
-          position: "relative",
-          background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`,
-          color: CREAM,
-          padding: "56px 32px 64px",
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "32px 32px 80px",
         }}
       >
-        <div style={{ maxWidth: 980, margin: "0 auto" }}>
-          <Link href="/library">
-            <a
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                fontFamily: "var(--font-mono, ui-monospace, monospace)",
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "rgba(255,251,240,0.7)",
-                textDecoration: "none",
-                marginBottom: 18,
-              }}
-            >
-              <ArrowLeft size={14} />
-              Library / Treatment Catalog
-            </a>
-          </Link>
-          <Eyebrow
-            style={{ color: "#5FB286", marginBottom: 14 }}
-          >
-            § TREATMENT CATALOG · {topic.title.toUpperCase()}
-          </Eyebrow>
-          <h1
-            style={{
-              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-              fontWeight: 400,
-              fontSize: "clamp(40px, 5vw, 68px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              color: CREAM,
-              margin: 0,
-              maxWidth: "20ch",
-            }}
-          >
-            {topic.title}
-            <Em style={{ color: ORANGE }}>.</Em>
-          </h1>
-          <p
-            style={{
-              marginTop: 18,
-              fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-              fontSize: 17,
-              lineHeight: 1.55,
-              color: "rgba(255,251,240,0.84)",
-              maxWidth: "70ch",
-            }}
-          >
-            {topic.summary}
-          </p>
+        {(["audio", "video", "infographic", "slides"] as AssetType[]).map(
+          (type, idx) => (
+            <AssetBlock
+              key={type}
+              type={type}
+              asset={topic.assets[type]}
+              accent={theme.accent}
+              soft={theme.soft}
+              reverse={idx % 2 === 1}
+            />
+          )
+        )}
+      </main>
 
-          {/* Jump nav */}
-          {available.length > 1 && (
-            <nav
-              style={{
-                marginTop: 28,
-                display: "flex",
-                gap: 8,
-                flexWrap: "wrap",
-                paddingTop: 18,
-                borderTop: "1px solid rgba(255,251,240,0.16)",
-              }}
-            >
-              {available.map((f) => {
-                const label =
-                  f === "audio" ? "Audio" :
-                  f === "video" ? "Video" :
-                  f === "infographic" ? "Infographic" :
-                  "Slide Deck";
-                const Icon =
-                  f === "audio" ? Headphones :
-                  f === "video" ? VideoIcon :
-                  f === "infographic" ? ImageIcon :
-                  Layers;
-                return (
-                  <a
-                    key={f}
-                    href={`#${f}`}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 7,
-                      padding: "7px 14px",
-                      background: "rgba(255,251,240,0.10)",
-                      border: "1px solid rgba(255,251,240,0.20)",
-                      borderRadius: 999,
-                      fontFamily:
-                        "var(--font-mono, ui-monospace, monospace)",
-                      fontSize: 11,
-                      fontWeight: 600,
-                      letterSpacing: "0.10em",
-                      textTransform: "uppercase",
-                      color: CREAM,
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Icon size={12} />
-                    {label}
-                  </a>
-                );
-              })}
-            </nav>
-          )}
-        </div>
-      </section>
+      {/* ── CONTINUE LEARNING ───────────────────────────────────────── */}
+      <ContinueLearning topics={otherTopics} />
 
-      {/* ASSET SECTIONS */}
-      <div style={{ maxWidth: 980, margin: "0 auto", padding: "48px 32px 96px" }}>
-        <AssetSection
-          id="audio"
-          eyebrow="§ A · AUDIO"
-          title="Audio deep dive"
-          asset={topic.assets.audio}
-          type="audio"
-          accent={ACCENT}
-        />
-        <AssetSection
-          id="video"
-          eyebrow="§ B · VIDEO"
-          title="Video overview"
-          asset={topic.assets.video}
-          type="video"
-          accent={ACCENT}
-        />
-        <AssetSection
-          id="infographic"
-          eyebrow="§ C · INFOGRAPHIC"
-          title="Visual summary"
-          asset={topic.assets.infographic}
-          type="infographic"
-          accent={ACCENT}
-        />
-        <AssetSection
-          id="slides"
-          eyebrow="§ D · SLIDE DECK"
-          title="Patient-facing slide deck"
-          asset={topic.assets.slides}
-          type="slides"
-          accent={ACCENT}
-        />
-      </div>
-
-      {/* FOOTER */}
+      {/* ── FOOTER ──────────────────────────────────────────────────── */}
       <footer
         style={{
-          padding: 32,
+          padding: "32px",
           maxWidth: 1920,
           margin: "0 auto",
           borderTop: `1px solid ${HAIRLINE}`,
@@ -280,7 +191,7 @@ export default function TreatmentTopic() {
               fontWeight: 600,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              color: ACCENT,
+              color: theme.accent,
               textDecoration: "none",
             }}
           >
@@ -293,111 +204,568 @@ export default function TreatmentTopic() {
   );
 }
 
-/* ─── Asset section ──────────────────────────────────────────────────────── */
-type AssetType = "audio" | "video" | "infographic" | "slides";
+/* ─── Hero band ──────────────────────────────────────────────────────────── */
+function Hero({
+  topic,
+  theme,
+  available,
+}: {
+  topic: TopicType;
+  theme: { accent: string; texture: FanTexture };
+  available: AssetType[];
+}) {
+  return (
+    <section
+      style={{
+        position: "relative",
+        background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)`,
+        color: CREAM,
+        overflow: "hidden",
+      }}
+    >
+      {/* Corner medallion */}
+      <RadialFan
+        texture={theme.texture}
+        origin="tr"
+        opacity={0.16}
+        size={720}
+        style={{ zIndex: 0 }}
+      />
+      {/* Subtle bottom hairline */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 1,
+          background: "rgba(255,251,240,0.10)",
+        }}
+      />
 
-function AssetSection({
-  id,
-  eyebrow,
-  title,
-  asset,
-  type,
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "44px 32px 56px",
+        }}
+      >
+        {/* Breadcrumb */}
+        <Link href="/library">
+          <a
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "rgba(255,251,240,0.66)",
+              textDecoration: "none",
+              marginBottom: 28,
+            }}
+          >
+            <ArrowLeft size={13} />
+            Library &nbsp;/&nbsp; Treatment Catalog
+          </a>
+        </Link>
+
+        {/* Two-column grid: title block (left, wider) + format rail (right) */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1.55fr) minmax(0, 1fr)",
+            gap: 56,
+            alignItems: "start",
+          }}
+        >
+          {/* LEFT: module number + short label + serif title + summary */}
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                gap: 20,
+                marginBottom: 12,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                  fontWeight: 600,
+                  fontSize: "clamp(64px, 8vw, 112px)",
+                  lineHeight: 0.85,
+                  letterSpacing: "-0.04em",
+                  color: theme.accent,
+                }}
+              >
+                {topic.moduleNumber}
+              </span>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,251,240,0.65)",
+                    marginBottom: 6,
+                  }}
+                >
+                  § Module {topic.moduleNumber} · Treatment Catalog
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                    fontWeight: 500,
+                    fontSize: "clamp(32px, 3.6vw, 48px)",
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.02em",
+                    color: CREAM,
+                  }}
+                >
+                  {topic.shortLabel}
+                  <Em style={{ color: theme.accent }}>.</Em>
+                </div>
+              </div>
+            </div>
+
+            <h1
+              style={{
+                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 400,
+                fontSize: "clamp(22px, 2.4vw, 30px)",
+                lineHeight: 1.25,
+                letterSpacing: "-0.01em",
+                color: "rgba(255,251,240,0.78)",
+                margin: "18px 0 0",
+                maxWidth: "30ch",
+              }}
+            >
+              {topic.title}
+            </h1>
+
+            <p
+              style={{
+                marginTop: 22,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "rgba(255,251,240,0.82)",
+                maxWidth: "62ch",
+              }}
+            >
+              {topic.summary}
+            </p>
+          </div>
+
+          {/* RIGHT: format rail */}
+          <aside
+            style={{
+              background: "rgba(255,251,240,0.06)",
+              border: "1px solid rgba(255,251,240,0.16)",
+              borderRadius: 14,
+              padding: "20px 22px",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(255,251,240,0.55)",
+                marginBottom: 12,
+                paddingBottom: 10,
+                borderBottom: "1px solid rgba(255,251,240,0.12)",
+              }}
+            >
+              § Formats in this module
+            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                margin: 0,
+                padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+              }}
+            >
+              {(["audio", "video", "infographic", "slides"] as AssetType[]).map(
+                (f) => {
+                  const isAvailable = available.includes(f);
+                  const { label, Icon } = FORMAT_META[f];
+                  return (
+                    <li key={f}>
+                      <a
+                        href={isAvailable ? `#${f}` : undefined}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                          padding: "10px 12px",
+                          background: isAvailable
+                            ? "rgba(255,251,240,0.05)"
+                            : "transparent",
+                          border: "1px solid rgba(255,251,240,0.10)",
+                          borderRadius: 8,
+                          color: isAvailable
+                            ? CREAM
+                            : "rgba(255,251,240,0.36)",
+                          textDecoration: "none",
+                          fontFamily:
+                            "var(--font-body, Inter), system-ui, sans-serif",
+                          fontSize: 13,
+                          fontWeight: 500,
+                          cursor: isAvailable ? "pointer" : "default",
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 28,
+                            height: 28,
+                            borderRadius: 6,
+                            background: isAvailable
+                              ? theme.accent
+                              : "rgba(255,251,240,0.10)",
+                            color: isAvailable ? CREAM : "rgba(255,251,240,0.4)",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Icon size={13} />
+                        </span>
+                        <span style={{ flex: 1 }}>{label}</span>
+                        <span
+                          style={{
+                            fontFamily:
+                              "var(--font-mono, ui-monospace, monospace)",
+                            fontSize: 9,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                            color: isAvailable
+                              ? "rgba(255,251,240,0.6)"
+                              : "rgba(255,251,240,0.32)",
+                          }}
+                        >
+                          {isAvailable ? "Available" : "Soon"}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                }
+              )}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── "What you'll learn" strip ──────────────────────────────────────────── */
+function LearningStrip({
+  topic,
   accent,
 }: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  asset: TreatmentTopicAsset | undefined;
-  type: AssetType;
+  topic: TopicType;
   accent: string;
 }) {
   return (
     <section
-      id={id}
       style={{
-        marginBottom: 48,
-        scrollMarginTop: 80,
-        padding: "28px 28px 26px",
-        background: CREAM,
-        border: `1px solid ${HAIRLINE}`,
-        borderLeft: `4px solid ${asset ? accent : HAIRLINE}`,
-        borderRadius: 12,
+        background: CREAM_WARM,
+        borderBottom: `1px solid ${HAIRLINE}`,
       }}
     >
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          marginBottom: 6,
+          maxWidth: 1200,
+          margin: "0 auto",
+          padding: "32px 32px 28px",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.7fr) minmax(0, 2fr)",
+          gap: 32,
+          alignItems: "start",
         }}
       >
-        <Eyebrow style={{ color: asset ? accent : INK_MUTED }}>
-          {eyebrow}
-        </Eyebrow>
-        {!asset && (
-          <span
+        <div>
+          <Eyebrow style={{ color: accent, marginBottom: 8 }}>
+            § What you'll learn
+          </Eyebrow>
+          <div
             style={{
-              fontFamily: "var(--font-mono, ui-monospace, monospace)",
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: INK_MUTED,
-              padding: "2px 8px",
-              background: "rgba(45, 42, 36, 0.06)",
-              borderRadius: 4,
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 500,
+              fontSize: "clamp(22px, 2vw, 28px)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.01em",
+              color: NAVY,
             }}
           >
-            Coming soon
-          </span>
-        )}
+            Three anchors for the call.
+          </div>
+        </div>
+        <ol
+          style={{
+            listStyle: "none",
+            margin: 0,
+            padding: 0,
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 18,
+            counterReset: "learn",
+          }}
+        >
+          {topic.learningBullets.map((b, i) => (
+            <li
+              key={i}
+              style={{
+                position: "relative",
+                paddingLeft: 44,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 14.5,
+                lineHeight: 1.55,
+                color: INK,
+              }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 30,
+                  height: 30,
+                  borderRadius: 8,
+                  background: accent,
+                  color: CREAM,
+                  fontFamily:
+                    "var(--font-mono, ui-monospace, monospace)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {b}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Asymmetric asset block ─────────────────────────────────────────────── */
+function AssetBlock({
+  type,
+  asset,
+  accent,
+  soft,
+  reverse,
+}: {
+  type: AssetType;
+  asset: TreatmentTopicAsset | undefined;
+  accent: string;
+  soft: string;
+  reverse: boolean;
+}) {
+  const meta = FORMAT_META[type];
+  const { Icon } = meta;
+
+  // Asymmetric grid: text column ~ 0.85fr, media column ~ 1.6fr.
+  // Reverse swaps which side the text sits on.
+  const textCol = (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gridColumn: reverse ? 2 : 1,
+        gridRow: 1,
+      }}
+    >
+      <div
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 14,
+        }}
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 34,
+            height: 34,
+            borderRadius: 8,
+            background: asset ? accent : "rgba(45,42,36,0.10)",
+            color: asset ? CREAM : INK_MUTED,
+          }}
+        >
+          <Icon size={15} />
+        </span>
+        <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
+          {meta.eyebrow}
+        </Eyebrow>
       </div>
       <h2
         style={{
           fontFamily: "var(--font-display, Fraunces), Georgia, serif",
           fontWeight: 500,
-          fontSize: 26,
-          lineHeight: 1.2,
+          fontSize: "clamp(28px, 3vw, 38px)",
+          lineHeight: 1.1,
+          letterSpacing: "-0.018em",
           color: NAVY,
           margin: 0,
-          letterSpacing: "-0.015em",
+          maxWidth: "18ch",
         }}
       >
-        {title}
+        {meta.label}
+        <Em style={{ color: accent }}>.</Em>
       </h2>
-
-      {asset ? (
-        <div style={{ marginTop: 18 }}>
-          {type === "audio" && <AudioPlayer asset={asset} accent={accent} />}
-          {type === "video" && <VideoPlayer asset={asset} accent={accent} />}
-          {type === "infographic" && <InfographicView asset={asset} accent={accent} />}
-          {type === "slides" && <SlideEmbed asset={asset} accent={accent} />}
+      <p
+        style={{
+          marginTop: 14,
+          marginBottom: 0,
+          fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+          fontSize: 15,
+          lineHeight: 1.6,
+          color: INK_MUTED,
+          maxWidth: "44ch",
+        }}
+      >
+        {asset
+          ? meta.blurb
+          : `This format is on the production list. The ${type} variation will live here as soon as it ships.`}
+      </p>
+      {!asset && (
+        <div style={{ marginTop: 12 }}>
+          <span
+            style={{
+              display: "inline-block",
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: INK_MUTED,
+              padding: "4px 10px",
+              background: "rgba(45,42,36,0.06)",
+              borderRadius: 4,
+            }}
+          >
+            Coming soon
+          </span>
         </div>
-      ) : (
-        <p
-          style={{
-            marginTop: 14,
-            marginBottom: 0,
-            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-            fontSize: 14,
-            lineHeight: 1.55,
-            color: INK_MUTED,
-            maxWidth: "60ch",
-          }}
-        >
-          This format is on the production list. The audio is the
-          source-of-truth recording; the {type} will be linked here as
-          soon as it ships.
-        </p>
       )}
+    </div>
+  );
+
+  const mediaCol = (
+    <div
+      style={{
+        gridColumn: reverse ? 1 : 2,
+        gridRow: 1,
+        minWidth: 0,
+      }}
+    >
+      {asset ? (
+        <MediaRender type={type} asset={asset} accent={accent} />
+      ) : (
+        <PlaceholderMedia accent={accent} soft={soft} Icon={Icon} />
+      )}
+    </div>
+  );
+
+  return (
+    <section
+      id={type}
+      style={{
+        scrollMarginTop: 80,
+        padding: "60px 0",
+        borderBottom: `1px solid ${HAIRLINE}`,
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.6fr)",
+        gap: 56,
+        alignItems: "stretch",
+      }}
+    >
+      {textCol}
+      {mediaCol}
     </section>
   );
 }
 
-/* ─── Format renderers ───────────────────────────────────────────────────── */
+function PlaceholderMedia({
+  accent,
+  soft,
+  Icon,
+}: {
+  accent: string;
+  soft: string;
+  Icon: typeof Headphones;
+}) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "16 / 10",
+        background: soft,
+        borderRadius: 14,
+        border: `1px dashed ${HAIRLINE}`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: accent,
+      }}
+    >
+      <Icon size={36} strokeWidth={1.4} style={{ opacity: 0.6 }} />
+    </div>
+  );
+}
 
-function AudioPlayer({
+/* ─── Media render switcher ──────────────────────────────────────────────── */
+function MediaRender({
+  type,
+  asset,
+  accent,
+}: {
+  type: AssetType;
+  asset: TreatmentTopicAsset;
+  accent: string;
+}) {
+  if (type === "audio") return <AudioBlock asset={asset} accent={accent} />;
+  if (type === "video") return <VideoBlock asset={asset} />;
+  if (type === "infographic")
+    return <InfographicBlock asset={asset} accent={accent} />;
+  return <SlidesBlock asset={asset} accent={accent} />;
+}
+
+/* ─── Audio ──────────────────────────────────────────────────────────────── */
+function AudioBlock({
   asset,
   accent,
 }: {
@@ -405,7 +773,74 @@ function AudioPlayer({
   accent: string;
 }) {
   return (
-    <div>
+    <div
+      style={{
+        background: CREAM,
+        border: `1px solid ${HAIRLINE}`,
+        borderRadius: 14,
+        padding: "26px 26px 22px",
+        boxShadow: "0 1px 2px rgba(26,32,96,0.04), 0 14px 36px rgba(26,32,96,0.06)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          marginBottom: 18,
+        }}
+      >
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 56,
+            height: 56,
+            borderRadius: 14,
+            background: accent,
+            color: CREAM,
+            boxShadow: `0 8px 20px ${accent}33`,
+          }}
+        >
+          <Headphones size={24} />
+        </span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: accent,
+            }}
+          >
+            Audio · Deep dive
+          </div>
+          <div
+            style={{
+              marginTop: 4,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+              fontFamily:
+                "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 11,
+              color: INK_MUTED,
+              letterSpacing: "0.06em",
+            }}
+          >
+            <span
+              style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+            >
+              <Clock size={12} />
+              <DurationBadge src={asset.src} type="audio" />
+            </span>
+          </div>
+        </div>
+      </div>
       <audio
         controls
         preload="metadata"
@@ -414,24 +849,7 @@ function AudioPlayer({
       >
         Your browser does not support audio playback.
       </audio>
-      <div
-        style={{
-          marginTop: 12,
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          flexWrap: "wrap",
-          fontFamily: "var(--font-mono, ui-monospace, monospace)",
-          fontSize: 11,
-          color: INK_MUTED,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-        }}
-      >
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-          <Clock size={12} />
-          <DurationBadge src={asset.src} type="audio" />
-        </span>
+      <div style={{ marginTop: 14, textAlign: "right" }}>
         <a
           href={asset.downloadSrc || asset.src}
           download
@@ -439,9 +857,13 @@ function AudioPlayer({
             display: "inline-flex",
             alignItems: "center",
             gap: 6,
+            fontFamily: "var(--font-mono, ui-monospace, monospace)",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
             color: accent,
             textDecoration: "none",
-            fontWeight: 600,
           }}
         >
           <Download size={12} />
@@ -452,31 +874,27 @@ function AudioPlayer({
   );
 }
 
-function VideoPlayer({
-  asset,
-}: {
-  asset: TreatmentTopicAsset;
-  accent: string;
-}) {
-  // If the src looks like a YouTube/Vimeo embed URL, render an iframe.
-  // Otherwise render a native <video> element.
+/* ─── Video ──────────────────────────────────────────────────────────────── */
+function VideoBlock({ asset }: { asset: TreatmentTopicAsset }) {
   const src = asset.src;
   const isEmbed =
     /youtube\.com\/embed\//.test(src) ||
     /player\.vimeo\.com\/video\//.test(src);
 
-  if (isEmbed) {
-    return (
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "16 / 9",
-          background: "#000",
-          borderRadius: 8,
-          overflow: "hidden",
-        }}
-      >
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        aspectRatio: "16 / 9",
+        background: "#000",
+        borderRadius: 14,
+        overflow: "hidden",
+        boxShadow:
+          "0 1px 2px rgba(26,32,96,0.04), 0 18px 40px rgba(26,32,96,0.10)",
+      }}
+    >
+      {isEmbed ? (
         <iframe
           src={src}
           style={{
@@ -490,24 +908,29 @@ function VideoPlayer({
           allowFullScreen
           title="Video"
         />
-      </div>
-    );
-  }
-
-  return (
-    <video
-      controls
-      preload="metadata"
-      poster={asset.poster}
-      style={{ width: "100%", borderRadius: 8, background: "#000" }}
-    >
-      <source src={src} />
-      Your browser does not support video playback.
-    </video>
+      ) : (
+        <video
+          controls
+          preload="metadata"
+          poster={asset.poster}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            background: "#000",
+          }}
+        >
+          <source src={src} />
+          Your browser does not support video playback.
+        </video>
+      )}
+    </div>
   );
 }
 
-function InfographicView({
+/* ─── Infographic ────────────────────────────────────────────────────────── */
+function InfographicBlock({
   asset,
   accent,
 }: {
@@ -515,7 +938,16 @@ function InfographicView({
   accent: string;
 }) {
   return (
-    <div>
+    <div
+      style={{
+        background: CREAM,
+        border: `1px solid ${HAIRLINE}`,
+        borderRadius: 14,
+        overflow: "hidden",
+        boxShadow:
+          "0 1px 2px rgba(26,32,96,0.04), 0 18px 40px rgba(26,32,96,0.08)",
+      }}
+    >
       <img
         src={asset.src}
         alt={asset.alt ?? "Treatment infographic"}
@@ -523,11 +955,31 @@ function InfographicView({
           width: "100%",
           height: "auto",
           display: "block",
-          borderRadius: 8,
-          border: `1px solid ${HAIRLINE}`,
         }}
       />
-      <div style={{ marginTop: 12 }}>
+      <div
+        style={{
+          padding: "14px 18px",
+          borderTop: `1px solid ${HAIRLINE}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-mono, ui-monospace, monospace)",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: INK_MUTED,
+          }}
+        >
+          One-page visual map
+        </span>
         <a
           href={asset.downloadSrc || asset.src}
           download
@@ -536,23 +988,248 @@ function InfographicView({
             alignItems: "center",
             gap: 6,
             fontFamily: "var(--font-mono, ui-monospace, monospace)",
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.08em",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
             textTransform: "uppercase",
             color: accent,
             textDecoration: "none",
           }}
         >
           <Download size={12} />
-          Download full-resolution image
+          Download full-res
         </a>
       </div>
     </div>
   );
 }
 
-function SlideEmbed({
+/* ─── Slides ─────────────────────────────────────────────────────────────── */
+function SlidesBlock({
+  asset,
+  accent,
+}: {
+  asset: TreatmentTopicAsset;
+  accent: string;
+}) {
+  // If `pages` array is provided, render an image carousel.
+  // Otherwise fall back to iframe embed (PDF / Google Slides).
+  const pages = asset.pages;
+  if (pages && pages.length > 0) {
+    return <SlideCarousel pages={pages} accent={accent} />;
+  }
+  return <SlideIframe asset={asset} accent={accent} />;
+}
+
+function SlideCarousel({
+  pages,
+  accent,
+}: {
+  pages: string[];
+  accent: string;
+}) {
+  const [idx, setIdx] = useState(0);
+  const total = pages.length;
+  const prev = () => setIdx((i) => (i - 1 + total) % total);
+  const next = () => setIdx((i) => (i + 1) % total);
+
+  // Keyboard navigation when carousel container is focused.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total]);
+
+  return (
+    <div>
+      {/* Frame */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          aspectRatio: "16 / 9",
+          background: NAVY_DEEP,
+          borderRadius: 14,
+          overflow: "hidden",
+          boxShadow:
+            "0 1px 2px rgba(26,32,96,0.04), 0 18px 40px rgba(26,32,96,0.10)",
+        }}
+      >
+        <img
+          src={pages[idx]}
+          alt={`Slide ${idx + 1} of ${total}`}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            background: NAVY_DEEP,
+          }}
+        />
+
+        {/* Prev / Next overlay buttons */}
+        <button
+          type="button"
+          aria-label="Previous slide"
+          onClick={prev}
+          style={navButtonStyle("left", accent)}
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          type="button"
+          aria-label="Next slide"
+          onClick={next}
+          style={navButtonStyle("right", accent)}
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Counter pill */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 14,
+            left: 14,
+            padding: "6px 12px",
+            background: "rgba(20,24,73,0.7)",
+            color: CREAM,
+            borderRadius: 999,
+            fontFamily: "var(--font-mono, ui-monospace, monospace)",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+          }}
+        >
+          {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </div>
+      </div>
+
+      {/* Thumbnail rail */}
+      <div
+        style={{
+          marginTop: 14,
+          display: "flex",
+          gap: 8,
+          overflowX: "auto",
+          paddingBottom: 6,
+          scrollbarWidth: "thin",
+        }}
+      >
+        {pages.map((p, i) => (
+          <button
+            key={p}
+            type="button"
+            onClick={() => setIdx(i)}
+            aria-label={`Jump to slide ${i + 1}`}
+            style={{
+              flexShrink: 0,
+              width: 88,
+              aspectRatio: "16 / 9",
+              border:
+                i === idx
+                  ? `2px solid ${accent}`
+                  : `1px solid ${HAIRLINE}`,
+              borderRadius: 6,
+              padding: 0,
+              background: NAVY_DEEP,
+              overflow: "hidden",
+              cursor: "pointer",
+              opacity: i === idx ? 1 : 0.72,
+              transition: "opacity 120ms ease, border-color 120ms ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.opacity = i === idx ? "1" : "0.72")
+            }
+          >
+            <img
+              src={p}
+              alt=""
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Meta row */}
+      <div
+        style={{
+          marginTop: 12,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+          fontFamily: "var(--font-mono, ui-monospace, monospace)",
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+        }}
+      >
+        <span style={{ color: INK_MUTED }}>
+          {total} slide{total === 1 ? "" : "s"} · use ← → to navigate
+        </span>
+        <a
+          href={pages[idx]}
+          download
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            color: accent,
+            textDecoration: "none",
+          }}
+        >
+          <Download size={12} />
+          Download slide {idx + 1}
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function navButtonStyle(
+  side: "left" | "right",
+  accent: string
+): React.CSSProperties {
+  return {
+    position: "absolute",
+    top: "50%",
+    [side]: 14,
+    transform: "translateY(-50%)",
+    width: 44,
+    height: 44,
+    borderRadius: "50%",
+    background: "rgba(20,24,73,0.62)",
+    color: CREAM,
+    border: `1px solid rgba(255,251,240,0.18)`,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+    transition: "background 120ms ease",
+  } as React.CSSProperties;
+}
+
+function SlideIframe({
   asset,
   accent,
 }: {
@@ -560,8 +1237,6 @@ function SlideEmbed({
   accent: string;
 }) {
   const src = asset.src;
-  // Decide rendering by URL shape. PDF -> embed in iframe. Google Slides
-  // / SlideShare / generic embed URL -> iframe directly.
   const isPdf = src.toLowerCase().endsWith(".pdf");
   const embedSrc = isPdf
     ? `${src}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`
@@ -573,9 +1248,9 @@ function SlideEmbed({
         style={{
           position: "relative",
           width: "100%",
-          aspectRatio: "4 / 3",
+          aspectRatio: "16 / 9",
           background: PALE,
-          borderRadius: 8,
+          borderRadius: 14,
           overflow: "hidden",
           border: `1px solid ${HAIRLINE}`,
         }}
@@ -622,27 +1297,205 @@ function SlideEmbed({
             gap: 6,
             color: accent,
             textDecoration: "none",
-            fontWeight: 600,
+            fontWeight: 700,
           }}
         >
           <Download size={12} />
           Download deck
         </a>
-        <a
-          href={src}
-          target="_blank"
-          rel="noopener noreferrer"
+      </div>
+    </div>
+  );
+}
+
+/* ─── Continue learning strip ────────────────────────────────────────────── */
+function ContinueLearning({ topics }: { topics: TopicType[] }) {
+  return (
+    <section
+      style={{
+        background: CREAM_WARM,
+        borderTop: `1px solid ${HAIRLINE}`,
+        borderBottom: `1px solid ${HAIRLINE}`,
+        padding: "56px 32px 64px",
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            color: INK_MUTED,
-            textDecoration: "none",
-            fontWeight: 600,
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 16,
+            marginBottom: 24,
           }}
         >
-          Open in new tab →
-        </a>
+          <div>
+            <Eyebrow style={{ color: GREEN, marginBottom: 8 }}>
+              <Sparkles size={11} style={{ marginRight: 6, verticalAlign: -1 }} />
+              § CONTINUE LEARNING
+            </Eyebrow>
+            <h3
+              style={{
+                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                fontWeight: 500,
+                fontSize: "clamp(28px, 3vw, 38px)",
+                lineHeight: 1.1,
+                letterSpacing: "-0.018em",
+                color: NAVY,
+                margin: 0,
+              }}
+            >
+              Other modules in the catalog<Em style={{ color: ORANGE }}>.</Em>
+            </h3>
+          </div>
+          <Link href="/library#treatment">
+            <a
+              style={{
+                fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: GREEN,
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              All modules
+              <ArrowRight size={12} />
+            </a>
+          </Link>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 14,
+          }}
+        >
+          {topics.map((t) => {
+            const theme = TOPIC_THEME[t.slug] ?? DEFAULT_THEME;
+            return (
+              <Link key={t.slug} href={`/library/treatment/${t.slug}`}>
+                <a
+                  style={{
+                    display: "block",
+                    padding: "18px 18px 16px",
+                    background: CREAM,
+                    border: `1px solid ${HAIRLINE}`,
+                    borderLeft: `4px solid ${theme.accent}`,
+                    borderRadius: 12,
+                    textDecoration: "none",
+                    color: "inherit",
+                    transition: "transform 160ms ease, box-shadow 160ms ease",
+                    boxShadow: "0 1px 2px rgba(26,32,96,0.04)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 10px 26px -14px rgba(26,32,96,0.25)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "";
+                    e.currentTarget.style.boxShadow =
+                      "0 1px 2px rgba(26,32,96,0.04)";
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: theme.accent,
+                      marginBottom: 8,
+                    }}
+                  >
+                    Module {t.moduleNumber}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily:
+                        "var(--font-display, Fraunces), Georgia, serif",
+                      fontWeight: 500,
+                      fontSize: 19,
+                      lineHeight: 1.18,
+                      letterSpacing: "-0.012em",
+                      color: NAVY,
+                      marginBottom: 6,
+                    }}
+                  >
+                    {t.shortLabel}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      color: INK_MUTED,
+                    }}
+                  >
+                    {t.tagline}
+                  </div>
+                </a>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── 404 fallback ───────────────────────────────────────────────────────── */
+function NotFoundView({ slug }: { slug: string }) {
+  return (
+    <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
+      <TopNav />
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "96px 32px" }}>
+        <Eyebrow style={{ color: GREEN }}>· TOPIC NOT FOUND ·</Eyebrow>
+        <h1
+          style={{
+            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+            fontWeight: 400,
+            fontSize: "clamp(36px, 4vw, 56px)",
+            color: NAVY,
+            marginTop: 14,
+          }}
+        >
+          We could not find that topic.
+        </h1>
+        <p style={{ marginTop: 16, color: INK_MUTED }}>
+          The Treatment Catalog topic <code>{slug}</code> is not in the
+          library. It may have been renamed or removed.
+        </p>
+        <div style={{ marginTop: 28 }}>
+          <Link href="/library">
+            <a
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "10px 18px",
+                background: GREEN,
+                color: CREAM,
+                textDecoration: "none",
+                borderRadius: 8,
+                fontFamily:
+                  "var(--font-body, Inter), system-ui, sans-serif",
+                fontWeight: 600,
+              }}
+            >
+              <ArrowLeft size={16} />
+              Back to Library
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );

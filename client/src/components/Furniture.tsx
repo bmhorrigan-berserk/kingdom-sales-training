@@ -122,14 +122,23 @@ export function PhaseStepper({
   );
 }
 
-/* HeadlineAccent: italic kingdom Orange word inside a Fraunces headline. */
-export function Em({ children }: { children: React.ReactNode }) {
+/* HeadlineAccent: italic kingdom Orange word inside a Fraunces headline.
+   Pass `style` to override the color (e.g. per-topic accent on Treatment
+   Catalog pages). The defaults (italic + inherit weight) stay intact. */
+export function Em({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
   return (
     <em
       style={{
         fontStyle: "italic",
         color: "#D9622B",
         fontWeight: "inherit",
+        ...style,
       }}
     >
       {children}

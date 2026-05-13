@@ -202,19 +202,24 @@ export const MEDIA_CATALOG: MediaItem[] = [
  * ----------------------------------------------------------------*/
 
 export interface TreatmentTopicAsset {
-  src: string;            // playable / viewable URL
+  src: string;            // playable / viewable URL (for image-based decks, this is page 1)
   poster?: string;        // optional thumbnail
   durationSec?: number;   // optional, computed at runtime if missing
   downloadSrc?: string;   // optional explicit download URL (defaults to src)
-  pageCount?: number;     // slide decks only
+  pageCount?: number;     // slide decks only - count of pages
+  pages?: string[];       // slide decks only - array of per-page image URLs
+                          // (when present, renders as a carousel instead of iframe)
   alt?: string;           // infographics only
 }
 
 export interface TreatmentTopic {
   slug: string;           // unique, used in URL: /library/treatment/<slug>
-  title: string;
+  title: string;          // long display title (used in hero subtitle)
+  shortLabel: string;     // clean module name (Male Hormones, Female Hormones, etc.)
+  moduleNumber: string;   // 01-05, drives module-N labeling and ordering
   tagline: string;        // one-sentence framing, shown on catalog card
   summary: string;        // longer description, shown on detail page hero
+  learningBullets: string[]; // 3-point "What you'll learn" row in hero band
   // Order in the array drives card order on the Library page.
   assets: {
     audio?: TreatmentTopicAsset;
@@ -230,15 +235,65 @@ const BLOB_VIDEO_BASE =
   "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/video";
 const BLOB_INFOGRAPHIC_BASE =
   "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/infographic";
+const BLOB_SLIDES_BASE =
+  "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/slides";
 
+// Image-based slide decks live as PNG pages under
+// onboarding/slides/<slug>/page-NN-<suffix>.png. Each entry is the
+// fully-resolved Blob URL because Vercel Blob always appends a random
+// suffix. Order matters - index 0 is page 1. Pages render as a
+// keyboard-navigable carousel on the topic detail page.
+const SLIDES_FIXING_MALE_ENERGY_CRISIS: string[] = [
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-01-AdsTQirBjYheHrduUUNeKifT3i0zkx.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-02-JW5u3WymM1csxO92tQu6YeU5zFuOMV.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-03-QzomWJQJbJUcu4ls8cicbUYjkiC0XU.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-04-aCGww9Ed4q11CvkrdrlszDlMGXFCaK.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-05-9UZ1ieI5V5Tw1JFXiM8kGpL20MGsy7.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-06-Ctoy4F3uguwQK6MVU0FeHILyE2zPXV.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-07-gnZbzuWtBMbjpelnwXSZHHlQtCMaCF.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-08-ZP5IOkd2Dn7XWVDMCO9v2Jvw2q0hOb.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-09-BeV5EnJ8x3fkcHOIEcA5ZyNYFINUyX.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-10-RV83BonerWm2hWB0yAXD1lXDdEhYqv.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-11-kHKYupApn9cTvzT2dSVg8XzA8TChWy.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-12-jw7fHz7u2z3eTq5Dz1JDM9i40S173B.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-13-pVwSbcMUEOwuTUI4y0XnnmdUdxBt3H.png`,
+  `${BLOB_SLIDES_BASE}/fixing-male-energy-crisis/page-14-ilHKGmNeupUcqa0ubLCa3SDte706Ge.png`,
+];
+
+const SLIDES_WHY_WOMEN_NEED_TESTOSTERONE: string[] = [
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-01-CT2WLjibPP1CtXbrPlmlSeKPomXSkq.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-02-eMLK2vi1rVJvKIAHxaQag1G9A4GD2O.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-03-w9ppoMmtkFYRlvkrHLrVluY5RukXV6.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-04-Q8ihFQnptEIv6mO6KjDoQZBox8SHF5.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-05-Rcj8FjIxi7dHZX58sRDAywML17RQZk.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-06-Qng6oBEC8BbeD3BwGEzFGPr34onDJC.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-07-t8Xrqu4fhWnrHffDJaHMzxFKr9qdU3.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-08-2p82KiZ5WZa22pgTJpkwGxu7dlNwsk.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-09-Iw8jXwq9YuDiKl1pp8eW99rb00HQfb.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-10-DxNGIpSVuCxeUmKep9VQEAQbKtcEhz.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-11-zI04pqbhDYqW0yveLOnBSgqLZ9lmsw.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-12-E5d1QcdcjaoG6rJm4C8m9f8TTvAEsR.png`,
+  `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-13-sEvuAodj1U4zVJi4KHll96WH6cEfNw.png`,
+];
+
+// Order in this array drives both Library card order and module number.
+// Module 01 → Male Hormones, 02 → Female Hormones, 03 → Peptides,
+// 04 → Weight Loss, 05 → Wellness.
 export const TREATMENT_TOPICS: TreatmentTopic[] = [
   {
     slug: "fixing-male-energy-crisis",
     title: "Fixing the Modern Male Energy Crisis",
+    shortLabel: "Male Hormones",
+    moduleNumber: "01",
     tagline:
       "Why male energy collapses in the modern environment, and what kingdom protocols actually correct.",
     summary:
-      "Foundational walk-through of the male hormonal collapse pattern. Use this to ground every TRT and recovery conversation in the biology beneath the symptoms. Frames testosterone, sleep, and recovery as one integrated signal system rather than three separate complaints.",
+      "Foundational walk-through of the male hormonal collapse pattern. Ground every TRT and recovery conversation in the biology beneath the symptoms. Testosterone, sleep, and recovery as one integrated signal system rather than three separate complaints.",
+    learningBullets: [
+      "The HPG axis and the five domains of low testosterone.",
+      "Why symptoms cluster, and how the kingdom restoration mechanism unwinds them.",
+      "The six-month patient timeline reps anchor every call against.",
+    ],
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/fixing-male-energy-crisis-0aQNX1BScveflRnZYAUwhAqwxIj343.m4a`,
@@ -250,15 +305,27 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
         src: `${BLOB_INFOGRAPHIC_BASE}/fixing-male-energy-crisis.jpg`,
         alt: "The Path to Restoration: Understanding Male Hormones and TRT - kingdom infographic covering HPG axis, the 5 domains of low testosterone, restoration mechanism, and 6-month patient timeline.",
       },
+      slides: {
+        src: SLIDES_FIXING_MALE_ENERGY_CRISIS[0],
+        pages: SLIDES_FIXING_MALE_ENERGY_CRISIS,
+        pageCount: SLIDES_FIXING_MALE_ENERGY_CRISIS.length,
+      },
     },
   },
   {
     slug: "why-women-need-testosterone",
     title: "Why Women Need More Testosterone Than Estrogen",
+    shortLabel: "Female Hormones",
+    moduleNumber: "02",
     tagline:
       "The signal hierarchy women actually run on, and why the testosterone-first lens reframes the female protocol.",
     summary:
-      "Female hormone restoration explained from first principles. Counter to the conventional estrogen-first framing, the female signal hierarchy is testosterone-led. This recording walks through the receptor biology, the cycle-stage realities, and how kingdom's female protocols sequence the restoration.",
+      "Female hormone restoration explained from first principles. Counter to the conventional estrogen-first framing, the female signal hierarchy is testosterone-led. The receptor biology, the cycle-stage realities, and how kingdom's female protocols sequence the restoration.",
+    learningBullets: [
+      "The female HPG axis and why testosterone leads the signal hierarchy.",
+      "Perimenopause vs menopause, and BHRT vs synthetic HRT.",
+      "The six-month restoration timeline for the female patient.",
+    ],
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/why-women-need-testosterone-dTBRNKgBMJRH2LbpfAu5ULGDBjItuY.m4a`,
@@ -270,15 +337,27 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
         src: `${BLOB_INFOGRAPHIC_BASE}/why-women-need-testosterone.jpg`,
         alt: "The Path to Hormonal Restoration: Navigating the Female Menopause Transition - kingdom infographic covering female HPG axis, perimenopause vs menopause, BHRT vs synthetic HRT, and the 6-month restoration timeline.",
       },
+      slides: {
+        src: SLIDES_WHY_WOMEN_NEED_TESTOSTERONE[0],
+        pages: SLIDES_WHY_WOMEN_NEED_TESTOSTERONE,
+        pageCount: SLIDES_WHY_WOMEN_NEED_TESTOSTERONE.length,
+      },
     },
   },
   {
     slug: "peptides-targeted-cellular-repair",
     title: "How Peptides Signal Targeted Cellular Repair",
+    shortLabel: "Peptides",
+    moduleNumber: "03",
     tagline:
       "Peptides as precision signaling tools, not generic supplements.",
     summary:
-      "How peptide protocols address specific cellular signaling pathways the body has stopped firing on its own. Walks through BPC-157, TB-500, ipamorelin, CJC-1295, and the rest of the kingdom peptide catalog with a focus on what each peptide signals, where it acts, and why the kingdom protocols stack them in the sequences they do.",
+      "How peptide protocols address specific cellular signaling pathways the body has stopped firing on its own. BPC-157, TB-500, ipamorelin, CJC-1295, and the rest of the kingdom catalog. What each peptide signals, where it acts, and why the protocols stack them in the sequences they do.",
+    learningBullets: [
+      "Peptides vs hormones, and why the language matters on a call.",
+      "The Wolverine Stack (BPC-157 + TB-500) and growth hormone secretagogues.",
+      "Aesthetic, libido, cognitive, and immune peptides at a glance.",
+    ],
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/peptides-targeted-cellular-repair-ccQoNdt3QWivyc6cssucrdD8qPUPmI.m4a`,
@@ -293,32 +372,19 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
     },
   },
   {
-    slug: "targeted-molecules-cellular-energy",
-    title: "Targeted Molecules to Restore Cellular Energy",
-    tagline:
-      "Molecular-level protocol design: rebuilding cellular energy production from the ground up.",
-    summary:
-      "The kingdom protocol design philosophy at the molecular level. Why we stack specific molecules (mitochondrial cofactors, methylation support, peptide signaling) in specific sequences to rebuild cellular energy production instead of chasing fatigue, brain fog, or recovery as isolated symptoms.",
-    assets: {
-      audio: {
-        src: `${BLOB_AUDIO_BASE}/targeted-molecules-cellular-energy-qFox8vqHZ8rObOTl60EopYgrAXMRxA.m4a`,
-      },
-      video: {
-        src: `${BLOB_VIDEO_BASE}/targeted-molecules-cellular-energy.mp4`,
-      },
-      infographic: {
-        src: `${BLOB_INFOGRAPHIC_BASE}/targeted-molecules-cellular-energy.jpg`,
-        alt: "Kingdom Module 05 - Fueling the Cellular Orchestra. Covers NAD+ for cellular fuel, B12 + LIE-poh B for methylation, glutathione (gloo-tah-THY-ohn) as master antioxidant, L carnitine for metabolic flexibility, PT-141 / P-B-E five inhibitors for sexual health.",
-      },
-    },
-  },
-  {
     slug: "retatrutide-human-survival-algorithm",
     title: "Retatrutide Rewrites the Human Survival Algorithm",
+    shortLabel: "Weight Loss",
+    moduleNumber: "04",
     tagline:
       "How next-gen GLP-1/GIP/glucagon agonists reset the metabolic set-point that defends weight.",
     summary:
-      "Retatrutide and the next-generation GLP-1/GIP/glucagon triple-agonists override the survival algorithm the body uses to defend its weight set-point. This recording frames the weight-loss conversation around biology, not willpower, and gives reps the language to position kingdom's GLP-1 line against the legacy single-agonist alternatives.",
+      "Retatrutide and the next-generation GLP-1/GIP/glucagon triple-agonists override the survival algorithm the body uses to defend its weight set-point. The weight-loss conversation framed around biology, not willpower. Position kingdom's GLP-1 line against the legacy single-agonist alternatives.",
+    learningBullets: [
+      "The biological trap: leptin and ghrelin defending the set-point.",
+      "Three generations of GLP medications: semaglutide, tirzepatide, retatrutide.",
+      "Receptor mechanism comparison and the six-month restoration timeline.",
+    ],
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/retatrutide-human-survival-algorithm-fCel7qLmzYQVuULq3eMUUsU2gH5hMT.m4a`,
@@ -329,6 +395,33 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
       infographic: {
         src: `${BLOB_INFOGRAPHIC_BASE}/retatrutide-human-survival-algorithm.jpg`,
         alt: "Beyond Willpower: Mapping the Biology of Weight Restoration. Covers the biological trap (leptin/ghrelin set-point), the three generations of GLP medications (semaglutide / tirzepatide / retatrutide), receptor mechanism comparison, and the 6-month restoration timeline.",
+      },
+    },
+  },
+  {
+    slug: "targeted-molecules-cellular-energy",
+    title: "Targeted Molecules to Restore Cellular Energy",
+    shortLabel: "Wellness",
+    moduleNumber: "05",
+    tagline:
+      "Molecular-level protocol design: rebuilding cellular energy production from the ground up.",
+    summary:
+      "The kingdom protocol design philosophy at the molecular level. Why we stack specific molecules (mitochondrial cofactors, methylation support, peptide signaling) in specific sequences to rebuild cellular energy production instead of chasing fatigue, brain fog, or recovery as isolated symptoms.",
+    learningBullets: [
+      "NAD+ as cellular fuel and B12 + lipotropic B for methylation.",
+      "Glutathione as master antioxidant and L-carnitine for metabolic flexibility.",
+      "PT-141 and PDE5 inhibitors in the sexual-health stack.",
+    ],
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/targeted-molecules-cellular-energy-qFox8vqHZ8rObOTl60EopYgrAXMRxA.m4a`,
+      },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/targeted-molecules-cellular-energy.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/targeted-molecules-cellular-energy.jpg`,
+        alt: "Kingdom Module 05 - Fueling the Cellular Orchestra. Covers NAD+ for cellular fuel, B12 + LIE-poh B for methylation, glutathione (gloo-tah-THY-ohn) as master antioxidant, L carnitine for metabolic flexibility, PT-141 / P-B-E five inhibitors for sexual health.",
       },
     },
   },

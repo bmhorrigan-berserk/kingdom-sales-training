@@ -671,7 +671,7 @@ function TreatmentTopicCard({
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "26px 26px 22px",
+          padding: "24px 26px 22px",
           background: CREAM,
           border: `1px solid ${HAIRLINE}`,
           borderLeft: `4px solid ${accent}`,
@@ -680,7 +680,7 @@ function TreatmentTopicCard({
           color: "inherit",
           transition: "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
           boxShadow: "0 1px 2px rgba(31,107,63,0.04)",
-          minHeight: 200,
+          minHeight: 220,
           cursor: "pointer",
         }}
         onMouseEnter={(e) => {
@@ -693,36 +693,66 @@ function TreatmentTopicCard({
           e.currentTarget.style.boxShadow = "0 1px 2px rgba(31,107,63,0.04)";
         }}
       >
+        {/* Module N · header row */}
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            gap: 10,
-            fontFamily: "var(--font-mono, ui-monospace, monospace)",
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: accent,
-            marginBottom: 14,
+            alignItems: "baseline",
+            gap: 16,
+            marginBottom: 6,
           }}
         >
-          <Headphones size={14} />
-          Treatment Topic
+          <span
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 600,
+              fontSize: 44,
+              lineHeight: 0.9,
+              letterSpacing: "-0.03em",
+              color: accent,
+            }}
+          >
+            {topic.moduleNumber}
+          </span>
+          <div
+            style={{
+              fontFamily: "var(--font-mono, ui-monospace, monospace)",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: INK_MUTED,
+            }}
+          >
+            § Module {topic.moduleNumber}
+          </div>
         </div>
         <h3
           style={{
             fontFamily: "var(--font-display, Fraunces), Georgia, serif",
             fontWeight: 500,
-            fontSize: 22,
-            lineHeight: 1.2,
+            fontSize: 26,
+            lineHeight: 1.15,
             color: NAVY,
-            margin: 0,
-            letterSpacing: "-0.015em",
+            margin: "6px 0 0",
+            letterSpacing: "-0.018em",
+          }}
+        >
+          {topic.shortLabel}
+        </h3>
+        <div
+          style={{
+            marginTop: 4,
+            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 400,
+            fontSize: 14,
+            lineHeight: 1.35,
+            color: INK_MUTED,
           }}
         >
           {topic.title}
-        </h3>
+        </div>
         <p
           style={{
             marginTop: 12,
