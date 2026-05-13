@@ -1,22 +1,22 @@
 /**
- * RadialFan - Sales Catalog faceted sunburst, fully enclosed and square.
+ * RadialFan - Sales Catalog faceted sunburst, fully enclosed and symmetric.
  *
- * Renders the catalog texture SVGs (/textures/texture-<name>.svg) so
- * the entire faceted shape is always visible inside the section,
- * regardless of section height/width.
+ * The catalog texture SVGs (/textures/texture-<name>.svg) are
+ * asymmetric on their own - the rays only radiate in roughly the
+ * upper hemisphere from the focal point. To get a fully enclosed
+ * circular medallion we layer TWO copies of the texture inside the
+ * same masked container: one in its natural orientation and one
+ * rotated 180 degrees around the focal. Together they fill the full
+ * 360 ring of rays.
  *
- * The trick: the container is forced square via `aspect-ratio: 1`
- * with `max-width: 100%` and `max-height: 100%`. When the parent is
- * shorter than the requested `size`, the container shrinks to a
- * smaller square - never a rectangle - so the SVG inside (sized via
- * `contain`) fills the container without leaving rectangular empty
- * margins. That means the radial mask centered on the SVG's natural
- * focal stays aligned with where the focal actually lands.
- *
- * Per-origin transforms (scaleX, scaleY, rotate) flip the SVG so the
- * dense focal lands in the requested corner. The radial mask fades
- * the bounding-box corners to transparent so the rectangle outline
- * never shows.
+ * Everything else stays the same as before:
+ *   - container is forced square via aspect-ratio: 1 with max-width
+ *     / max-height: 100%, so the medallion shrinks to fit short
+ *     sections without distorting.
+ *   - radial-gradient mask centered on the focal fades the corners
+ *     to transparent so the bounding box is invisible.
+ *   - mix-blend-mode integrates the line ink into the surface -
+ *     multiply on cream / paper, screen on navy / dark gradients.
  */
 
 export type FanTexture =
@@ -51,15 +51,9 @@ export const KINGDOM_PALETTE = ["#1F6B3F", "#3B5BDB", "#D9622B", "#B23A3A"];
 
 interface RadialFanProps {
   texture?: FanTexture;
-  /** Which corner / edge the dense focal sits in. */
   origin?: Origin;
-  /** 0-1. Default 0.36 for paper / 0.50 with screen blend on dark. */
   opacity?: number;
-  /** Square diameter in px. Capped to the parent's smaller dimension
-      via max-width / max-height + aspect-ratio so the container stays
-      square. */
   size?: number;
-  /** mix-blend-mode. "multiply" on light surfaces, "screen" on dark. */
   blendMode?: BlendMode;
   className?: string;
   style?: React.CSSProperties;
@@ -72,40 +66,29 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* SVG focal sits at approximately (58.7%, 43.9%) of the viewBox. */
+/* SVG focal sits at approximately (58.7%, 43.9%) of the viewBox.
+   Both texture layers share this anchor point. */
 const FOCAL_X = "58.7%";
 const FOCAL_Y = "43.9%";
 
-/* Per-origin: where the square sits, and which transform flips the
-   SVG so the focal lands at that corner. Mask coordinates stay at the
-   SVG's natural focal because both the SVG and the mask are inside
-   the same transformed element - they move together. */
 function placementFor(origin: Origin): React.CSSProperties {
   switch (origin) {
     case "tr":
-      return { top: 0, right: 0, transform: "none" };
+      return { top: 0, right: 0 };
     case "tl":
-      return { top: 0, left: 0, transform: "scaleX(-1)" };
+      return { top: 0, left: 0 };
     case "br":
-      return { bottom: 0, right: 0, transform: "scaleY(-1)" };
+      return { bottom: 0, right: 0 };
     case "bl":
-      return { bottom: 0, left: 0, transform: "rotate(180deg)" };
+      return { bottom: 0, left: 0 };
     case "right":
       return { top: "50%", right: 0, transform: "translateY(-50%)" };
     case "left":
-      return {
-        top: "50%",
-        left: 0,
-        transform: "translateY(-50%) scaleX(-1)",
-      };
+      return { top: "50%", left: 0, transform: "translateY(-50%)" };
     case "top":
       return { top: 0, left: "50%", transform: "translateX(-50%)" };
     case "bottom":
-      return {
-        bottom: 0,
-        left: "50%",
-        transform: "translateX(-50%) scaleY(-1)",
-      };
+      return { bottom: 0, left: "50%", transform: "translateX(-50%)" };
     case "center":
     default:
       return {
@@ -127,13 +110,22 @@ export function RadialFan({
   ariaHidden = true,
 }: RadialFanProps) {
   const placement = placementFor(origin);
+  const textureUrl = `/textures/texture-${texture}.svg`;
 
-  /* Tight radial mask centered on the SVG's natural focal. The
-     catalog texture is asymmetric - the dense rays radiate in one
-     cone away from the focal, so showing the full SVG looks like a
-     half-fan. Clipping to a tight circle around the focal reveals
-     only the dense core, which reads as a balanced circular medallion. */
-  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 26%, rgba(0,0,0,0.55) 42%, transparent 62%)`;
+  /* Soft radial mask centered on the focal. Reaches all the way out
+     to the bounding-box corner with a gradual fade so the combined
+     360 ring of rays stays visible across the whole medallion. */
+  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 42%, rgba(0,0,0,0.78) 65%, rgba(0,0,0,0.30) 85%, transparent 100%)`;
+
+  /* Style shared by both texture layers. */
+  const layerBase: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: `url('${textureUrl}')`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "contain",
+  };
 
   return (
     <div
@@ -146,10 +138,6 @@ export function RadialFan({
         maxWidth: "100%",
         maxHeight: "100%",
         aspectRatio: "1 / 1",
-        backgroundImage: `url('/textures/texture-${texture}.svg')`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "contain",
         opacity,
         mixBlendMode: blendMode,
         WebkitMaskImage: maskImage,
@@ -159,13 +147,25 @@ export function RadialFan({
         zIndex: 0,
         ...placement,
         ...style,
-        ...(style?.transform
-          ? {
-              transform: `${placement.transform ?? ""} ${style.transform}`.trim(),
-            }
-          : null),
       }}
-    />
+    >
+      {/* Layer 1: SVG in natural orientation - rays fan into the
+          upper hemisphere from the focal. */}
+      <div style={layerBase} />
+      {/* Layer 2: same SVG rotated 180 degrees around the focal so
+          its rays fill the lower hemisphere. Combined with layer 1
+          they form a fully enclosed 360 ring. */}
+      <div
+        style={{
+          ...layerBase,
+          transform: "rotate(180deg)",
+          /* transform-origin set to the focal so the rotation pivots
+             around the SVG's natural focal point, keeping both layers'
+             focals stacked exactly on top of each other. */
+          transformOrigin: `${FOCAL_X} ${FOCAL_Y}`,
+        }}
+      />
+    </div>
   );
 }
 
