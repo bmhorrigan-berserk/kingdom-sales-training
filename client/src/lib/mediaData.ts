@@ -182,48 +182,48 @@ export const MEDIA_CATALOG: MediaItem[] = [
   // the catalog. These are companion onboarding references, not phase-
   // specific lessons.
   {
-    slug: "male-hormonal-command-center",
+    slug: "fixing-male-energy-crisis",
     type: "audio",
-    title: "Rebuilding the Male Hormonal Command Center",
-    src: "/media/male-hormonal-command-center.m4a",
+    title: "Fixing the Modern Male Energy Crisis",
+    src: "/media/fixing-male-energy-crisis.m4a",
     description:
-      "Foundational walk-through of male hormone optimization. Use this to ground every TRT and recovery-protocol conversation in the biology beneath the labels.",
+      "Foundational walk-through of why male energy collapses in the modern environment and what kingdom protocols actually correct. Use this to ground every TRT and recovery conversation in the biology beneath the symptoms.",
     category: "treatment-catalog",
   },
   {
-    slug: "bioidentical-hormones-female-biology",
+    slug: "why-women-need-testosterone",
     type: "audio",
-    title: "How Bioidentical Hormones Repair Female Biology",
-    src: "/media/bioidentical-hormones-female-biology.m4a",
+    title: "Why Women Need More Testosterone Than Estrogen",
+    src: "/media/why-women-need-testosterone.m4a",
     description:
-      "Female hormone restoration explained from first principles. Why bioidenticals match the body's native signaling instead of overriding it.",
+      "Female hormone restoration explained from first principles. The signal hierarchy women actually run on and why the testosterone-first lens reframes the entire female protocol conversation.",
     category: "treatment-catalog",
   },
   {
-    slug: "targeted-peptide-signaling",
+    slug: "peptides-targeted-cellular-repair",
     type: "audio",
-    title: "Targeted Peptide Signaling for Biological Restoration",
-    src: "/media/targeted-peptide-signaling.m4a",
+    title: "How Peptides Signal Targeted Cellular Repair",
+    src: "/media/peptides-targeted-cellular-repair.m4a",
     description:
-      "How peptide protocols restore signaling pathways the body has stopped firing. Use to position peptides as precision tools, not generic supplements.",
+      "How peptide protocols address specific cellular signaling pathways the body has stopped firing. Use to position peptides as precision repair tools, not generic supplements.",
     category: "treatment-catalog",
   },
   {
-    slug: "targeted-protocols-optimization",
+    slug: "targeted-molecules-cellular-energy",
     type: "audio",
-    title: "Targeted Protocols for Biological Optimization",
-    src: "/media/targeted-protocols-optimization.m4a",
+    title: "Targeted Molecules to Restore Cellular Energy",
+    src: "/media/targeted-molecules-cellular-energy.m4a",
     description:
-      "Walkthrough of the kingdom protocol design philosophy. Why we stack specific molecules in specific sequences instead of treating symptoms in isolation.",
+      "Walkthrough of the kingdom protocol design philosophy at the molecular level. Why we stack specific molecules in specific sequences to rebuild cellular energy production instead of treating symptoms in isolation.",
     category: "treatment-catalog",
   },
   {
-    slug: "why-biology-defends-weight",
+    slug: "retatrutide-human-survival-algorithm",
     type: "audio",
-    title: "Why Your Biology Defends Your Weight",
-    src: "/media/why-biology-defends-weight.m4a",
+    title: "Retatrutide Rewrites the Human Survival Algorithm",
+    src: "/media/retatrutide-human-survival-algorithm.m4a",
     description:
-      "The metabolic set-point problem and how GLP-1 plus peptide therapy resets it. Frames the weight-loss conversation around biology, not willpower.",
+      "How retatrutide and the next-generation GLP-1/GIP/glucagon agonists reset the metabolic set-point and override the survival algorithm that defends weight. Frames the weight-loss conversation around biology, not willpower.",
     category: "treatment-catalog",
   },
 ];
