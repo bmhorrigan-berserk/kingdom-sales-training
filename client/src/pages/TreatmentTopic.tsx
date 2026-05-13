@@ -617,19 +617,21 @@ function AssetBlock({
         overflow: "hidden",
       }}
     >
-      {/* Two vector medallions framing the tile - one on each side. */}
+      {/* Two big medallions like the Sales Catalog: one anchored to the
+          top-left corner, one to the bottom-right. They radiate inward
+          and frame the white content tile diagonally. */}
       <RadialFan
         texture={texture}
-        origin="left"
-        opacity={0.10}
-        size={520}
+        origin="tl"
+        opacity={0.14}
+        size={680}
         style={{ zIndex: 0 }}
       />
       <RadialFan
         texture={texture}
-        origin="right"
-        opacity={0.10}
-        size={520}
+        origin="br"
+        opacity={0.14}
+        size={680}
         style={{ zIndex: 0 }}
       />
 
