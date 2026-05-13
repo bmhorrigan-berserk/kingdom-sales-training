@@ -68,51 +68,27 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* Flat rim tilted 45 degrees, with the top tip of the rim pinned
-   against the section corner. The fan tilts diagonally into the
-   page from the corner anchor.
+/* Natural orientation, flush to the section edge.
 
-   Implementation: anchor the div at the section corner via zero
-   inset, then rotate the div around that anchor corner so the rim's
-   tip stays glued to the corner and the rest of the fan tilts 45
-   degrees into the interior. transform-origin is set to whichever
-   corner of the div is supposed to stay at the section corner. */
+   The catalog SVG has its flat rim at the very top of its viewBox.
+   With zero inset (top:0, right:0 for `tr`), the SVG's top edge -
+   the rim - sits exactly on the section's top edge. The focal lands
+   in the section's interior (about 44% down, 41% in from the right
+   edge), with the rays fanning from the rim down to the focal.
+
+   Mirroring transforms send the focal to whichever interior quadrant
+   the caller asks for, while keeping the rim along the matching
+   section edges. */
 function placementFor(origin: Origin): React.CSSProperties {
   switch (origin) {
     case "tr":
-      // div anchored at section's top-right; rotate -45 deg around
-      // the div's top-right corner so the rim tip stays at the
-      // section corner and the fan tilts down-left into the page
-      return {
-        top: 0,
-        right: 0,
-        transform: "rotate(-45deg)",
-        transformOrigin: "100% 0%",
-      };
+      return { top: 0, right: 0, transform: "none" };
     case "tl":
-      // top-left anchor; rotate +45 deg around div's top-left corner
-      return {
-        top: 0,
-        left: 0,
-        transform: "scaleX(-1) rotate(-45deg)",
-        transformOrigin: "100% 0%",
-      };
+      return { top: 0, left: 0, transform: "scaleX(-1)" };
     case "br":
-      // bottom-right anchor; mirror vertically + tilt
-      return {
-        bottom: 0,
-        right: 0,
-        transform: "scaleY(-1) rotate(-45deg)",
-        transformOrigin: "100% 0%",
-      };
+      return { bottom: 0, right: 0, transform: "scaleY(-1)" };
     case "bl":
-      // bottom-left anchor; mirror both + tilt
-      return {
-        bottom: 0,
-        left: 0,
-        transform: "rotate(180deg) rotate(-45deg)",
-        transformOrigin: "100% 0%",
-      };
+      return { bottom: 0, left: 0, transform: "rotate(180deg)" };
     case "right":
       return { top: "50%", right: 0, transform: "translateY(-50%)" };
     case "left":
