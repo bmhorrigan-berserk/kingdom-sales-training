@@ -29,27 +29,35 @@ export default function ReferenceBinder() {
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
       <TopNav />
 
-      {/* HERO */}
+      {/* HERO — kingdom green band. The binder is the lookup section,
+          green is the reference / wellness color in the kingdom system. */}
       <section
         style={{
           position: "relative",
-          padding: "72px 32px 56px",
-          maxWidth: 1920,
-          margin: "0 auto",
+          background: `linear-gradient(135deg, #1F6B3F 0%, #16532F 100%)`,
+          color: CREAM,
           overflow: "hidden",
         }}
       >
         <RadialFan
-          texture="hormone"
+          texture="wellness"
           origin="tl"
-          opacity={0.36}
-          size={1100}
+          opacity={0.48}
+          blendMode="screen"
           style={{ zIndex: 0 }}
         />
 
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <Eyebrow style={{ marginBottom: 20 }}>
-            § 02 · THE REFERENCE BINDER · 8 GUIDES
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: 1920,
+            margin: "0 auto",
+            padding: "72px 32px 56px",
+          }}
+        >
+          <Eyebrow style={{ color: "rgba(255,251,240,0.78)", marginBottom: 20 }}>
+            § 04 OF 06 · THE REFERENCE BINDER · 8 GUIDES
           </Eyebrow>
           <h1
             style={{
@@ -58,7 +66,7 @@ export default function ReferenceBinder() {
               fontSize: "clamp(44px, 6vw, 76px)",
               lineHeight: 1.04,
               letterSpacing: "-0.025em",
-              color: NAVY,
+              color: CREAM,
               margin: 0,
               maxWidth: "16ch",
             }}
@@ -71,7 +79,7 @@ export default function ReferenceBinder() {
               fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
               fontSize: 17,
               lineHeight: 1.55,
-              color: INK_MUTED,
+              color: "rgba(255,251,240,0.84)",
               maxWidth: 620,
             }}
           >
@@ -197,7 +205,7 @@ export default function ReferenceBinder() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current="02" total="05" />
+        <PageNumber current="04" total="06" />
       </footer>
     </div>
   );

@@ -180,7 +180,7 @@ export default function Quiz() {
                 marginBottom: 14,
               }}
             >
-              § 05 · KNOWLEDGE QUIZ · 90 TO PASS
+              § 06 OF 06 · KNOWLEDGE QUIZ · 90 TO PASS
             </div>
             <h1
               style={{
@@ -613,7 +613,7 @@ export default function Quiz() {
         }}
       >
         <Eyebrow>· KNOWLEDGE QUIZ · INTERNAL ·</Eyebrow>
-        <PageNumber current="05" total="05" />
+        <PageNumber current="06" total="06" />
       </footer>
     </div>
   );
@@ -679,7 +679,7 @@ function ResultsSpread({
               marginBottom: 20,
             }}
           >
-            § 05 · QUIZ COMPLETE · {passed ? "PASS" : "REVIEW REQUIRED"}
+            § 06 OF 06 · QUIZ COMPLETE · {passed ? "PASS" : "REVIEW REQUIRED"}
           </div>
           <div
             style={{
@@ -954,7 +954,7 @@ function ResultsSpread({
         }}
       >
         <Eyebrow>· QUIZ RESULTS · INTERNAL ·</Eyebrow>
-        <PageNumber current="05" total="05" />
+        <PageNumber current="06" total="06" />
       </footer>
     </>
   );

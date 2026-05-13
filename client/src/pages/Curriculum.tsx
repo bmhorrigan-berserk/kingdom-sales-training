@@ -24,25 +24,35 @@ export default function Curriculum() {
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
       <TopNav />
 
-      {/* HERO */}
+      {/* HERO — kingdom navy band so the page leads with brand color
+          instead of plain cream */}
       <section
         style={{
-          padding: "72px 32px 64px",
-          maxWidth: 1920,
-          margin: "0 auto",
           position: "relative",
+          background: `linear-gradient(135deg, ${NAVY} 0%, #141849 100%)`,
+          color: CREAM,
           overflow: "hidden",
         }}
       >
         <RadialFan
           texture="peptides"
           origin="tr"
-          opacity={0.36}
-          size={1100}
+          opacity={0.48}
+          blendMode="screen"
           style={{ zIndex: 0 }}
         />
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <Eyebrow style={{ marginBottom: 16 }}>§ 01 OF 05 · CURRICULUM</Eyebrow>
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: 1920,
+            margin: "0 auto",
+            padding: "72px 32px 64px",
+          }}
+        >
+          <Eyebrow style={{ color: "rgba(255,251,240,0.7)", marginBottom: 16 }}>
+            § 02 OF 06 · CURRICULUM
+          </Eyebrow>
           <h1
             style={{
               fontFamily: "var(--font-display, Fraunces), Georgia, serif",
@@ -50,7 +60,7 @@ export default function Curriculum() {
               fontSize: "clamp(44px, 6vw, 76px)",
               lineHeight: 1.05,
               letterSpacing: "-0.025em",
-              color: NAVY,
+              color: CREAM,
               margin: 0,
               maxWidth: "16ch",
             }}
@@ -63,7 +73,7 @@ export default function Curriculum() {
               fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
               fontSize: 17,
               lineHeight: 1.55,
-              color: INK_MUTED,
+              color: "rgba(255,251,240,0.78)",
               maxWidth: 620,
             }}
           >
@@ -481,7 +491,7 @@ export default function Curriculum() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current="01" total="05" />
+        <PageNumber current="02" total="06" />
       </footer>
     </div>
   );

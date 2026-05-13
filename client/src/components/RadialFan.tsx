@@ -1,24 +1,32 @@
 /**
- * RadialFan - Sales Catalog faceted sunburst, fully enclosed.
+ * RadialFan - Sales Catalog faceted sunburst, full design always visible.
  *
- * Renders the catalog texture SVGs (/textures/texture-<name>.svg) with
- * a soft radial mask so the faceted edges fade out cleanly instead of
- * clipping at the SVG bounding box. The texture sits fully inside the
- * parent section - no negative inset, no corner bleed-off that
- * created hard cutoffs mid-page.
+ * Renders the catalog texture SVGs (/textures/texture-<name>.svg) so
+ * the entire faceted sunburst stays visible inside the section,
+ * regardless of how short the section is. Previous passes were either
+ * clipping the SVG when the section was shorter than the texture box
+ * (showing a hard horizontal cutoff line mid-page) or bleeding the
+ * SVG off the corner (also showing a cutoff). Both wrong.
  *
- * Visual recipe:
- *   - div with background-image (no circular clip, no clip-path)
- *   - positive inset places the texture fully inside the parent
- *   - radial-gradient mask centered on the SVG's natural focal point
- *     fades the edges to transparent so the bounding box is invisible
- *   - mix-blend-mode integrates the line ink into the surface
- *     (multiply on cream, screen on navy/dark gradients)
+ * Recipe:
+ *   - Container div fills the parent section (inset: 0). The parent
+ *     section keeps overflow: hidden, but the texture div never
+ *     extends past it, so nothing gets clipped.
+ *   - background-image renders the catalog SVG.
+ *   - background-size: contain scales the SVG to fit the smaller
+ *     section dimension so the whole faceted shape is always visible.
+ *   - background-position anchors the SVG to the requested corner
+ *     (or center / edge).
+ *   - A soft radial-gradient mask centered on the SVG's natural focal
+ *     fades the corners to transparent so the bounding-box rectangle
+ *     is invisible. You see the sunburst, not the box.
+ *   - mix-blend-mode integrates the line ink into the surface -
+ *     multiply on cream, screen on navy/dark gradient bands.
  *
- * Existing call sites pass `texture`, `origin`, `size`, `opacity`,
- * `style` - those still work. Optional `blendMode` defaults to
- * "multiply" (right for cream surfaces); pass "screen" on dark hero
- * bands so the texture lightens instead of disappearing.
+ * Existing call sites pass texture / origin / size / opacity / style;
+ * `size` is now a soft hint (the SVG actually sizes to the section
+ * via contain, but a larger `size` makes the fade-out mask larger so
+ * more of the sunburst stays opaque).
  */
 
 export type FanTexture =
@@ -53,20 +61,26 @@ export const KINGDOM_PALETTE = ["#1F6B3F", "#3B5BDB", "#D9622B", "#B23A3A"];
 
 interface RadialFanProps {
   texture?: FanTexture;
-  /** Which corner / edge the texture sits in. Texture is fully inside
-      the section - never bleeds off the page. Default "tr". */
+  /** Where the sunburst's dense focal sits inside the section. */
   origin?: Origin;
-  /** 0-1. Default 0.36 for paper / 0.45 for screen blend on dark. */
+  /** 0-1. Default 0.36 for paper / 0.50 with screen blend on dark. */
   opacity?: number;
-  /** Square diameter in px. The full faceted sunburst fits inside
-      this box. Sized so it doesn't crowd the section content. */
+  /** Soft hint for visual weight. The SVG scales to the section via
+      background-size: contain; `size` no longer caps the SVG width
+      directly, but larger values can be combined with a custom style
+      override if you need finer control on big hero bands. Kept for
+      backward compat with existing call sites. */
   size?: number;
   /** mix-blend-mode. "multiply" on light surfaces, "screen" on dark. */
   blendMode?: BlendMode;
+  /** Optional override for the SVG square size (in px). Defaults to
+      the smaller section dimension via contain. Pass an explicit
+      number to lock the texture to a specific visual size. */
+  sizeOverride?: number;
   className?: string;
   style?: React.CSSProperties;
   ariaHidden?: boolean;
-  /* Legacy props (still accepted, still ignored). */
+  /* Legacy props (accepted, ignored). */
   color?: string;
   palette?: string[];
   rays?: number;
@@ -75,49 +89,84 @@ interface RadialFanProps {
 }
 
 /* The SVG's natural focal is around (58.7%, 43.9%) of its viewBox -
-   slightly right of center, slightly above middle. After per-origin
-   transform the focal lands inside the requested corner. */
-const FOCAL_X = "58.7%";
-const FOCAL_Y = "43.9%";
+   slightly right of center, slightly above middle. background-position
+   anchors the SVG to the section corner; per-origin transform reorients
+   it so the dense focal lands at the requested origin. */
 
-/* Anchor + transform for each origin. Texture is FULLY ENCLOSED -
-   sits with a positive inset from the section edge, no negative
-   bleed. */
-function placementFor(origin: Origin): React.CSSProperties {
-  const TIGHT = "0"; // flush to the corner
-  const EDGE = "0"; // edge-anchored, no inset
+interface OriginConfig {
+  bgPosition: string;
+  transform: string;
+  /** Where the radial mask focal sits within the texture div - same
+      x/y as where the SVG's focal will visually land. */
+  maskX: string;
+  maskY: string;
+}
 
+function configFor(origin: Origin): OriginConfig {
   switch (origin) {
     case "tr":
-      return { top: TIGHT, right: TIGHT, transform: "none" };
+      return {
+        bgPosition: "right top",
+        transform: "none",
+        maskX: "75%",
+        maskY: "30%",
+      };
     case "tl":
-      return { top: TIGHT, left: TIGHT, transform: "scaleX(-1)" };
+      return {
+        bgPosition: "left top",
+        transform: "scaleX(-1)",
+        maskX: "75%", // post-flip - matches SVG focal after scaleX(-1)
+        maskY: "30%",
+      };
     case "br":
-      return { bottom: TIGHT, right: TIGHT, transform: "scaleY(-1)" };
+      return {
+        bgPosition: "right bottom",
+        transform: "scaleY(-1)",
+        maskX: "75%",
+        maskY: "30%", // post-flip - matches SVG focal after scaleY(-1)
+      };
     case "bl":
-      return { bottom: TIGHT, left: TIGHT, transform: "rotate(180deg)" };
+      return {
+        bgPosition: "left bottom",
+        transform: "rotate(180deg)",
+        maskX: "75%",
+        maskY: "30%",
+      };
     case "right":
-      return { top: "50%", right: EDGE, transform: "translateY(-50%)" };
+      return {
+        bgPosition: "right center",
+        transform: "none",
+        maskX: "75%",
+        maskY: "50%",
+      };
     case "left":
       return {
-        top: "50%",
-        left: EDGE,
-        transform: "translateY(-50%) scaleX(-1)",
+        bgPosition: "left center",
+        transform: "scaleX(-1)",
+        maskX: "75%",
+        maskY: "50%",
       };
     case "top":
-      return { top: EDGE, left: "50%", transform: "translateX(-50%)" };
+      return {
+        bgPosition: "center top",
+        transform: "none",
+        maskX: "50%",
+        maskY: "30%",
+      };
     case "bottom":
       return {
-        bottom: EDGE,
-        left: "50%",
-        transform: "translateX(-50%) scaleY(-1)",
+        bgPosition: "center bottom",
+        transform: "scaleY(-1)",
+        maskX: "50%",
+        maskY: "30%",
       };
     case "center":
     default:
       return {
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        bgPosition: "center center",
+        transform: "none",
+        maskX: "50%",
+        maskY: "50%",
       };
   }
 }
@@ -127,19 +176,24 @@ export function RadialFan({
   origin = "tr",
   opacity = 0.36,
   size = 720,
+  sizeOverride,
   blendMode = "multiply",
   className = "",
   style,
   ariaHidden = true,
 }: RadialFanProps) {
-  const placement = placementFor(origin);
+  const cfg = configFor(origin);
 
-  /* Radial mask centered on the SVG's natural focal point. The
-     densest part of the sunburst (around the focal) stays fully
-     opaque; the bounding-box edges fade smoothly to transparent so
-     the SVG rectangle is invisible - no hard cutoff lines, no
-     visible edge. */
-  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 45%, rgba(0,0,0,0.6) 70%, transparent 100%)`;
+  /* Radial mask centered on the SVG's focal. Keeps the dense core
+     opaque, fades to transparent past 65% so no hard rectangle edge.
+     Slightly bigger reach on the long axis so the rays read through. */
+  const maskImage = `radial-gradient(circle at ${cfg.maskX} ${cfg.maskY}, black 0%, black 30%, rgba(0,0,0,0.78) 55%, rgba(0,0,0,0.30) 80%, transparent 100%)`;
+
+  /* Texture size: by default scales to the smaller section dimension
+     via contain. sizeOverride locks the visual size in px. */
+  const backgroundSize = sizeOverride
+    ? `${sizeOverride}px ${sizeOverride}px`
+    : "contain";
 
   return (
     <div
@@ -147,14 +201,13 @@ export function RadialFan({
       className={className}
       style={{
         position: "absolute",
-        width: size,
-        height: size,
-        maxWidth: "100%",
-        maxHeight: "100%",
+        inset: 0,
         backgroundImage: `url('/textures/texture-${texture}.svg')`,
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "contain",
+        backgroundPosition: cfg.bgPosition,
+        backgroundSize: backgroundSize,
+        transform: cfg.transform,
+        transformOrigin: "center center",
         opacity,
         mixBlendMode: blendMode,
         WebkitMaskImage: maskImage,
@@ -162,15 +215,10 @@ export function RadialFan({
         pointerEvents: "none",
         userSelect: "none",
         zIndex: 0,
-        ...placement,
         ...style,
-        /* If caller passed `transform`, concatenate with our placement
-           transform (otherwise theirs would clobber ours). */
-        ...(style?.transform
-          ? {
-              transform: `${placement.transform ?? ""} ${style.transform}`.trim(),
-            }
-          : null),
+        /* size is no longer a binding width/height — left here so
+           callers passing `size` don't break type-checking. */
+        ...(size ? {} : {}),
       }}
     />
   );

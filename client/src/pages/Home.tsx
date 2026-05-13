@@ -214,18 +214,11 @@ export default function Home() {
           >
             {[
               {
-                n: "01",
+                n: "02",
                 href: "/curriculum",
                 title: "Curriculum",
                 desc: "Day-by-day onboarding. 30 days, 5 phases, every script and protocol.",
                 icon: GraduationCap,
-              },
-              {
-                n: "02",
-                href: "/reference",
-                title: "Reference Binder",
-                desc: "Eight working guides. Sign-up, billing, DX codes, lab panels, pipelines.",
-                icon: Library,
               },
               {
                 n: "03",
@@ -236,13 +229,20 @@ export default function Home() {
               },
               {
                 n: "04",
+                href: "/reference",
+                title: "Reference Binder",
+                desc: "Eight working guides. Sign-up, billing, DX codes, lab panels, pipelines.",
+                icon: Library,
+              },
+              {
+                n: "05",
                 href: "/flashcards",
                 title: "Flashcards",
                 desc: "115 cards across 16 categories. Click to reveal. Drill until instinct.",
                 icon: BookOpen,
               },
               {
-                n: "05",
+                n: "06",
                 href: "/quiz",
                 title: "Knowledge Quiz",
                 desc: "38 scenario questions. Score 90+ to certify. Built for elite operators.",
@@ -352,7 +352,7 @@ export default function Home() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current="00" total="05" />
+        <PageNumber current="01" total="06" />
       </footer>
     </div>
   );

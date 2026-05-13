@@ -480,7 +480,7 @@ export default function CurriculumLesson() {
         }}
       >
         <Eyebrow>· {lesson.code} · {lesson.title.toUpperCase()} ·</Eyebrow>
-        <PageNumber current="01" total="05" />
+        <PageNumber current="02" total="06" />
       </footer>
     </div>
   );

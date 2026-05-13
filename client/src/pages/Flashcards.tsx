@@ -137,7 +137,7 @@ export default function Flashcards() {
                 marginBottom: 14,
               }}
             >
-              § 04 · DRILL · {all.length} CARDS · {categories.length - 1}{" "}
+              § 05 OF 06 · DRILL · {all.length} CARDS · {categories.length - 1}{" "}
               CATEGORIES
             </div>
             <h1
@@ -448,7 +448,7 @@ export default function Flashcards() {
         }}
       >
         <Eyebrow>· FLASHCARD DRILL · KINGDOM CONFIDENTIAL ·</Eyebrow>
-        <PageNumber current="04" total="05" />
+        <PageNumber current="05" total="06" />
       </footer>
     </div>
   );
