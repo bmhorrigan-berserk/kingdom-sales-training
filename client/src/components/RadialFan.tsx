@@ -68,57 +68,60 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* Position the SVG so its natural FOCAL sits exactly at the section
-   corner, with the rest of the SVG bleeding off-screen. The visible
-   portion shows the rays fanning INWARD from the corner - which is
-   exactly what the Sales Catalog does.
+/* Position the SVG so its FLAT outer rim aligns with the section
+   corner / edge, and the FOCAL points inward into the page. Inverse
+   of the previous "focal at corner" placement - the fan opens away
+   from the page center instead of into it, which is the look Brice
+   wants: the wide flat side facing outward.
 
-   Focal at (58.7%, 43.9%) of SVG. To place focal at corner:
-     right corner: SVG's right of focal (41.3% of size) sits OUTSIDE
-                   the section. CSS: right = -(0.413 * size)
-     top corner:   SVG's above focal (43.9% of size) sits OUTSIDE
-                   the section. CSS: top = -(0.439 * size)
-   Same idea for the other corners + mirroring transforms so the
-   natural focal can land in any corner. */
+   Mechanics: the SVG's natural focal sits at (58.7%, 43.9%) of the
+   viewBox; its rim sits at the top of the viewBox (y near 0). To put
+   the RIM at the section corner, the SVG is offset so its rim lands
+   at the corner and the focal sits inward by 43.9% of the size in
+   one axis and 58.7% in the other. Mirroring transforms route the
+   rim to the requested corner. */
 function placementFor(
   origin: Origin,
   size: number
 ): React.CSSProperties {
-  const offsetH = -Math.round(0.413 * size); // horizontal bleed
-  const offsetV = -Math.round(0.439 * size); // vertical bleed
+  /* The rim (top of viewBox) sits at the very edge; the focal sits
+     ~44% inward vertically and ~41% from the rim's far side.
+     The negative inset values push the SVG so the rim's outer edge
+     coincides with the section edge while the focal lands inside. */
+  const RIM_OFFSET = -Math.round(0.06 * size); // tiny bleed so the bounding box edge isn't visible
 
   switch (origin) {
     case "tr":
-      return { top: offsetV, right: offsetH, transform: "none" };
+      return { top: RIM_OFFSET, right: RIM_OFFSET, transform: "rotate(180deg)" };
     case "tl":
-      return { top: offsetV, left: offsetH, transform: "scaleX(-1)" };
+      return { top: RIM_OFFSET, left: RIM_OFFSET, transform: "scaleY(-1)" };
     case "br":
-      return { bottom: offsetV, right: offsetH, transform: "scaleY(-1)" };
+      return { bottom: RIM_OFFSET, right: RIM_OFFSET, transform: "scaleX(-1)" };
     case "bl":
-      return { bottom: offsetV, left: offsetH, transform: "rotate(180deg)" };
+      return { bottom: RIM_OFFSET, left: RIM_OFFSET, transform: "none" };
     case "right":
       return {
         top: "50%",
-        right: offsetH,
-        transform: "translateY(-50%)",
+        right: RIM_OFFSET,
+        transform: "translateY(-50%) rotate(180deg)",
       };
     case "left":
       return {
         top: "50%",
-        left: offsetH,
-        transform: "translateY(-50%) scaleX(-1)",
+        left: RIM_OFFSET,
+        transform: "translateY(-50%)",
       };
     case "top":
       return {
-        top: offsetV,
+        top: RIM_OFFSET,
         left: "50%",
-        transform: "translateX(-50%)",
+        transform: "translateX(-50%) rotate(180deg)",
       };
     case "bottom":
       return {
-        bottom: offsetV,
+        bottom: RIM_OFFSET,
         left: "50%",
-        transform: "translateX(-50%) scaleY(-1)",
+        transform: "translateX(-50%)",
       };
     case "center":
     default:
