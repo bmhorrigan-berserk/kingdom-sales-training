@@ -596,16 +596,8 @@ function FormatBand({
         overflow: "hidden",
       }}
     >
-      {/* Giant Sales-Catalog-scale faceted sunbursts: ONE top-left,
-          ONE bottom-right. Multiply blend so each topic's accent ink
-          shows through on the soft cream tint. */}
-      <RadialFan
-        texture={theme.texture}
-        origin="tl"
-        opacity={0.36}
-        size={1180}
-        style={{ zIndex: 0 }}
-      />
+      {/* Single bottom-right medallion. The matching top-left
+          medallion was crowding the page; one is enough. */}
       <RadialFan
         texture={theme.texture}
         origin="br"

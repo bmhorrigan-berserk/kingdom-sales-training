@@ -39,14 +39,6 @@ export default function ReferenceBinder() {
           overflow: "hidden",
         }}
       >
-        <RadialFan
-          texture="wellness"
-          origin="tl"
-          opacity={0.48}
-          blendMode="screen"
-          style={{ zIndex: 0 }}
-        />
-
         <div
           style={{
             position: "relative",
@@ -125,11 +117,17 @@ export default function ReferenceBinder() {
             >
               <RadialFan
                 texture={categoryTexture}
-                /* Billing stays right-anchored (origin where it lived
-                   before). Patient Pipeline + Clinical move to the
-                   LEFT side so the page reads with alternating rhythm
-                   instead of every medallion stacking on the right. */
-                origin={category === "Billing" ? "right" : "left"}
+                /* Billing keeps its right-anchored medallion. Patient
+                   Pipeline + Clinical use natural corner placements
+                   (bl/tl) so they stay flush against the section
+                   edges without bleeding off the page. */
+                origin={
+                  category === "Billing"
+                    ? "tr"
+                    : category === "Patient Pipeline"
+                    ? "bl"
+                    : "tl"
+                }
                 opacity={0.30}
                 size={760}
                 style={{ zIndex: 0 }}

@@ -371,94 +371,118 @@ export default function Curriculum() {
         );
       })}
 
-      {/* OPERATIONS REFERENCE */}
-      <section style={{ padding: "96px 32px", maxWidth: 1920, margin: "0 auto" }}>
-        <Eyebrow style={{ marginBottom: 16 }}>§ R · OPERATIONS REFERENCE</Eyebrow>
-        <h2
-          style={{
-            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-            fontWeight: 400,
-            fontSize: "clamp(36px, 4.5vw, 56px)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.02em",
-            color: NAVY,
-            margin: 0,
-            maxWidth: "16ch",
-          }}
-        >
-          The supporting <Em>chapters.</Em>
-        </h2>
-        <div
-          style={{
-            marginTop: 40,
-            display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-            gap: 16,
-          }}
-        >
-          {OPERATIONS_REFERENCE.map((r) => {
-            const media = lessonMediaTypes(r.code);
-            return (
-            <Link key={r.code} href={`/curriculum/${r.code}`}>
-              <a
-                className="kingdom-ops-card"
-                style={{
-                  background: "rgba(255, 255, 255, 0.55)",
-                  backdropFilter: "blur(14px)",
-                  WebkitBackdropFilter: "blur(14px)",
-                  padding: "20px 22px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  textDecoration: "none",
-                  color: INK,
-                  border: `1px solid rgba(232, 222, 198, 0.7)`,
-                  borderRadius: 10,
-                  boxShadow: "0 1px 2px rgba(26,32,96,0.04), 0 4px 14px rgba(26,32,96,0.05)",
-                  transition: "background 150ms ease, transform 150ms ease, box-shadow 150ms ease",
-                  minHeight: 96,
-                }}
-              >
-                <span
+      {/* OPERATIONS REFERENCE - navy band so it picks up the kingdom
+          blue/navy treatment instead of sitting on the cream surface. */}
+      <section
+        style={{
+          background: NAVY,
+          color: CREAM,
+          padding: "96px 32px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <RadialFan
+          texture="peptides"
+          origin="top-tilt"
+          opacity={0.45}
+          size={900}
+          blendMode="screen"
+          style={{ zIndex: 0 }}
+        />
+        <div style={{ maxWidth: 1920, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <Eyebrow style={{ color: "rgba(255,251,240,0.6)", marginBottom: 16 }}>
+            § R · OPERATIONS REFERENCE
+          </Eyebrow>
+          <h2
+            style={{
+              fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+              fontWeight: 400,
+              fontSize: "clamp(36px, 4.5vw, 56px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              color: CREAM,
+              margin: 0,
+              maxWidth: "16ch",
+            }}
+          >
+            The supporting <Em>chapters.</Em>
+          </h2>
+          <div
+            style={{
+              marginTop: 40,
+              display: "grid",
+              gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+              gap: 16,
+            }}
+          >
+            {OPERATIONS_REFERENCE.map((r) => {
+              const media = lessonMediaTypes(r.code);
+              return (
+              <Link key={r.code} href={`/curriculum/${r.code}`}>
+                <a
+                  className="kingdom-ops-card-dark"
                   style={{
-                    fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: BLUE,
-                    letterSpacing: "0.06em",
-                    minWidth: 36,
+                    background: "rgba(255,251,240,0.06)",
+                    backdropFilter: "blur(14px)",
+                    WebkitBackdropFilter: "blur(14px)",
+                    padding: "20px 22px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    textDecoration: "none",
+                    color: CREAM,
+                    border: "1px solid rgba(255,251,240,0.18)",
+                    borderRadius: 10,
+                    boxShadow:
+                      "0 1px 2px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,251,240,0.06)",
+                    transition:
+                      "background 150ms ease, transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease",
+                    minHeight: 96,
                   }}
                 >
-                  {r.code}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                    fontWeight: 500,
-                    fontSize: 18,
-                    lineHeight: 1.25,
-                    color: NAVY,
-                    letterSpacing: "-0.01em",
-                    flex: 1,
-                  }}
-                >
-                  {r.title}
-                </span>
-                {media.hasVideo && (
-                  <span style={mediaPill("#3B5BDB", false)}>
-                    <Video size={10} /> VIDEO
+                  <span
+                    style={{
+                      fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color: "#5FB286",
+                      letterSpacing: "0.06em",
+                      minWidth: 36,
+                    }}
+                  >
+                    {r.code}
                   </span>
-                )}
-                {media.hasAudio && (
-                  <span style={mediaPill("#D9622B", false)}>
-                    <Headphones size={10} /> AUDIO
+                  <span
+                    style={{
+                      fontFamily:
+                        "var(--font-display, Fraunces), Georgia, serif",
+                      fontWeight: 500,
+                      fontSize: 18,
+                      lineHeight: 1.25,
+                      color: CREAM,
+                      letterSpacing: "-0.01em",
+                      flex: 1,
+                    }}
+                  >
+                    {r.title}
                   </span>
-                )}
-                <ArrowRight size={14} style={{ color: BLUE, opacity: 0.85 }} />
-              </a>
-            </Link>
-            );
-          })}
+                  {media.hasVideo && (
+                    <span style={mediaPill("#3B5BDB", true)}>
+                      <Video size={10} /> VIDEO
+                    </span>
+                  )}
+                  {media.hasAudio && (
+                    <span style={mediaPill("#D9622B", true)}>
+                      <Headphones size={10} /> AUDIO
+                    </span>
+                  )}
+                  <ArrowRight size={14} style={{ color: "#5FB286", opacity: 0.85 }} />
+                </a>
+              </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -469,6 +493,12 @@ export default function Curriculum() {
           background: rgba(255, 255, 255, 0.78) !important;
           transform: translateY(-1px);
           box-shadow: 0 2px 4px rgba(26,32,96,0.06), 0 8px 24px rgba(26,32,96,0.08) !important;
+        }
+        .kingdom-ops-card-dark:hover {
+          background: rgba(255,251,240,0.12) !important;
+          border-color: rgba(255,251,240,0.32) !important;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.28), 0 12px 32px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,251,240,0.10) !important;
         }
       `}</style>
 
