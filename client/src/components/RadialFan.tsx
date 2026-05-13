@@ -37,6 +37,8 @@ export type FanFocal =
   | "left"
   | "top"
   | "bottom"
+  | "top-tilt"   // focal at top-right corner, rays bloom down-left at 45 deg
+  | "top-left"   // focal at top-left corner, rays bloom right
   | "center";
 
 type Origin = FanFocal;
@@ -126,6 +128,27 @@ function placementFor(
         right: -0.439 * size,
         top: `calc(50% - ${0.587 * size}px)`,
         transform: "rotate(-90deg)",
+      };
+
+    case "top-tilt":
+      // focal at top-right corner, rays bloom DOWN-LEFT at 45 deg.
+      // After rotate(-135deg) the focal lands at (39.5%, 48.2%) of
+      // the div, so we offset the div to put that point exactly on
+      // the section's top-right corner.
+      return {
+        top: -0.482 * size,
+        right: -0.605 * size,
+        transform: "rotate(-135deg)",
+      };
+    case "top-left":
+      // focal at top-left corner, rays bloom RIGHT (no tilt).
+      // After rotate(90deg) the focal lands at (43.9%, 41.3%) of the
+      // div, so we offset to put that point at section's top-left
+      // corner.
+      return {
+        top: -0.413 * size,
+        left: -0.439 * size,
+        transform: "rotate(90deg)",
       };
 
     case "center":
