@@ -69,35 +69,46 @@ interface RadialFanProps {
 }
 
 /* Anchor + transform per origin. The SVG's natural focal sits in the
-   upper-right of its viewBox, so `tr` needs no transform. Other
-   origins flip the SVG (scaleX, scaleY, rotate) so the focal lands
-   at the requested corner while the rays still open inward. */
+   upper-right of its viewBox at (58.7%, 43.9%). We flip the SVG so
+   that the FLAT side of the fan (the rays' outer terminus, originally
+   the upper part of the viewBox) lands along the section edge - and
+   the FOCAL points inward into the page. That's the Sales Catalog
+   corner-emergent look.
+
+   For `tr`: rotate 180 so the rim lands at top-right edge and the
+   focal points down-left into the page.
+   `tl`: scaleY(-1) keeps the rim at top-left edge, focal points
+   down-right inward.
+   `br`: scaleX(-1) puts the rim at bottom-right edge, focal points
+   up-left inward.
+   `bl`: no transform - natural orientation puts the rim at bottom-
+   left edge and focal points up-right inward. */
 function placementFor(origin: Origin): React.CSSProperties {
   switch (origin) {
     case "tr":
-      return { top: 0, right: 0, transform: "none" };
+      return { top: 0, right: 0, transform: "rotate(180deg)" };
     case "tl":
-      return { top: 0, left: 0, transform: "scaleX(-1)" };
+      return { top: 0, left: 0, transform: "scaleY(-1)" };
     case "br":
-      return { bottom: 0, right: 0, transform: "scaleY(-1)" };
+      return { bottom: 0, right: 0, transform: "scaleX(-1)" };
     case "bl":
-      return { bottom: 0, left: 0, transform: "rotate(180deg)" };
+      return { bottom: 0, left: 0, transform: "none" };
     case "right":
-      return { top: "50%", right: 0, transform: "translateY(-50%)" };
-    case "left":
       return {
         top: "50%",
-        left: 0,
-        transform: "translateY(-50%) scaleX(-1)",
+        right: 0,
+        transform: "translateY(-50%) rotate(180deg)",
       };
+    case "left":
+      return { top: "50%", left: 0, transform: "translateY(-50%)" };
     case "top":
-      return { top: 0, left: "50%", transform: "translateX(-50%)" };
-    case "bottom":
       return {
-        bottom: 0,
+        top: 0,
         left: "50%",
-        transform: "translateX(-50%) scaleY(-1)",
+        transform: "translateX(-50%) rotate(180deg)",
       };
+    case "bottom":
+      return { bottom: 0, left: "50%", transform: "translateX(-50%)" };
     case "center":
     default:
       return {
