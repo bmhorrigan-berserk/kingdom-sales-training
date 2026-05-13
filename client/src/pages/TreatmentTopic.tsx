@@ -657,6 +657,107 @@ function FormatTile({
   const meta = FORMAT_META[type];
   const { Icon } = meta;
 
+  // Slide decks render in a wide stacked layout: header band on top
+  // (icon + eyebrow + title + blurb) and the carousel below at full
+  // tile width. The other formats keep the asymmetric two-column.
+  if (type === "slides") {
+    return (
+      <article
+        id={type}
+        style={{
+          scrollMarginTop: 80,
+          background: CREAM,
+          border: `1px solid ${HAIRLINE}`,
+          borderRadius: 18,
+          padding: "40px 44px",
+          boxShadow:
+            "0 1px 2px rgba(26,32,96,0.04), 0 24px 60px -28px rgba(26,32,96,0.18)",
+        }}
+      >
+        {/* Header band */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1.4fr)",
+            gap: 32,
+            alignItems: "end",
+            marginBottom: 28,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 14,
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 36,
+                  height: 36,
+                  borderRadius: 9,
+                  background: asset ? accent : "rgba(45,42,36,0.10)",
+                  color: asset ? CREAM : INK_MUTED,
+                  boxShadow: asset ? `0 6px 16px ${accent}33` : "none",
+                }}
+              >
+                <Icon size={16} />
+              </span>
+              <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
+                {meta.eyebrow}
+              </Eyebrow>
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                fontWeight: 500,
+                fontSize: "clamp(28px, 3vw, 40px)",
+                lineHeight: 1.08,
+                letterSpacing: "-0.018em",
+                color: NAVY,
+                margin: 0,
+                maxWidth: "18ch",
+              }}
+            >
+              {meta.label}
+              <Em style={{ color: accent }}>.</Em>
+            </h2>
+          </div>
+          <p
+            style={{
+              margin: 0,
+              fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+              fontSize: 15,
+              lineHeight: 1.6,
+              color: INK_MUTED,
+              maxWidth: "60ch",
+            }}
+          >
+            {asset
+              ? meta.blurb
+              : `This format is on the production list. The slide deck will live here as soon as it ships.`}
+          </p>
+        </div>
+
+        {/* Full-width carousel - tall enough to actually read */}
+        {asset ? (
+          <MediaRender type="slides" asset={asset} accent={accent} />
+        ) : (
+          <PlaceholderMedia
+            accent={accent}
+            soft="rgba(45,42,36,0.04)"
+            Icon={Icon}
+          />
+        )}
+      </article>
+    );
+  }
+
   return (
     <article
       id={type}
@@ -1116,12 +1217,15 @@ function SlideCarousel({
 
   return (
     <div>
-      {/* Frame */}
+      {/* Frame - tall enough that text on each slide stays readable.
+          16:9 fills the full tile width, and the minHeight floor keeps
+          the frame readable even on narrow viewports. */}
       <div
         style={{
           position: "relative",
           width: "100%",
           aspectRatio: "16 / 9",
+          minHeight: 460,
           background: NAVY_DEEP,
           borderRadius: 14,
           overflow: "hidden",
@@ -1202,7 +1306,7 @@ function SlideCarousel({
             aria-label={`Jump to slide ${i + 1}`}
             style={{
               flexShrink: 0,
-              width: 88,
+              width: 120,
               aspectRatio: "16 / 9",
               border:
                 i === idx
@@ -1319,6 +1423,7 @@ function SlideIframe({
           position: "relative",
           width: "100%",
           aspectRatio: "16 / 9",
+          minHeight: 460,
           background: PALE,
           borderRadius: 14,
           overflow: "hidden",
