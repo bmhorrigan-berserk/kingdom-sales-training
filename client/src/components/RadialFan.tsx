@@ -1,22 +1,24 @@
 /**
- * RadialFan - Sales Catalog faceted sunburst, fully enclosed and symmetric.
+ * RadialFan - Sales Catalog faceted sunburst.
  *
- * The catalog texture SVGs (/textures/texture-<name>.svg) are
- * asymmetric on their own - the rays only radiate in roughly the
- * upper hemisphere from the focal point. To get a fully enclosed
- * circular medallion we layer TWO copies of the texture inside the
- * same masked container: one in its natural orientation and one
- * rotated 180 degrees around the focal. Together they fill the full
- * 360 ring of rays.
+ * Renders the catalog texture SVGs (/textures/texture-<name>.svg) as
+ * a single uncropped fan, exactly the way the Sales Catalog uses
+ * them. The SVG's natural shape IS a fan opening from a focal point;
+ * trying to clip it to a perfect circle (single layer + tight mask)
+ * or fake symmetry (two stacked rotated layers) both looked wrong.
  *
- * Everything else stays the same as before:
- *   - container is forced square via aspect-ratio: 1 with max-width
- *     / max-height: 100%, so the medallion shrinks to fit short
- *     sections without distorting.
- *   - radial-gradient mask centered on the focal fades the corners
- *     to transparent so the bounding box is invisible.
- *   - mix-blend-mode integrates the line ink into the surface -
- *     multiply on cream / paper, screen on navy / dark gradients.
+ * What the Sales Catalog does:
+ *   - container sized to be larger than its parent so the rays fan
+ *     deep into the section
+ *   - anchored to a corner via negative inset so the focal sits near
+ *     the section corner and the fan opens inward
+ *   - very light radial fade only at the absolute outer edge to soft-
+ *     land the bounding box; no aggressive masking
+ *
+ * We mirror that here. Default `origin="tr"` puts the focal in the
+ * top-right corner with the fan opening down-left; other origins
+ * flip the SVG via transform so the focal lands in whichever corner
+ * is requested.
  */
 
 export type FanTexture =
@@ -66,29 +68,36 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* SVG focal sits at approximately (58.7%, 43.9%) of the viewBox.
-   Both texture layers share this anchor point. */
-const FOCAL_X = "58.7%";
-const FOCAL_Y = "43.9%";
-
+/* Anchor + transform per origin. The SVG's natural focal sits in the
+   upper-right of its viewBox, so `tr` needs no transform. Other
+   origins flip the SVG (scaleX, scaleY, rotate) so the focal lands
+   at the requested corner while the rays still open inward. */
 function placementFor(origin: Origin): React.CSSProperties {
   switch (origin) {
     case "tr":
-      return { top: 0, right: 0 };
+      return { top: 0, right: 0, transform: "none" };
     case "tl":
-      return { top: 0, left: 0 };
+      return { top: 0, left: 0, transform: "scaleX(-1)" };
     case "br":
-      return { bottom: 0, right: 0 };
+      return { bottom: 0, right: 0, transform: "scaleY(-1)" };
     case "bl":
-      return { bottom: 0, left: 0 };
+      return { bottom: 0, left: 0, transform: "rotate(180deg)" };
     case "right":
       return { top: "50%", right: 0, transform: "translateY(-50%)" };
     case "left":
-      return { top: "50%", left: 0, transform: "translateY(-50%)" };
+      return {
+        top: "50%",
+        left: 0,
+        transform: "translateY(-50%) scaleX(-1)",
+      };
     case "top":
       return { top: 0, left: "50%", transform: "translateX(-50%)" };
     case "bottom":
-      return { bottom: 0, left: "50%", transform: "translateX(-50%)" };
+      return {
+        bottom: 0,
+        left: "50%",
+        transform: "translateX(-50%) scaleY(-1)",
+      };
     case "center":
     default:
       return {
@@ -110,22 +119,11 @@ export function RadialFan({
   ariaHidden = true,
 }: RadialFanProps) {
   const placement = placementFor(origin);
-  const textureUrl = `/textures/texture-${texture}.svg`;
 
-  /* Soft radial mask centered on the focal. Reaches all the way out
-     to the bounding-box corner with a gradual fade so the combined
-     360 ring of rays stays visible across the whole medallion. */
-  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 42%, rgba(0,0,0,0.78) 65%, rgba(0,0,0,0.30) 85%, transparent 100%)`;
-
-  /* Style shared by both texture layers. */
-  const layerBase: React.CSSProperties = {
-    position: "absolute",
-    inset: 0,
-    backgroundImage: `url('${textureUrl}')`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "contain",
-  };
+  /* Very soft outer-edge fade only - just enough to land the
+     bounding box. The catalog's natural fan shape stays intact. */
+  const maskImage =
+    "radial-gradient(ellipse at center, black 0%, black 70%, rgba(0,0,0,0.6) 88%, transparent 100%)";
 
   return (
     <div
@@ -138,6 +136,10 @@ export function RadialFan({
         maxWidth: "100%",
         maxHeight: "100%",
         aspectRatio: "1 / 1",
+        backgroundImage: `url('/textures/texture-${texture}.svg')`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "contain",
         opacity,
         mixBlendMode: blendMode,
         WebkitMaskImage: maskImage,
@@ -147,25 +149,13 @@ export function RadialFan({
         zIndex: 0,
         ...placement,
         ...style,
+        ...(style?.transform
+          ? {
+              transform: `${placement.transform ?? ""} ${style.transform}`.trim(),
+            }
+          : null),
       }}
-    >
-      {/* Layer 1: SVG in natural orientation - rays fan into the
-          upper hemisphere from the focal. */}
-      <div style={layerBase} />
-      {/* Layer 2: same SVG rotated 180 degrees around the focal so
-          its rays fill the lower hemisphere. Combined with layer 1
-          they form a fully enclosed 360 ring. */}
-      <div
-        style={{
-          ...layerBase,
-          transform: "rotate(180deg)",
-          /* transform-origin set to the focal so the rotation pivots
-             around the SVG's natural focal point, keeping both layers'
-             focals stacked exactly on top of each other. */
-          transformOrigin: `${FOCAL_X} ${FOCAL_Y}`,
-        }}
-      />
-    </div>
+    />
   );
 }
 
