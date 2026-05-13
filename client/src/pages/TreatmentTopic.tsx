@@ -59,6 +59,7 @@ const GREEN = "#1F6B3F";
 const ORANGE = "#D9622B";
 const RED = "#B23A3A";
 const BLUE = "#3B5BDB";
+const ROSE = "#C95371";
 const CREAM = "#FFFBF0";
 const CREAM_WARM = "#FAF3E2";
 const PALE = "#EAF4EC";
@@ -66,18 +67,29 @@ const HAIRLINE = "#E8DEC6";
 const INK = "#2D2A24";
 const INK_MUTED = "#6B6357";
 
-/* ─── per-topic accent + medallion texture ───────────────────────────────── */
+/* ─── per-topic accent + medallion texture ────────────────────────────────
+   accent  → bold ink color for headings, period flourishes, borders.
+   soft    → faded background tint behind each format section (the cream
+             washes Brice asked for: each module owns its own hue).
+   texture → which RadialFan vector goes behind the section frames.
+
+   Male Hormones    → BLUE
+   Female Hormones  → PINK/RED (rose)
+   Peptides         → ORANGE
+   Weight Loss      → RED
+   Wellness         → GREEN
+*/
 const TOPIC_THEME: Record<
   string,
   { accent: string; texture: FanTexture; soft: string }
 > = {
-  "fixing-male-energy-crisis":          { accent: RED,    texture: "hormone",  soft: "#F8E8E5" },
-  "why-women-need-testosterone":        { accent: ORANGE, texture: "weight",   soft: "#FBEBDD" },
-  "peptides-targeted-cellular-repair":  { accent: BLUE,   texture: "peptides", soft: "#E3E8FB" },
-  "retatrutide-human-survival-algorithm": { accent: ORANGE, texture: "weight", soft: "#FBEBDD" },
-  "targeted-molecules-cellular-energy": { accent: GREEN,  texture: "wellness", soft: PALE },
+  "fixing-male-energy-crisis":            { accent: BLUE,   texture: "peptides", soft: "#E8EDFB" },
+  "why-women-need-testosterone":          { accent: ROSE,   texture: "hormone",  soft: "#FBE5EB" },
+  "peptides-targeted-cellular-repair":    { accent: ORANGE, texture: "weight",   soft: "#FBEBDD" },
+  "retatrutide-human-survival-algorithm": { accent: RED,    texture: "hormone",  soft: "#F8E8E5" },
+  "targeted-molecules-cellular-energy":   { accent: GREEN,  texture: "wellness", soft: "#E5F0E9" },
 };
-const DEFAULT_THEME = { accent: GREEN, texture: "wellness" as FanTexture, soft: PALE };
+const DEFAULT_THEME = { accent: GREEN, texture: "wellness" as FanTexture, soft: "#E5F0E9" };
 
 /* ─── format meta (label + icon + section blurb) ─────────────────────────── */
 type AssetType = "audio" | "video" | "infographic" | "slides";
@@ -140,14 +152,8 @@ export default function TreatmentTopic() {
       {/* ── WHAT YOU'LL LEARN STRIP ──────────────────────────────────── */}
       <LearningStrip topic={topic} accent={theme.accent} />
 
-      {/* ── ASSET SECTIONS (asymmetric alternating) ─────────────────── */}
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "0 auto",
-          padding: "32px 32px 80px",
-        }}
-      >
+      {/* ── ASSET SECTIONS (one full-width tile per format) ─────────── */}
+      <main>
         {(["audio", "video", "infographic", "slides"] as AssetType[]).map(
           (type, idx) => (
             <AssetBlock
@@ -156,6 +162,7 @@ export default function TreatmentTopic() {
               asset={topic.assets[type]}
               accent={theme.accent}
               soft={theme.soft}
+              texture={theme.texture}
               reverse={idx % 2 === 1}
             />
           )
@@ -575,145 +582,183 @@ function LearningStrip({
   );
 }
 
-/* ─── Asymmetric asset block ─────────────────────────────────────────────── */
+/* ─── Format tile (one per format) ────────────────────────────────────────
+   Each section gets the topic's soft tint as its full-bleed background
+   plus two RadialFan vector medallions (left + right) flanking the
+   white content tile. The asymmetric two-column layout (text | media)
+   alternates which side the text lives on so the page reads with a
+   rhythm rather than four identical bricks. */
 function AssetBlock({
   type,
   asset,
   accent,
   soft,
+  texture,
   reverse,
 }: {
   type: AssetType;
   asset: TreatmentTopicAsset | undefined;
   accent: string;
   soft: string;
+  texture: FanTexture;
   reverse: boolean;
 }) {
   const meta = FORMAT_META[type];
   const { Icon } = meta;
 
-  // Asymmetric grid: text column ~ 0.85fr, media column ~ 1.6fr.
-  // Reverse swaps which side the text sits on.
-  const textCol = (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gridColumn: reverse ? 2 : 1,
-        gridRow: 1,
-      }}
-    >
-      <div
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 10,
-          marginBottom: 14,
-        }}
-      >
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: 34,
-            height: 34,
-            borderRadius: 8,
-            background: asset ? accent : "rgba(45,42,36,0.10)",
-            color: asset ? CREAM : INK_MUTED,
-          }}
-        >
-          <Icon size={15} />
-        </span>
-        <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
-          {meta.eyebrow}
-        </Eyebrow>
-      </div>
-      <h2
-        style={{
-          fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-          fontWeight: 500,
-          fontSize: "clamp(28px, 3vw, 38px)",
-          lineHeight: 1.1,
-          letterSpacing: "-0.018em",
-          color: NAVY,
-          margin: 0,
-          maxWidth: "18ch",
-        }}
-      >
-        {meta.label}
-        <Em style={{ color: accent }}>.</Em>
-      </h2>
-      <p
-        style={{
-          marginTop: 14,
-          marginBottom: 0,
-          fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
-          fontSize: 15,
-          lineHeight: 1.6,
-          color: INK_MUTED,
-          maxWidth: "44ch",
-        }}
-      >
-        {asset
-          ? meta.blurb
-          : `This format is on the production list. The ${type} variation will live here as soon as it ships.`}
-      </p>
-      {!asset && (
-        <div style={{ marginTop: 12 }}>
-          <span
-            style={{
-              display: "inline-block",
-              fontFamily: "var(--font-mono, ui-monospace, monospace)",
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: INK_MUTED,
-              padding: "4px 10px",
-              background: "rgba(45,42,36,0.06)",
-              borderRadius: 4,
-            }}
-          >
-            Coming soon
-          </span>
-        </div>
-      )}
-    </div>
-  );
-
-  const mediaCol = (
-    <div
-      style={{
-        gridColumn: reverse ? 1 : 2,
-        gridRow: 1,
-        minWidth: 0,
-      }}
-    >
-      {asset ? (
-        <MediaRender type={type} asset={asset} accent={accent} />
-      ) : (
-        <PlaceholderMedia accent={accent} soft={soft} Icon={Icon} />
-      )}
-    </div>
-  );
-
   return (
     <section
       id={type}
       style={{
+        position: "relative",
         scrollMarginTop: 80,
-        padding: "60px 0",
-        borderBottom: `1px solid ${HAIRLINE}`,
-        display: "grid",
-        gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.6fr)",
-        gap: 56,
-        alignItems: "stretch",
+        background: soft,
+        padding: "64px 32px",
+        overflow: "hidden",
       }}
     >
-      {textCol}
-      {mediaCol}
+      {/* Two vector medallions framing the tile - one on each side. */}
+      <RadialFan
+        texture={texture}
+        origin="left"
+        opacity={0.10}
+        size={520}
+        style={{ zIndex: 0 }}
+      />
+      <RadialFan
+        texture={texture}
+        origin="right"
+        opacity={0.10}
+        size={520}
+        style={{ zIndex: 0 }}
+      />
+
+      {/* The white tile holding the actual content. */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: 1200,
+          margin: "0 auto",
+          background: CREAM,
+          border: `1px solid ${HAIRLINE}`,
+          borderRadius: 18,
+          padding: "44px 44px",
+          boxShadow:
+            "0 1px 2px rgba(26,32,96,0.04), 0 24px 60px -28px rgba(26,32,96,0.18)",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.6fr)",
+            gap: 44,
+            alignItems: "center",
+          }}
+        >
+          {/* Text column (alternates side via grid-column override) */}
+          <div
+            style={{
+              gridColumn: reverse ? 2 : 1,
+              gridRow: 1,
+              minWidth: 0,
+            }}
+          >
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 14,
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 36,
+                  height: 36,
+                  borderRadius: 9,
+                  background: asset ? accent : "rgba(45,42,36,0.10)",
+                  color: asset ? CREAM : INK_MUTED,
+                  boxShadow: asset ? `0 6px 16px ${accent}33` : "none",
+                }}
+              >
+                <Icon size={16} />
+              </span>
+              <Eyebrow style={{ color: asset ? accent : INK_MUTED, margin: 0 }}>
+                {meta.eyebrow}
+              </Eyebrow>
+            </div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+                fontWeight: 500,
+                fontSize: "clamp(28px, 3vw, 40px)",
+                lineHeight: 1.08,
+                letterSpacing: "-0.018em",
+                color: NAVY,
+                margin: 0,
+                maxWidth: "18ch",
+              }}
+            >
+              {meta.label}
+              <Em style={{ color: accent }}>.</Em>
+            </h2>
+            <p
+              style={{
+                marginTop: 14,
+                marginBottom: 0,
+                fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                fontSize: 15,
+                lineHeight: 1.6,
+                color: INK_MUTED,
+                maxWidth: "44ch",
+              }}
+            >
+              {asset
+                ? meta.blurb
+                : `This format is on the production list. The ${type} variation will live here as soon as it ships.`}
+            </p>
+            {!asset && (
+              <div style={{ marginTop: 12 }}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: INK_MUTED,
+                    padding: "4px 10px",
+                    background: "rgba(45,42,36,0.06)",
+                    borderRadius: 4,
+                  }}
+                >
+                  Coming soon
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Media column */}
+          <div
+            style={{
+              gridColumn: reverse ? 1 : 2,
+              gridRow: 1,
+              minWidth: 0,
+            }}
+          >
+            {asset ? (
+              <MediaRender type={type} asset={asset} accent={accent} />
+            ) : (
+              <PlaceholderMedia accent={accent} soft={soft} Icon={Icon} />
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -1308,18 +1353,41 @@ function SlideIframe({
   );
 }
 
-/* ─── Continue learning strip ────────────────────────────────────────────── */
+/* ─── Continue learning strip (shifting kingdom gradient) ─────────────────
+   Mirrors the ShiftingBand footer pattern - the red → blue → orange →
+   green gradient drifts continuously underneath glassy uniform tiles.
+   Each tile is exactly the same size (grid-auto-rows: 1fr) so the row
+   reads as one motion rather than four shapes. */
 function ContinueLearning({ topics }: { topics: TopicType[] }) {
   return (
     <section
       style={{
-        background: CREAM_WARM,
-        borderTop: `1px solid ${HAIRLINE}`,
-        borderBottom: `1px solid ${HAIRLINE}`,
-        padding: "56px 32px 64px",
+        position: "relative",
+        padding: "64px 32px 72px",
+        marginTop: 0,
+        background:
+          "linear-gradient(115deg, #B23A3A 0%, #3B5BDB 33%, #D9622B 66%, #1F6B3F 100%)",
+        backgroundSize: "260% 260%",
+        animation: "kingdomShift 22s ease-in-out infinite",
+        color: CREAM,
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <RadialFan
+        texture="footer"
+        origin="center"
+        opacity={0.14}
+        size={620}
+        style={{ zIndex: 0 }}
+      />
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: 1200,
+          margin: "0 auto",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -1327,26 +1395,26 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: 16,
-            marginBottom: 24,
+            marginBottom: 28,
           }}
         >
           <div>
-            <Eyebrow style={{ color: GREEN, marginBottom: 8 }}>
+            <Eyebrow style={{ color: "rgba(255,251,240,0.78)", marginBottom: 10 }}>
               <Sparkles size={11} style={{ marginRight: 6, verticalAlign: -1 }} />
               § CONTINUE LEARNING
             </Eyebrow>
             <h3
               style={{
                 fontFamily: "var(--font-display, Fraunces), Georgia, serif",
-                fontWeight: 500,
-                fontSize: "clamp(28px, 3vw, 38px)",
+                fontWeight: 400,
+                fontSize: "clamp(28px, 3vw, 40px)",
                 lineHeight: 1.1,
-                letterSpacing: "-0.018em",
-                color: NAVY,
+                letterSpacing: "-0.02em",
+                color: CREAM,
                 margin: 0,
               }}
             >
-              Other modules in the catalog<Em style={{ color: ORANGE }}>.</Em>
+              Other modules in the catalog<Em style={{ color: CREAM }}>.</Em>
             </h3>
           </div>
           <Link href="/library#treatment">
@@ -1357,11 +1425,17 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
                 fontWeight: 700,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
-                color: GREEN,
+                color: CREAM,
                 textDecoration: "none",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
+                padding: "8px 14px",
+                background: "rgba(255,251,240,0.10)",
+                border: "1px solid rgba(255,251,240,0.24)",
+                borderRadius: 999,
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
               }}
             >
               All modules
@@ -1374,7 +1448,9 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gridAutoRows: "1fr",
             gap: 14,
+            alignItems: "stretch",
           }}
         >
           {topics.map((t) => {
@@ -1383,50 +1459,78 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
               <Link key={t.slug} href={`/library/treatment/${t.slug}`}>
                 <a
                   style={{
-                    display: "block",
-                    padding: "18px 18px 16px",
-                    background: CREAM,
-                    border: `1px solid ${HAIRLINE}`,
-                    borderLeft: `4px solid ${theme.accent}`,
-                    borderRadius: 12,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    minHeight: 180,
+                    padding: "20px 20px 18px",
+                    background: "rgba(255,251,240,0.10)",
+                    border: "1px solid rgba(255,251,240,0.22)",
+                    borderRadius: 14,
                     textDecoration: "none",
                     color: "inherit",
-                    transition: "transform 160ms ease, box-shadow 160ms ease",
-                    boxShadow: "0 1px 2px rgba(26,32,96,0.04)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    transition: "transform 180ms ease, background 180ms ease, border-color 180ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow =
-                      "0 10px 26px -14px rgba(26,32,96,0.25)";
+                    e.currentTarget.style.transform = "translateY(-3px)";
+                    e.currentTarget.style.background =
+                      "rgba(255,251,240,0.18)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(255,251,240,0.40)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "";
-                    e.currentTarget.style.boxShadow =
-                      "0 1px 2px rgba(26,32,96,0.04)";
+                    e.currentTarget.style.background =
+                      "rgba(255,251,240,0.10)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(255,251,240,0.22)";
                   }}
                 >
+                  {/* Topic dot + module label */}
                   <div
                     style={{
-                      fontFamily: "var(--font-mono, ui-monospace, monospace)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: theme.accent,
-                      marginBottom: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      marginBottom: 12,
                     }}
                   >
-                    Module {t.moduleNumber}
+                    <span
+                      aria-hidden
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: "50%",
+                        background: theme.accent,
+                        boxShadow: `0 0 0 3px rgba(255,251,240,0.18)`,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily:
+                          "var(--font-mono, ui-monospace, monospace)",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "rgba(255,251,240,0.78)",
+                      }}
+                    >
+                      Module {t.moduleNumber}
+                    </span>
                   </div>
                   <div
                     style={{
                       fontFamily:
                         "var(--font-display, Fraunces), Georgia, serif",
                       fontWeight: 500,
-                      fontSize: 19,
-                      lineHeight: 1.18,
-                      letterSpacing: "-0.012em",
-                      color: NAVY,
+                      fontSize: 22,
+                      lineHeight: 1.15,
+                      letterSpacing: "-0.015em",
+                      color: CREAM,
                       marginBottom: 6,
                     }}
                   >
@@ -1434,13 +1538,26 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
                   </div>
                   <div
                     style={{
-                      fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+                      fontFamily:
+                        "var(--font-body, Inter), system-ui, sans-serif",
                       fontSize: 13,
                       lineHeight: 1.5,
-                      color: INK_MUTED,
+                      color: "rgba(255,251,240,0.78)",
+                      flex: 1,
                     }}
                   >
                     {t.tagline}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: 14,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      color: CREAM,
+                    }}
+                  >
+                    <ArrowRight size={14} />
                   </div>
                 </a>
               </Link>
@@ -1448,6 +1565,13 @@ function ContinueLearning({ topics }: { topics: TopicType[] }) {
           })}
         </div>
       </div>
+
+      <style>{`
+        @keyframes kingdomShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
     </section>
   );
 }
