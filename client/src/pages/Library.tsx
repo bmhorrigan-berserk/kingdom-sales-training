@@ -123,7 +123,7 @@ export default function Library() {
                 marginBottom: 14,
               }}
             >
-              § 05 · MEDIA LIBRARY · {videos.length} VIDEOS · {audios.length}{" "}
+              § 03 · MEDIA LIBRARY · {videos.length} VIDEOS · {audios.length}{" "}
               AUDIO · {treatmentTopics.length} TREATMENT
             </div>
             <h1
@@ -350,7 +350,7 @@ export default function Library() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current={5} total={5} />
+        <PageNumber current="03" total="05" />
       </footer>
     </div>
   );

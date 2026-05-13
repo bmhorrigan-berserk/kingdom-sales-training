@@ -508,7 +508,7 @@ export default function ReferenceGuide() {
         }}
       >
         <Eyebrow>· {guide.title.toUpperCase()} ·</Eyebrow>
-        <PageNumber current={2} total={4} />
+        <PageNumber current="02" total="05" />
       </footer>
       <style>{`
         .kingdom-sib-row:hover { background: ${PALE}; }

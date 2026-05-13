@@ -197,7 +197,7 @@ export default function ReferenceBinder() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current={2} total={4} />
+        <PageNumber current="02" total="05" />
       </footer>
     </div>
   );

@@ -222,17 +222,17 @@ export default function Home() {
               },
               {
                 n: "02",
-                href: "/library",
-                title: "Media Library",
-                desc: "Watch and listen. 7 video explainers + 6 audio recordings, including live calls.",
-                icon: PlayCircle,
-              },
-              {
-                n: "03",
                 href: "/reference",
                 title: "Reference Binder",
                 desc: "Eight working guides. Sign-up, billing, DX codes, lab panels, pipelines.",
                 icon: Library,
+              },
+              {
+                n: "03",
+                href: "/library",
+                title: "Media Library",
+                desc: "Watch and listen. 7 video explainers + 6 audio recordings, including live calls.",
+                icon: PlayCircle,
               },
               {
                 n: "04",
@@ -352,7 +352,7 @@ export default function Home() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current={1} total={4} />
+        <PageNumber current="00" total="05" />
       </footer>
     </div>
   );

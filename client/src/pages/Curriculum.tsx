@@ -42,7 +42,7 @@ export default function Curriculum() {
           style={{ zIndex: 0 }}
         />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <Eyebrow style={{ marginBottom: 16 }}>§ 02 OF 04 · CURRICULUM</Eyebrow>
+          <Eyebrow style={{ marginBottom: 16 }}>§ 01 OF 05 · CURRICULUM</Eyebrow>
           <h1
             style={{
               fontFamily: "var(--font-display, Fraunces), Georgia, serif",
@@ -481,7 +481,7 @@ export default function Curriculum() {
         }}
       >
         <Eyebrow>· KINGDOM CONFIDENTIAL · INTERNAL USE ONLY ·</Eyebrow>
-        <PageNumber current={2} total={4} />
+        <PageNumber current="01" total="05" />
       </footer>
     </div>
   );
