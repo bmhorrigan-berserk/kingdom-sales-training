@@ -226,6 +226,10 @@ export interface TreatmentTopic {
 
 const BLOB_AUDIO_BASE =
   "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/audio";
+const BLOB_VIDEO_BASE =
+  "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/video";
+const BLOB_INFOGRAPHIC_BASE =
+  "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/infographic";
 
 export const TREATMENT_TOPICS: TreatmentTopic[] = [
   {
@@ -238,6 +242,13 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/fixing-male-energy-crisis-0aQNX1BScveflRnZYAUwhAqwxIj343.m4a`,
+      },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/fixing-male-energy-crisis.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/fixing-male-energy-crisis.jpg`,
+        alt: "The Path to Restoration: Understanding Male Hormones and TRT - kingdom infographic covering HPG axis, the 5 domains of low testosterone, restoration mechanism, and 6-month patient timeline.",
       },
     },
   },
@@ -252,6 +263,13 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
       audio: {
         src: `${BLOB_AUDIO_BASE}/why-women-need-testosterone-dTBRNKgBMJRH2LbpfAu5ULGDBjItuY.m4a`,
       },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/why-women-need-testosterone.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/why-women-need-testosterone.jpg`,
+        alt: "The Path to Hormonal Restoration: Navigating the Female Menopause Transition - kingdom infographic covering female HPG axis, perimenopause vs menopause, BHRT vs synthetic HRT, and the 6-month restoration timeline.",
+      },
     },
   },
   {
@@ -264,6 +282,13 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/peptides-targeted-cellular-repair-ccQoNdt3QWivyc6cssucrdD8qPUPmI.m4a`,
+      },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/peptides-targeted-cellular-repair.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/peptides-targeted-cellular-repair.jpg`,
+        alt: "Kingdom Module 03 - The Peptide Catalog: Precision Signaling for Repair and Performance. Covers peptides vs hormones, the Wolverine Stack (BPC-157 + TB-500), growth hormone secretagogues, aesthetic/libido peptides (GHK-Cu, PT-141), and cognitive/immune peptides.",
       },
     },
   },
@@ -278,6 +303,13 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
       audio: {
         src: `${BLOB_AUDIO_BASE}/targeted-molecules-cellular-energy-qFox8vqHZ8rObOTl60EopYgrAXMRxA.m4a`,
       },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/targeted-molecules-cellular-energy.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/targeted-molecules-cellular-energy.jpg`,
+        alt: "Kingdom Module 05 - Fueling the Cellular Orchestra. Covers NAD+ for cellular fuel, B12 + LIE-poh B for methylation, glutathione (gloo-tah-THY-ohn) as master antioxidant, L carnitine for metabolic flexibility, PT-141 / P-B-E five inhibitors for sexual health.",
+      },
     },
   },
   {
@@ -290,6 +322,13 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
     assets: {
       audio: {
         src: `${BLOB_AUDIO_BASE}/retatrutide-human-survival-algorithm-fCel7qLmzYQVuULq3eMUUsU2gH5hMT.m4a`,
+      },
+      video: {
+        src: `${BLOB_VIDEO_BASE}/retatrutide-human-survival-algorithm.mp4`,
+      },
+      infographic: {
+        src: `${BLOB_INFOGRAPHIC_BASE}/retatrutide-human-survival-algorithm.jpg`,
+        alt: "Beyond Willpower: Mapping the Biology of Weight Restoration. Covers the biological trap (leptin/ghrelin set-point), the three generations of GLP medications (semaglutide / tirzepatide / retatrutide), receptor mechanism comparison, and the 6-month restoration timeline.",
       },
     },
   },
