@@ -95,34 +95,41 @@ export default function ReferenceBinder() {
         style={{
           maxWidth: 1920,
           margin: "0 auto",
-          padding: "0 32px 96px",
+          padding: "56px 32px 96px",
         }}
       >
         {REFERENCE_CATEGORIES.map((category, catIdx) => {
           const guides = REFERENCE_GUIDES.filter((g) => g.category === category);
-          // Only "Billing" gets a medallion. Patient Pipeline and Clinical
-          // run clean text-only sections per spec.
-          const showMedallion = category === "Billing";
+          // Each category carries its own kingdom texture so the page
+          // reads with rhythm. Billing -> weight (orange), Patient
+          // Pipeline -> peptides (navy), Clinical -> hormone (red);
+          // anything else falls back to wellness.
+          const categoryTexture: "weight" | "peptides" | "hormone" | "wellness" =
+            category === "Billing"
+              ? "weight"
+              : category === "Patient Pipeline"
+              ? "peptides"
+              : category === "Clinical"
+              ? "hormone"
+              : "wellness";
           return (
             <div
               key={category}
               style={{
                 position: "relative",
-                marginTop: catIdx === 0 ? 0 : 80,
-                paddingTop: catIdx === 0 ? 0 : 56,
+                marginTop: catIdx === 0 ? 0 : 96,
+                paddingTop: catIdx === 0 ? 32 : 64,
                 borderTop: catIdx === 0 ? "none" : `1px solid ${HAIRLINE}`,
                 overflow: "hidden",
               }}
             >
-              {showMedallion && (
-                <RadialFan
-                  texture="weight"
-                  origin="right"
-                  opacity={0.32}
-                  size={900}
-                  style={{ zIndex: 0 }}
-                />
-              )}
+              <RadialFan
+                texture={categoryTexture}
+                origin="right"
+                opacity={0.30}
+                size={760}
+                style={{ zIndex: 0 }}
+              />
               <div
                 style={{
                   position: "relative",

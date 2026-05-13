@@ -40,7 +40,7 @@ export default function Home() {
           texture="footer"
           origin="tr"
           opacity={0.42}
-          size={1100}
+          size={900}
           style={{ zIndex: 0 }}
         />
 
@@ -402,19 +402,26 @@ function TreatmentDirectorySection() {
         overflow: "hidden",
       }}
     >
+      {/* One medallion in the top-right; the second sits on the left
+          edge, slightly below vertical center, so the two don't
+          overlap. */}
       <RadialFan
         texture="wellness"
         origin="tr"
         opacity={0.32}
-        size={1000}
+        size={780}
         style={{ zIndex: 0 }}
       />
       <RadialFan
         texture="peptides"
-        origin="bl"
-        opacity={0.30}
-        size={960}
-        style={{ zIndex: 0 }}
+        origin="left"
+        opacity={0.28}
+        size={640}
+        style={{
+          zIndex: 0,
+          top: "62%",
+          transform: "translateY(-50%) scaleX(-1)",
+        }}
       />
 
       <div

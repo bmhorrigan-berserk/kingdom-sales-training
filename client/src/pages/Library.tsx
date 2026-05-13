@@ -298,36 +298,76 @@ export default function Library() {
         <section
           id="treatment"
           style={{
-            maxWidth: 1920,
-            margin: "0 auto",
-            padding: "32px 32px 96px",
+            position: "relative",
             scrollMarginTop: 80,
+            overflow: "hidden",
           }}
         >
-          <SectionHeader
-            eyebrow="§ C · TREATMENT CATALOG"
-            eyebrowColor={GREEN}
-            headline={
-              <>
-                Know <Em>what you sell.</Em>
-              </>
-            }
-            subline="Clinical onboarding companions. Each topic ships with multiple format variations - audio, video, infographic, slide deck - so pick the format that fits how you learn."
-            count={treatmentTopics.length}
-            accent={GREEN}
+          {/* Section vector */}
+          <RadialFan
+            texture="wellness"
+            origin="tr"
+            opacity={0.30}
+            size={760}
+            style={{ zIndex: 0 }}
           />
           <div
             style={{
-              marginTop: 40,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
-              gap: 20,
+              position: "relative",
+              zIndex: 1,
+              maxWidth: 1920,
+              margin: "0 auto",
+              padding: "32px 32px 96px",
             }}
           >
-            {treatmentTopics.map((topic) => (
-              <TreatmentTopicCard key={topic.slug} topic={topic} accent={GREEN} />
-            ))}
+            <SectionHeader
+              eyebrow="§ C · TREATMENT CATALOG"
+              eyebrowColor={GREEN}
+              headline={
+                <>
+                  Know <Em>what you sell.</Em>
+                </>
+              }
+              subline="Clinical onboarding companions. Each topic ships with multiple format variations - audio, video, infographic, slide deck - so pick the format that fits how you learn."
+              count={treatmentTopics.length}
+              accent={GREEN}
+            />
+            <div
+              style={{
+                marginTop: 40,
+                display: "grid",
+                /* Five tiles, equal columns. Collapses to 2 columns on
+                   narrower screens via auto-fit fallback below. */
+                gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+                gridAutoRows: "1fr",
+                gap: 16,
+                alignItems: "stretch",
+              }}
+              className="kingdom-treatment-grid"
+            >
+              {treatmentTopics.map((topic) => (
+                <TreatmentTopicCard key={topic.slug} topic={topic} accent={GREEN} />
+              ))}
+            </div>
           </div>
+
+          <style>{`
+            @media (max-width: 1280px) {
+              .kingdom-treatment-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+              }
+            }
+            @media (max-width: 880px) {
+              .kingdom-treatment-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+              }
+            }
+            @media (max-width: 560px) {
+              .kingdom-treatment-grid {
+                grid-template-columns: 1fr !important;
+              }
+            }
+          `}</style>
         </section>
       )}
 
@@ -649,20 +689,35 @@ const statTileLabel: React.CSSProperties = {
   color: "rgba(255,251,240,0.85)",
 };
 
+/* Per-topic soft tint matching the Treatment Catalog detail pages,
+   so each Library catalog tile reads as its own product line. */
+const TOPIC_SOFT_BG: Record<string, { soft: string; accent: string }> = {
+  "fixing-male-energy-crisis":            { soft: "#E8EDFB", accent: "#3B5BDB" }, // blue
+  "why-women-need-testosterone":          { soft: "#FBE5EB", accent: "#C95371" }, // rose
+  "peptides-targeted-cellular-repair":    { soft: "#FBEBDD", accent: "#D9622B" }, // orange
+  "retatrutide-human-survival-algorithm": { soft: "#F8E8E5", accent: "#B23A3A" }, // red
+  "targeted-molecules-cellular-energy":   { soft: "#E5F0E9", accent: "#1F6B3F" }, // green
+};
+
 /* ─── Treatment Topic card (Catalog section) ──────────────────────────────
    Each card represents one Treatment Catalog topic. Clicking the card
    navigates to /library/treatment/<slug>, where every format variation
    (audio, video, infographic, slide deck) is rendered. The chip row
    at the bottom advertises which formats are currently available for
-   that topic, so the rep knows what to expect on the detail page. */
+   that topic, so the rep knows what to expect on the detail page.
+
+   Tile background uses the topic's soft tint so each module reads as
+   its own product line. */
 function TreatmentTopicCard({
   topic,
-  accent,
+  accent: _accent,
 }: {
   topic: TreatmentTopic;
   accent: string;
 }) {
   const formats = topicAvailableFormats(topic);
+  const theme = TOPIC_SOFT_BG[topic.slug] ?? { soft: CREAM, accent: GREEN };
+  const accent = theme.accent;
 
   return (
     <Link href={`/library/treatment/${topic.slug}`}>
@@ -670,16 +725,17 @@ function TreatmentTopicCard({
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "24px 26px 22px",
-          background: CREAM,
+          height: "100%",
+          padding: "24px 22px 20px",
+          background: theme.soft,
           border: `1px solid ${HAIRLINE}`,
-          borderLeft: `4px solid ${accent}`,
-          borderRadius: 12,
+          borderTop: `4px solid ${accent}`,
+          borderRadius: 14,
           textDecoration: "none",
           color: "inherit",
           transition: "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
           boxShadow: "0 1px 2px rgba(31,107,63,0.04)",
-          minHeight: 220,
+          minHeight: 260,
           cursor: "pointer",
         }}
         onMouseEnter={(e) => {
