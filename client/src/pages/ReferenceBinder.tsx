@@ -125,7 +125,11 @@ export default function ReferenceBinder() {
             >
               <RadialFan
                 texture={categoryTexture}
-                origin="right"
+                /* Billing stays right-anchored (origin where it lived
+                   before). Patient Pipeline + Clinical move to the
+                   LEFT side so the page reads with alternating rhythm
+                   instead of every medallion stacking on the right. */
+                origin={category === "Billing" ? "right" : "left"}
                 opacity={0.30}
                 size={760}
                 style={{ zIndex: 0 }}

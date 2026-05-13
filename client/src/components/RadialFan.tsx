@@ -128,10 +128,12 @@ export function RadialFan({
 }: RadialFanProps) {
   const placement = placementFor(origin);
 
-  /* Radial mask centered on the SVG's natural focal. The dense core
-     stays opaque; the corners fade to transparent so the rectangular
-     bounding box never shows. */
-  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 38%, rgba(0,0,0,0.78) 62%, rgba(0,0,0,0.30) 85%, transparent 100%)`;
+  /* Tight radial mask centered on the SVG's natural focal. The
+     catalog texture is asymmetric - the dense rays radiate in one
+     cone away from the focal, so showing the full SVG looks like a
+     half-fan. Clipping to a tight circle around the focal reveals
+     only the dense core, which reads as a balanced circular medallion. */
+  const maskImage = `radial-gradient(circle at ${FOCAL_X} ${FOCAL_Y}, black 0%, black 26%, rgba(0,0,0,0.55) 42%, transparent 62%)`;
 
   return (
     <div
