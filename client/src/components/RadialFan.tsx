@@ -68,47 +68,58 @@ interface RadialFanProps {
   strokeWidth?: number;
 }
 
-/* Anchor + transform per origin. The SVG's natural focal sits in the
-   upper-right of its viewBox at (58.7%, 43.9%). We flip the SVG so
-   that the FLAT side of the fan (the rays' outer terminus, originally
-   the upper part of the viewBox) lands along the section edge - and
-   the FOCAL points inward into the page. That's the Sales Catalog
-   corner-emergent look.
+/* Position the SVG so its natural FOCAL sits exactly at the section
+   corner, with the rest of the SVG bleeding off-screen. The visible
+   portion shows the rays fanning INWARD from the corner - which is
+   exactly what the Sales Catalog does.
 
-   For `tr`: rotate 180 so the rim lands at top-right edge and the
-   focal points down-left into the page.
-   `tl`: scaleY(-1) keeps the rim at top-left edge, focal points
-   down-right inward.
-   `br`: scaleX(-1) puts the rim at bottom-right edge, focal points
-   up-left inward.
-   `bl`: no transform - natural orientation puts the rim at bottom-
-   left edge and focal points up-right inward. */
-function placementFor(origin: Origin): React.CSSProperties {
+   Focal at (58.7%, 43.9%) of SVG. To place focal at corner:
+     right corner: SVG's right of focal (41.3% of size) sits OUTSIDE
+                   the section. CSS: right = -(0.413 * size)
+     top corner:   SVG's above focal (43.9% of size) sits OUTSIDE
+                   the section. CSS: top = -(0.439 * size)
+   Same idea for the other corners + mirroring transforms so the
+   natural focal can land in any corner. */
+function placementFor(
+  origin: Origin,
+  size: number
+): React.CSSProperties {
+  const offsetH = -Math.round(0.413 * size); // horizontal bleed
+  const offsetV = -Math.round(0.439 * size); // vertical bleed
+
   switch (origin) {
     case "tr":
-      return { top: 0, right: 0, transform: "rotate(180deg)" };
+      return { top: offsetV, right: offsetH, transform: "none" };
     case "tl":
-      return { top: 0, left: 0, transform: "scaleY(-1)" };
+      return { top: offsetV, left: offsetH, transform: "scaleX(-1)" };
     case "br":
-      return { bottom: 0, right: 0, transform: "scaleX(-1)" };
+      return { bottom: offsetV, right: offsetH, transform: "scaleY(-1)" };
     case "bl":
-      return { bottom: 0, left: 0, transform: "none" };
+      return { bottom: offsetV, left: offsetH, transform: "rotate(180deg)" };
     case "right":
       return {
         top: "50%",
-        right: 0,
-        transform: "translateY(-50%) rotate(180deg)",
+        right: offsetH,
+        transform: "translateY(-50%)",
       };
     case "left":
-      return { top: "50%", left: 0, transform: "translateY(-50%)" };
+      return {
+        top: "50%",
+        left: offsetH,
+        transform: "translateY(-50%) scaleX(-1)",
+      };
     case "top":
       return {
-        top: 0,
+        top: offsetV,
         left: "50%",
-        transform: "translateX(-50%) rotate(180deg)",
+        transform: "translateX(-50%)",
       };
     case "bottom":
-      return { bottom: 0, left: "50%", transform: "translateX(-50%)" };
+      return {
+        bottom: offsetV,
+        left: "50%",
+        transform: "translateX(-50%) scaleY(-1)",
+      };
     case "center":
     default:
       return {
@@ -129,7 +140,7 @@ export function RadialFan({
   style,
   ariaHidden = true,
 }: RadialFanProps) {
-  const placement = placementFor(origin);
+  const placement = placementFor(origin, size);
 
   /* Very soft outer-edge fade only - just enough to land the
      bounding box. The catalog's natural fan shape stays intact. */
@@ -144,9 +155,6 @@ export function RadialFan({
         position: "absolute",
         width: size,
         height: size,
-        maxWidth: "100%",
-        maxHeight: "100%",
-        aspectRatio: "1 / 1",
         backgroundImage: `url('/textures/texture-${texture}.svg')`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
