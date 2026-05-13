@@ -283,6 +283,44 @@ const SLIDES_PEPTIDES_TARGETED_CELLULAR_REPAIR: string[] = [
   `${BLOB_SLIDES_BASE}/peptides-targeted-cellular-repair/page-20-TCjWLLcVnXR2PaejjvW7qZ07XWnphA.jpg`,
 ];
 
+const SLIDES_RETATRUTIDE_HUMAN_SURVIVAL_ALGORITHM: string[] = [
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-01-cSrAOzbqVvfoY7vGX62NJkOyVKP1Az.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-02-OhKfacsRDVUZedInGhiaglBqwdT0DK.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-03-zwacY0sGXUKaaXXtZlFelMwBPIIYzd.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-04-or8ZhXEmSoLshhGR3R7mnO7HWD7dQh.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-05-OIBOtWVIMWfP2XzpNlT6YQoQCoeNpI.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-06-qp7J80MIrxGOVUZBPF0aRZH4TFJNKN.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-07-Y9LDanU0pv9NhIDnvLRhDUyyqfnUHB.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-08-gAKvv2z6mnL6wKMKuI6Iw2VEOwAJT7.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-09-ecFq4JYZH7k2PJ9dTS7fzldS6RTnwr.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-10-HPTT93FI8FLNL1PN4B5Tzqp1sL5hOz.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-11-yXcL0jZok73cZFI91DXEjbW7lp8ri9.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-12-AXq0I3VYEdYXKiXTv8Pg0ZFeC4CGRG.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-13-5ktQ0wqCoA6plr25kaZQDGmdjbVIm1.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-14-MMcRUhsJyRDwD545XHIvwb9TII0gGQ.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-15-5zJNHiw5Cb32EZvCdclzOUzBuS0boN.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-16-nfOPyVqWJqXozn0rgwSgmqqAni233O.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-17-2lsJDM0uPypk05MNyQpYxGbUXQinCz.jpg`,
+  `${BLOB_SLIDES_BASE}/retatrutide-human-survival-algorithm/page-18-O56SQrzNELOOk6Lx6JZRLMkB8aPQRh.jpg`,
+];
+
+const SLIDES_TARGETED_MOLECULES_CELLULAR_ENERGY: string[] = [
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-01-Mw42hghuhLgx6F0BfLmSuxkDSkaQLq.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-02-pTs7Wlx3VDWfMCMeycHXjhp7jNUDaP.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-03-URjPwinwgk1md0InNU5OWkgvT1am69.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-04-Mat0x5PNb9QMvOhz5PJvnti0tD8Lbi.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-05-qb2zkux59L6PmJXKaINM9yGAWqthRm.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-06-0lx4GbZPB9ErKYW8GtZuxeZSJCffv8.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-07-txMtugs8SQvuOltHziUoRRXKDpI2Ob.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-08-uwlFPR4QL0WOEFocgQm7qk3OY5ipT9.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-09-jWKaFRnZfP6rin50laQWtLbKR6yiZr.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-10-UNr7umgjXpcHYEP63rVRkI7yP0hjR8.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-11-tOJZd3R16w2U0gPqe9ugcKiuFOYRn4.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-12-UMIExq9PfETEv90c8N7nB9Hxoa0Fmj.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-13-9IrVFWbwJVAasXKR8UE3abX5v0dLg8.jpg`,
+  `${BLOB_SLIDES_BASE}/targeted-molecules-cellular-energy/page-14-4JIB9O5xSRjaXHjx1BKeUFFupKjEph.jpg`,
+];
+
 const SLIDES_WHY_WOMEN_NEED_TESTOSTERONE: string[] = [
   `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-01-CT2WLjibPP1CtXbrPlmlSeKPomXSkq.png`,
   `${BLOB_SLIDES_BASE}/why-women-need-testosterone/page-02-eMLK2vi1rVJvKIAHxaQag1G9A4GD2O.png`,
@@ -424,6 +462,11 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
         src: `${BLOB_INFOGRAPHIC_BASE}/retatrutide-human-survival-algorithm.jpg`,
         alt: "Beyond Willpower: Mapping the Biology of Weight Restoration. Covers the biological trap (leptin/ghrelin set-point), the three generations of GLP medications (semaglutide / tirzepatide / retatrutide), receptor mechanism comparison, and the 6-month restoration timeline.",
       },
+      slides: {
+        src: SLIDES_RETATRUTIDE_HUMAN_SURVIVAL_ALGORITHM[0],
+        pages: SLIDES_RETATRUTIDE_HUMAN_SURVIVAL_ALGORITHM,
+        pageCount: SLIDES_RETATRUTIDE_HUMAN_SURVIVAL_ALGORITHM.length,
+      },
     },
   },
   {
@@ -450,6 +493,11 @@ export const TREATMENT_TOPICS: TreatmentTopic[] = [
       infographic: {
         src: `${BLOB_INFOGRAPHIC_BASE}/targeted-molecules-cellular-energy.jpg`,
         alt: "Kingdom Module 05 - Fueling the Cellular Orchestra. Covers NAD+ for cellular fuel, B12 + LIE-poh B for methylation, glutathione (gloo-tah-THY-ohn) as master antioxidant, L carnitine for metabolic flexibility, PT-141 / P-B-E five inhibitors for sexual health.",
+      },
+      slides: {
+        src: SLIDES_TARGETED_MOLECULES_CELLULAR_ENERGY[0],
+        pages: SLIDES_TARGETED_MOLECULES_CELLULAR_ENERGY,
+        pageCount: SLIDES_TARGETED_MOLECULES_CELLULAR_ENERGY.length,
       },
     },
   },
