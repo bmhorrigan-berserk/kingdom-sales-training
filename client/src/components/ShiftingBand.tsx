@@ -47,9 +47,9 @@ export default function ShiftingBand({
     >
       <RadialFan
         texture={texture}
-        origin="center"
+        origin="top"
         opacity={0.30}
-        size={1100}
+        size={900}
         blendMode="screen"
         style={{ zIndex: 0 }}
       />

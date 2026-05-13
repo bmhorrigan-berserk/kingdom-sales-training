@@ -38,7 +38,7 @@ export default function Home() {
       >
         <RadialFan
           texture="footer"
-          origin="tr"
+          origin="top"
           opacity={0.42}
           size={900}
           style={{ zIndex: 0 }}
@@ -178,9 +178,9 @@ export default function Home() {
       >
         <RadialFan
           texture="footer"
-          origin="bl"
+          origin="left"
           opacity={0.48}
-          size={1100}
+          size={900}
           blendMode="screen"
           style={{ zIndex: 0 }}
         />
