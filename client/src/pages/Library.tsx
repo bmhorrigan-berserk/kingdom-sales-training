@@ -14,8 +14,24 @@ import TopNav from "@/components/TopNav";
 import { Eyebrow, PageNumber, Em } from "@/components/Furniture";
 import { RadialFan, KINGDOM_PALETTE } from "@/components/RadialFan";
 import ShiftingBand from "@/components/ShiftingBand";
-import { MEDIA_CATALOG, LESSON_MEDIA, type MediaItem } from "@/lib/mediaData";
-import { Play, Headphones, Video, ArrowRight, Clock } from "lucide-react";
+import {
+  MEDIA_CATALOG,
+  LESSON_MEDIA,
+  type MediaItem,
+  TREATMENT_TOPICS,
+  topicAvailableFormats,
+  type TreatmentTopic,
+} from "@/lib/mediaData";
+import {
+  Play,
+  Headphones,
+  Video,
+  ArrowRight,
+  Clock,
+  Image as ImageIcon,
+  Layers,
+  FileText,
+} from "lucide-react";
 import { DurationBadge } from "@/components/DurationBadge";
 
 const NAVY = "#1A2060";
@@ -56,9 +72,10 @@ export default function Library() {
   const audios = MEDIA_CATALOG.filter(
     (m) => m.type === "audio" && (m.category ?? "sales-method") === "sales-method"
   );
-  const treatmentMedia = MEDIA_CATALOG.filter(
-    (m) => m.category === "treatment-catalog"
-  );
+  // Treatment Catalog topics each get their own detail page with
+  // multiple format variations (audio, video, infographic, slides).
+  // Source of truth is TREATMENT_TOPICS in mediaData.ts.
+  const treatmentTopics = TREATMENT_TOPICS;
 
   return (
     <div style={{ background: CREAM, minHeight: "100vh", color: INK }}>
@@ -108,7 +125,7 @@ export default function Library() {
               }}
             >
               § 05 · MEDIA LIBRARY · {videos.length} VIDEOS · {audios.length}{" "}
-              AUDIO · {treatmentMedia.length} TREATMENT
+              AUDIO · {treatmentTopics.length} TREATMENT
             </div>
             <h1
               style={{
@@ -179,11 +196,11 @@ export default function Library() {
             </a>
             <a
               href="#treatment"
-              style={statTile(GREEN, treatmentMedia.length, "Treatment", "catalog")}
+              style={statTile(GREEN, treatmentTopics.length, "Treatment", "catalog")}
             >
               <Headphones size={18} style={{ color: CREAM }} />
               <div style={statTileNumber}>
-                {String(treatmentMedia.length).padStart(2, "0")}
+                {String(treatmentTopics.length).padStart(2, "0")}
               </div>
               <div style={statTileLabel}>Treatment catalog</div>
             </a>
@@ -278,7 +295,7 @@ export default function Library() {
           what they're selling. Separate from the sales-method audio
           above because the use case is "learning the catalog," not
           "drilling sales tactics." */}
-      {treatmentMedia.length > 0 && (
+      {treatmentTopics.length > 0 && (
         <section
           id="treatment"
           style={{
@@ -296,8 +313,8 @@ export default function Library() {
                 Know <Em>what you sell.</Em>
               </>
             }
-            subline="Clinical onboarding companions. Listen end-to-end before any patient call so the catalog isn't a list of names - it's the biology behind every protocol."
-            count={treatmentMedia.length}
+            subline="Clinical onboarding companions. Each topic ships with multiple format variations - audio, video, infographic, slide deck - so pick the format that fits how you learn."
+            count={treatmentTopics.length}
             accent={GREEN}
           />
           <div
@@ -308,13 +325,8 @@ export default function Library() {
               gap: 20,
             }}
           >
-            {treatmentMedia.map((m) => (
-              <MediaTile
-                key={m.slug}
-                item={m}
-                accent={GREEN}
-                lessonCode={lessonForSlug(m.slug)}
-              />
+            {treatmentTopics.map((topic) => (
+              <TreatmentTopicCard key={topic.slug} topic={topic} accent={GREEN} />
             ))}
           </div>
         </section>
@@ -637,3 +649,147 @@ const statTileLabel: React.CSSProperties = {
   textTransform: "uppercase",
   color: "rgba(255,251,240,0.85)",
 };
+
+/* ─── Treatment Topic card (Catalog section) ──────────────────────────────
+   Each card represents one Treatment Catalog topic. Clicking the card
+   navigates to /library/treatment/<slug>, where every format variation
+   (audio, video, infographic, slide deck) is rendered. The chip row
+   at the bottom advertises which formats are currently available for
+   that topic, so the rep knows what to expect on the detail page. */
+function TreatmentTopicCard({
+  topic,
+  accent,
+}: {
+  topic: TreatmentTopic;
+  accent: string;
+}) {
+  const formats = topicAvailableFormats(topic);
+
+  return (
+    <Link href={`/library/treatment/${topic.slug}`}>
+      <a
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "26px 26px 22px",
+          background: CREAM,
+          border: `1px solid ${HAIRLINE}`,
+          borderLeft: `4px solid ${accent}`,
+          borderRadius: 12,
+          textDecoration: "none",
+          color: "inherit",
+          transition: "transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease",
+          boxShadow: "0 1px 2px rgba(31,107,63,0.04)",
+          minHeight: 200,
+          cursor: "pointer",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-2px)";
+          e.currentTarget.style.boxShadow =
+            "0 12px 28px -16px rgba(31,107,63,0.30), 0 2px 6px rgba(10,14,26,0.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "";
+          e.currentTarget.style.boxShadow = "0 1px 2px rgba(31,107,63,0.04)";
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            fontFamily: "var(--font-mono, ui-monospace, monospace)",
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: accent,
+            marginBottom: 14,
+          }}
+        >
+          <Headphones size={14} />
+          Treatment Topic
+        </div>
+        <h3
+          style={{
+            fontFamily: "var(--font-display, Fraunces), Georgia, serif",
+            fontWeight: 500,
+            fontSize: 22,
+            lineHeight: 1.2,
+            color: NAVY,
+            margin: 0,
+            letterSpacing: "-0.015em",
+          }}
+        >
+          {topic.title}
+        </h3>
+        <p
+          style={{
+            marginTop: 12,
+            fontFamily: "var(--font-body, Inter), system-ui, sans-serif",
+            fontSize: 14,
+            lineHeight: 1.55,
+            color: INK_MUTED,
+            flex: 1,
+          }}
+        >
+          {topic.tagline}
+        </p>
+
+        {/* Format chip row */}
+        <div
+          style={{
+            marginTop: 16,
+            paddingTop: 14,
+            borderTop: `1px solid ${HAIRLINE}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+            flexWrap: "wrap",
+          }}
+        >
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            {(["audio", "video", "infographic", "slides"] as const).map((f) => {
+              const available = formats.includes(f);
+              const icon =
+                f === "audio" ? <Headphones size={11} /> :
+                f === "video" ? <Video size={11} /> :
+                f === "infographic" ? <ImageIcon size={11} /> :
+                <Layers size={11} />;
+              return (
+                <span
+                  key={f}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 5,
+                    fontFamily: "var(--font-mono, ui-monospace, monospace)",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    padding: "4px 8px",
+                    borderRadius: 6,
+                    background: available ? `${accent}14` : "transparent",
+                    color: available ? accent : "rgba(45, 42, 36, 0.32)",
+                    border: `1px solid ${available ? `${accent}33` : HAIRLINE}`,
+                  }}
+                  title={
+                    available
+                      ? `${f.charAt(0).toUpperCase()}${f.slice(1)} available`
+                      : `${f.charAt(0).toUpperCase()}${f.slice(1)} coming soon`
+                  }
+                >
+                  {icon}
+                  {f === "infographic" ? "Infographic" : f.charAt(0).toUpperCase() + f.slice(1)}
+                </span>
+              );
+            })}
+          </div>
+          <ArrowRight size={16} style={{ color: accent }} />
+        </div>
+      </a>
+    </Link>
+  );
+}

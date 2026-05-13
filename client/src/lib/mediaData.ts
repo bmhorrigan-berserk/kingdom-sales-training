@@ -176,57 +176,141 @@ export const MEDIA_CATALOG: MediaItem[] = [
       "End-to-end walkthrough of the full kingdom sales engine. Watch as the capstone before certification.",
   },
 
-  // ─── Treatment Catalog ────────────────────────────────────────────
-  // Clinical / product education. Reps listen to understand WHAT they
-  // are selling - the hormones, peptides, and protocol mechanics behind
-  // the catalog. These are companion onboarding references, not phase-
-  // specific lessons.
+  // Treatment Catalog entries previously lived here. They moved to
+  // TREATMENT_TOPICS below when each topic gained its own detail page
+  // at /library/treatment/<slug> with multiple format variations
+  // (audio, video, infographic, slide deck).
+];
+
+/* ------------------------------------------------------------------
+ * Treatment Catalog topics - the "Know What You Sell" library.
+ *
+ * Each topic has its own detail page at /library/treatment/<slug>
+ * showing all available format variations: audio, video, infographic,
+ * slide deck. The Library page's Treatment Catalog section renders
+ * cards that link into the detail pages.
+ *
+ * Adding a new format to an existing topic: drop the asset URL into
+ * the relevant field. Adding a new topic: append a new entry below.
+ *
+ * Audio files live in Vercel Blob (store j5aicoata8cxgrkm) under the
+ * onboarding/audio/ prefix. Videos should also use Blob or an
+ * unlisted Vimeo/YouTube embed, NEVER bundled into the repo (too
+ * large for Vercel deploy limits). Infographics and slide decks can
+ * live in client/public/treatment-catalog/<slug>/ if they are small
+ * (under ~5MB each); migrate to Blob if they grow.
+ * ----------------------------------------------------------------*/
+
+export interface TreatmentTopicAsset {
+  src: string;            // playable / viewable URL
+  poster?: string;        // optional thumbnail
+  durationSec?: number;   // optional, computed at runtime if missing
+  downloadSrc?: string;   // optional explicit download URL (defaults to src)
+  pageCount?: number;     // slide decks only
+  alt?: string;           // infographics only
+}
+
+export interface TreatmentTopic {
+  slug: string;           // unique, used in URL: /library/treatment/<slug>
+  title: string;
+  tagline: string;        // one-sentence framing, shown on catalog card
+  summary: string;        // longer description, shown on detail page hero
+  // Order in the array drives card order on the Library page.
+  assets: {
+    audio?: TreatmentTopicAsset;
+    video?: TreatmentTopicAsset;
+    infographic?: TreatmentTopicAsset;
+    slides?: TreatmentTopicAsset;
+  };
+}
+
+const BLOB_AUDIO_BASE =
+  "https://j5aicoata8cxgrkm.public.blob.vercel-storage.com/onboarding/audio";
+
+export const TREATMENT_TOPICS: TreatmentTopic[] = [
   {
     slug: "fixing-male-energy-crisis",
-    type: "audio",
     title: "Fixing the Modern Male Energy Crisis",
-    src: "/media/fixing-male-energy-crisis.m4a",
-    description:
-      "Foundational walk-through of why male energy collapses in the modern environment and what kingdom protocols actually correct. Use this to ground every TRT and recovery conversation in the biology beneath the symptoms.",
-    category: "treatment-catalog",
+    tagline:
+      "Why male energy collapses in the modern environment, and what kingdom protocols actually correct.",
+    summary:
+      "Foundational walk-through of the male hormonal collapse pattern. Use this to ground every TRT and recovery conversation in the biology beneath the symptoms. Frames testosterone, sleep, and recovery as one integrated signal system rather than three separate complaints.",
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/fixing-male-energy-crisis-0aQNX1BScveflRnZYAUwhAqwxIj343.m4a`,
+      },
+    },
   },
   {
     slug: "why-women-need-testosterone",
-    type: "audio",
     title: "Why Women Need More Testosterone Than Estrogen",
-    src: "/media/why-women-need-testosterone.m4a",
-    description:
-      "Female hormone restoration explained from first principles. The signal hierarchy women actually run on and why the testosterone-first lens reframes the entire female protocol conversation.",
-    category: "treatment-catalog",
+    tagline:
+      "The signal hierarchy women actually run on, and why the testosterone-first lens reframes the female protocol.",
+    summary:
+      "Female hormone restoration explained from first principles. Counter to the conventional estrogen-first framing, the female signal hierarchy is testosterone-led. This recording walks through the receptor biology, the cycle-stage realities, and how kingdom's female protocols sequence the restoration.",
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/why-women-need-testosterone-dTBRNKgBMJRH2LbpfAu5ULGDBjItuY.m4a`,
+      },
+    },
   },
   {
     slug: "peptides-targeted-cellular-repair",
-    type: "audio",
     title: "How Peptides Signal Targeted Cellular Repair",
-    src: "/media/peptides-targeted-cellular-repair.m4a",
-    description:
-      "How peptide protocols address specific cellular signaling pathways the body has stopped firing. Use to position peptides as precision repair tools, not generic supplements.",
-    category: "treatment-catalog",
+    tagline:
+      "Peptides as precision signaling tools, not generic supplements.",
+    summary:
+      "How peptide protocols address specific cellular signaling pathways the body has stopped firing on its own. Walks through BPC-157, TB-500, ipamorelin, CJC-1295, and the rest of the kingdom peptide catalog with a focus on what each peptide signals, where it acts, and why the kingdom protocols stack them in the sequences they do.",
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/peptides-targeted-cellular-repair-ccQoNdt3QWivyc6cssucrdD8qPUPmI.m4a`,
+      },
+    },
   },
   {
     slug: "targeted-molecules-cellular-energy",
-    type: "audio",
     title: "Targeted Molecules to Restore Cellular Energy",
-    src: "/media/targeted-molecules-cellular-energy.m4a",
-    description:
-      "Walkthrough of the kingdom protocol design philosophy at the molecular level. Why we stack specific molecules in specific sequences to rebuild cellular energy production instead of treating symptoms in isolation.",
-    category: "treatment-catalog",
+    tagline:
+      "Molecular-level protocol design: rebuilding cellular energy production from the ground up.",
+    summary:
+      "The kingdom protocol design philosophy at the molecular level. Why we stack specific molecules (mitochondrial cofactors, methylation support, peptide signaling) in specific sequences to rebuild cellular energy production instead of chasing fatigue, brain fog, or recovery as isolated symptoms.",
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/targeted-molecules-cellular-energy-qFox8vqHZ8rObOTl60EopYgrAXMRxA.m4a`,
+      },
+    },
   },
   {
     slug: "retatrutide-human-survival-algorithm",
-    type: "audio",
     title: "Retatrutide Rewrites the Human Survival Algorithm",
-    src: "/media/retatrutide-human-survival-algorithm.m4a",
-    description:
-      "How retatrutide and the next-generation GLP-1/GIP/glucagon agonists reset the metabolic set-point and override the survival algorithm that defends weight. Frames the weight-loss conversation around biology, not willpower.",
-    category: "treatment-catalog",
+    tagline:
+      "How next-gen GLP-1/GIP/glucagon agonists reset the metabolic set-point that defends weight.",
+    summary:
+      "Retatrutide and the next-generation GLP-1/GIP/glucagon triple-agonists override the survival algorithm the body uses to defend its weight set-point. This recording frames the weight-loss conversation around biology, not willpower, and gives reps the language to position kingdom's GLP-1 line against the legacy single-agonist alternatives.",
+    assets: {
+      audio: {
+        src: `${BLOB_AUDIO_BASE}/retatrutide-human-survival-algorithm-fCel7qLmzYQVuULq3eMUUsU2gH5hMT.m4a`,
+      },
+    },
   },
 ];
+
+/** Quick lookup by slug. */
+export function getTreatmentTopic(slug: string): TreatmentTopic | undefined {
+  return TREATMENT_TOPICS.find((t) => t.slug === slug);
+}
+
+/** Which asset formats this topic has. Used to render the chip row. */
+export function topicAvailableFormats(
+  topic: TreatmentTopic
+): Array<"audio" | "video" | "infographic" | "slides"> {
+  const out: Array<"audio" | "video" | "infographic" | "slides"> = [];
+  if (topic.assets.audio) out.push("audio");
+  if (topic.assets.video) out.push("video");
+  if (topic.assets.infographic) out.push("infographic");
+  if (topic.assets.slides) out.push("slides");
+  return out;
+}
 
 /* ------------------------------------------------------------------
  * Lesson-to-media routing.

@@ -24,6 +24,7 @@ import ReferenceGuide from "@/pages/ReferenceGuide";
 import Flashcards from "@/pages/Flashcards";
 import Quiz from "@/pages/Quiz";
 import Library from "@/pages/Library";
+import TreatmentTopic from "@/pages/TreatmentTopic";
 import NotFound from "@/pages/NotFound";
 
 function Router() {
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/flashcards" component={Flashcards} />
       <Route path="/quiz" component={Quiz} />
       <Route path="/library" component={Library} />
+      <Route path="/library/treatment/:slug" component={TreatmentTopic} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
