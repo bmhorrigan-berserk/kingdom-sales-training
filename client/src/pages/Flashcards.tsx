@@ -324,8 +324,15 @@ export default function Flashcards() {
                 minHeight: 460,
               }}
             >
+              {/* CSS Grid is the trick that lets the 3D-flip parent grow
+                  with content. Both faces share grid-area: 1 / 1 so they
+                  stack on top of each other (preserving the flip), but
+                  the parent's height auto-stretches to the LARGER of
+                  the two faces. Long answers (e.g. Accusation Audit)
+                  now show in full instead of being clipped at 460px. */}
               <div
                 style={{
+                  display: "grid",
                   position: "relative",
                   transformStyle: "preserve-3d",
                   transition: "transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1)",
@@ -462,8 +469,11 @@ function CardFace({
   return (
     <div
       style={{
-        position: "absolute",
-        inset: 0,
+        // Both faces share grid-area 1/1 via the parent's display:grid,
+        // so they stack but the parent auto-grows to fit the larger one.
+        // No more position: absolute + inset: 0 - that was clipping long
+        // answers (e.g. Accusation Audit) at the fixed 460px minHeight.
+        gridArea: "1 / 1",
         backfaceVisibility: "hidden",
         WebkitBackfaceVisibility: "hidden",
         transform: isBack ? "rotateY(180deg)" : "rotateY(0)",
@@ -484,7 +494,12 @@ function CardFace({
           ? "0 1px 2px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.32)"
           : "0 1px 2px rgba(31,107,63,0.04), 0 12px 36px rgba(26,32,96,0.08), 0 4px 14px rgba(26,32,96,0.04)",
         minHeight: 460,
-        overflow: "hidden",
+        // overflow:hidden previously clipped long answers. Now we let
+        // them flow naturally - the grid parent grows to accommodate.
+        // Keeping the radial fan + corner decorations clean still
+        // requires hiding overflow OF those internal elements, handled
+        // inline where they're rendered.
+        overflow: "visible",
       }}
     >
       {/* Decorative fan on the back face for visual interest */}
@@ -553,15 +568,23 @@ function CardFace({
             : "var(--font-display, Fraunces), Georgia, serif",
           fontWeight: 400,
           fontSize: isBack
-            ? "clamp(18px, 2vw, 22px)"
+            ? "clamp(16px, 1.8vw, 19px)"
             : "clamp(26px, 3.2vw, 38px)",
-          lineHeight: isBack ? 1.55 : 1.2,
+          lineHeight: isBack ? 1.6 : 1.2,
           letterSpacing: isBack ? "0" : "-0.015em",
           color: isBack ? CREAM : NAVY,
           margin: "32px 0",
-          maxWidth: "32ch",
+          // Wider answer column on the back face so long answers
+          // need fewer lines. Front face stays narrower for big
+          // editorial prompts.
+          maxWidth: isBack ? "54ch" : "32ch",
           position: "relative",
           zIndex: 1,
+          // Preserve newlines from the source data so multi-paragraph
+          // answers (Accusation Audit has Script: / Result: blocks
+          // separated by \n\n) render as visible paragraph breaks
+          // instead of collapsing into one run-on block.
+          whiteSpace: "pre-wrap",
         }}
       >
         {text}
